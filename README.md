@@ -1,4 +1,4 @@
-Event and data storage with embedded query system built ontop of MongoDB
+Storage Engine for Event based Data
 ===
 
 ### Install
