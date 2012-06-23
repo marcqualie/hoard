@@ -1,0 +1,7 @@
+# Hoard
+/.deploy
+/server/config.php
+
+# Generic
+.DS_STORE
+Thumbs.db
