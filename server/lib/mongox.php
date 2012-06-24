@@ -39,7 +39,39 @@ class MongoX
 		{
 			self::connect();
 		}
-		return self::$db->selectCollection($collection_name);
+		if ($collection_name)
+		{
+			return self::$db->selectCollection($collection_name);
+		}
+		else
+		{
+			return new MongoX_EmptyCollection;
+		}
+	}
+	
+	/**
+	 * Commands
+	 */
+	public static function command ($cmd)
+	{
+		return self::$db->command($cmd);
+	}
+	
+}
+
+/**
+ * Empty MongoCollection for silent collection exception handling
+ */
+class MongoX_EmptyCollection
+{
+	
+	public function find ()
+	{
+		return $this;
+	}
+	public function sort ()
+	{
+		return $this;
 	}
 	
 }
