@@ -108,7 +108,7 @@ class MapreduceController extends PageController
 		// Set default values
 		if (!$this->params['query'])
 		{
-			$this->params['query'] = '{ "event": " .. " }';
+			$this->params['query'] = '{ "event": "" }';
 		}
 		if (!$this->params['sort'])
 		{
@@ -116,11 +116,11 @@ class MapreduceController extends PageController
 		}
 		if (!$this->params['map-func'])
 		{
-			$this->params['map-func'] = "function () {\n  \n}";
+			$this->params['map-func'] = "function () {\n  emit(this.message, 1);\n}";
 		}
 		if (!$this->params['reduce-func'])
 		{
-			$this->params['reduce-func'] = "function (key, obj) {\n  \n}";
+			$this->params['reduce-func'] = "function (key, obj) {\n  var sum = 0;\n  for (var i in obj) {\n    sum += obj[i];\n  }\n  return sum;\n}";
 		}
 		
 	}
