@@ -27,7 +27,7 @@
 	<table id="output" class="table table-condensed table-striped table-bordered">
 <? foreach ($output as $row): ?>
 		<tr>
-			<td width="100"><?=$row['_id']?></td>
+			<td width="50%"><?=htmlentities($row['_id'])?></td>
 			<td><?=$row['value']?></td>
 		</tr>
 <? endforeach; ?>
