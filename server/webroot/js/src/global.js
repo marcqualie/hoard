@@ -69,10 +69,17 @@ $(document).ready(function () {
 					
 					// Tine
 					var _date = new Date(data.date.sec * 1000);
-					var _hour = _date.getHours(); if (_hour < 10) _hour = '0' + _hour;
-					var _min = _date.getMinutes(); if (_min < 10) _min = '0' + _min;
-					var _sec = _date.getSeconds(); if (_sec < 10) _sec = '0' + _sec;
-					var timeText = _hour + ':' + _min + ':' + _sec;
+					var _dateToday = new Date();
+					if (_dateToday.getMonth() + _dateToday.getDay() == _date.getMonth() + _date.getDay()) {
+						var _hour = _date.getHours(); if (_hour < 10) _hour = '0' + _hour;
+						var _min = _date.getMinutes(); if (_min < 10) _min = '0' + _min;
+						var _sec = _date.getSeconds(); if (_sec < 10) _sec = '0' + _sec;
+						var timeText = _hour + ':' + _min + '<span style="opacity:.5">:' + _sec + '</span>';
+					} else {
+						var _month = _date.getMonth(); if (_month < 10) _month = '0' + _month;
+						var _day = _date.getDate(); if (_day < 10) _day = '0' + _day;
+						var timeText = _month + '/' + _day;
+					}
 					
 					// Parse JSON
 					var json_full = JSON.stringify(data, undefined, 2);
