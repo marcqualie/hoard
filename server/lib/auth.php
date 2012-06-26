@@ -5,6 +5,7 @@ class Auth
 	
 	public static $cookie = 'user';
 	public static $id = null;
+	public static $admin = false;
 	public static $user = array();
 	public static $apps = array();
 	
@@ -23,7 +24,7 @@ class Auth
 			return;
 		}
 		$collection = MongoX::selectCollection('user');
-		$user = $collection->findOne(array('_id' => new MongoId($id)), array('email' => 1, 'token' => 1));
+		$user = $collection->findOne(array('_id' => new MongoId($id)), array('email' => 1, 'token' => 1, 'admin' => 1));
 		if (!$user)
 		{
 			return;
@@ -32,6 +33,7 @@ class Auth
 		// Populate User Data
 		self::$user = $user;
 		self::$id = $id;
+		self::$admin = $user['admin'] ? true : false;
 		
 		// Populate Apps
 		$cursor = MongoX::selectCollection('app')->find(array('roles.' . self::$id => array('$exists' => 1)));

@@ -29,6 +29,9 @@
 			<div class="nav-collaps">
 				<ul class="nav pull-right">
 <? if (Auth::$id): ?>
+<? if (Auth::$admin): ?>
+					<li<?=PAGE === 'admin' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/admin">Admin</a></li>
+<? endif; ?>
 					<li<?=PAGE === 'account' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/account"><?=Auth::$user['email']?></a></li>
 					<li><a href="<?=URIBASE?>/logout">Logout</a></li>
 <? else: ?>
