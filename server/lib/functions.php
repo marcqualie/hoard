@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Redirect Helper
+ */
+function redirect ($url)
+{
+	$goto = $url;
+	if (strpos($goto, 'http') !== 0)
+	{
+		$goto = 'http://' . $_SERVER['HTTP_HOST'] . $goto;
+	}
+	header('Location: ' . $goto);
+	exit;
+}
+
+/**
  * Array Sort
  */
 function array_sort_func ($a, $b = null)

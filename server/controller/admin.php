@@ -34,7 +34,7 @@ class AdminController extends PageController
 			}
 			$id = MongoX::selectCollection('user')->insert(array(
 				'email' => $email,
-				'password' => Auth::password($pass),
+				'password' => Auth::password($password),
 				'token' => $token,
 				'created' => new MongoDate(),
 				'updated' => new MongoDate()
