@@ -22,7 +22,16 @@
 <? if (Auth::$id): ?>
 				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/apps">My Apps (<?=count(Auth::$apps)?>)</a></li>
 <? endif; ?>
-				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/viewer">Viewer</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Tools
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="<?=URIBASE?>/viewer">Viewer</a></li>
+						<li><a href="<?=URIBASE?>/mapreduce">Map Reduce</a></li>
+					</ul>
+				</li>
 				<li<?=PAGE === 'docs' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/docs">Documentation</a></li>
 				<li<?=PAGE === 'contact' ? ' class="active"' : ''?>><a href="http://www.marcqualie.com/contact/" target="_blank">Support</a></li>
 			</ul>
