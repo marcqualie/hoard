@@ -5,14 +5,18 @@ class TrackController extends PageController
 	
 	public $formats = array('json');
 	
-	public function req_post ()
+	public function req_get ()
 	{
 		
+		$format = $params['format']? $params['format'] : 'json';
 		$params = array_merge($_GET, $_POST);
-		$event = $this->uri[1];
-		$format = $params['format'];
-		$params['data'] = urldecode($params['data']);
-		$data = json_decode($params['data'], true);
+		$dataload = $params['data'] ? json_decode(urldecode($params['data']), true) : array();
+		$payload = $params['payload'] ? json_decode(urldecode($params['payload']), true) : array();
+		$data = array_merge($dataload, $payload);
+
+		// Special data types
+		$data['event'] = $this->uri[1] ? $this->uri[1] : $data['event'];
+		$data['appkey'] = $params['appkey'] ? $params['appkey'] : $data['appkey'];
 		
 		// Sometimes local machines send no post data, or it's corrupt
 		if (!$data)
@@ -30,10 +34,6 @@ class TrackController extends PageController
 		unset($data['sig'], $data['hash']);
 		
 		// Append to data
-		if ($event)
-		{
-			$data['event'] = $event;
-		}
 		$data['date'] = new MongoDate();
 		
 		// Save Data to log
@@ -55,51 +55,4 @@ class TrackController extends PageController
 		
 	}
 	
-	public function req_get ()
-	{
-		
-		echo 'Hoard tracker only supports post data right now';
-		
-	}
-	
 }
-
-/*
-
-
-header('Content-type: text/plain');
-error_reporting(E_ALL);
-
-// Only accept certain fields
-$accept_fields = array('devkey', 'uri', 'action', 'host', 'type', 'text', 'message', 'query', 'object', 'server', 'referer', 'file', 'line', 'trace');
-$data = array();
-foreach ($_REQUEST as $k => $v)
-{
-	if (in_array($k, $accept_fields))
-	{
-		$data[$k] = $v;
-	}
-}
-if (!$data['text']) $data['text'] = $data['message'];
-
-// Save Data to log
-if ($data['type'] && $data['host'] && $data['text'] && $data['action'] === 'log')
-{
-	
-	$data['time'] = time();
-	$data['sig'] = md5($data['host'] . ':' . $data['type'] . ':' . $data['text']);
-	$mongo = new Mongo();
-	$db = $mongo->selectDB('logger');
-	$collection = $db->selectCollection('error');
-	$collection->insert($data);
-	echo "{\"ok\":1}";
-	
-}
-else
-{
-	
-	echo "{\"ok\":0}";
-	
-}
-
-*/
