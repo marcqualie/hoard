@@ -129,6 +129,18 @@ $(document).ready(function () {
 			
 			
 		}
+
+		/**
+		 * Select Box
+		 */
+		var appSelector = $('[name=appkey]');
+		appSelector.change(function () {
+			location.href = '#appkey=' + appSelector.value;
+		});
+		if (location.hash) {
+			var appKey = location.hash.replace('#', '').split('=')[1];
+			appSelector.val(appKey);
+		}
 		
 		/**
 		 * Request
@@ -140,16 +152,11 @@ $(document).ready(function () {
 		}).submit();
 		function sendHoardRequest () {
 			var _data = _hoardRequestData;
-//			console.log(_data);
 			var _event = _hoardRequestData['event'] || '';
 			$.post(app.uribase + '/find/' + _event, _hoardRequestData, function (json) {
 				renderView(json);
 			}, 'json');
 		}
-		
-		setInterval(function () {
-//			sendHoardRequest();
-		}, 5000);
 		
 	}
 	
