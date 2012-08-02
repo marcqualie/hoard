@@ -20,7 +20,11 @@
 			<table class="table table-bordered table-condensed table-striped">
 <? foreach ($users as $user): ?>
 				<tr>
-					<td><a href="/user/<?=$user['_id']?>"><?=$user['email']?></a></td>
+					<td>
+<?php if ($user['admin']): ?>
+						<i class="icon icon-star"></i>
+<?php endif; ?>
+						<a href="/user/<?=$user['_id']?>"><?=$user['email']?></a></td>
 				</tr>
 <? endforeach; ?>
 			</table>
