@@ -9,6 +9,7 @@
  */
 
 header('Content-Type: text/plain');
+date_default_timezone_set('UTC');
 
 // Get params from Shell
 parse_str(implode('&', array_slice($argv, 1)), $params);
@@ -25,41 +26,48 @@ while (preg_match('/\/\w+\/\.\./', $docroot))
 }
 if (!file_exists($docroot . '/router.php'))
 {
-	echo '[error] invalid docroot [' . $docroot . ']' . PHP_EOL;
+	echo '[Error] Invalid docroot [' . $docroot . ']' . PHP_EOL;
 	exit;
 }
 define('DOCROOT', $docroot);
 echo 'docroot: ' . $docroot . PHP_EOL;
 
 // Validate email data
-$email = $params['email'];
+$admin = $params['admin'];
+list($email, $password) = explode(':', $admin);
 if (!$email)
 {
 	$email = 'admin@' . ($_SERVER['SERVER_NAME'] ? $_SERVER['SERVER_NAME'] : 'example.com');
 }
+if (!$password)
+{
+	$password = 'password';
+}
 echo 'email: ' . $email . PHP_EOL;
 
 // Get database info and test connection
-$mongodburi = 'mongodb://admin:admin@127.0.0.1:27017/hoard';
+$mongodburi = $params['mongodburi'];
+if (!$mongodburi)
+{
+	$mongodburi = 'mongodb://admin:admin@127.0.0.1:27017/hoard';
+}
 echo 'mongodburi: ' . $mongodburi . PHP_EOL;
 include DOCROOT . '/lib/mongox.php';
 MongoX::init($mongodburi, array('connect' => true));
 if (!MongoX::$connected)
 {
-	echo '[Error] Invalid Mongo Config';
+	echo '[Error] Invalid Mongo Config, cannot connect';
 	exit;
 }
 
 // Create config file from variables
 $config_file = DOCROOT . '/config.php';
-if (file_exists($config_file))
+if (0 && file_exists($config_file))
 {
-	echo 'config file exists [' . $config_file . ']' . PHP_EOL;
+	echo 'config file exists, will overwrite' . PHP_EOL;
 }
-else
-{
-	$data = date('c');
-	$content = <<< EOT
+$data = date('c');
+$content = <<< EOT
 <?php
 
 /**
@@ -70,34 +78,33 @@ else
 \$config['email'] = '$email';
 
 // Database
-\$config['mongo_uri'] = '$mongo_uri';
+\$config['mongo_uri'] = '$mongodburi';
 
 // Access Control
 \$config['allow_ips'] = array('*'); // allow global access by default
 
 EOT;
-	$fh = fopen($config_file, 'w');
-	  fwrite($fh, $content);
-	  fclose($fh);
-	echo 'config file created [' . $config_file . ']' . PHP_EOL;
-}
+$fh = fopen($config_file, 'w');
+  fwrite($fh, $content);
+  fclose($fh);
+echo 'config file saved [' . $config_file . ']' . PHP_EOL;
 
 // Create admin user in Mongo
 $collection = MongoX::selectCollection('user');
 $user = $collection->findOne(array('email' => $email));
 if ($user['_id'])
 {
-	echo 'admin user exists' . PHP_EOL;
+	echo 'admin user (' . $email . ') already exists' . PHP_EOL;
 }
 else
 {
 	$collection->ensureIndex(array('email' => 1), array('unique' => true));
 	include DOCROOT . '/lib/auth.php';
 	$token = uniqid();
-	echo 'created admin user [email=' . $email . ', password=admin, token=' . $token . ']' . PHP_EOL;
+	echo 'created admin user [email=' . $email . ', password=' . $password . ', token=' . $token . ']' . PHP_EOL;
 	$collection->insert(array(
 		'email' => $email,
-		'password' => Auth::password('admin'),
+		'password' => Auth::password($password),
 		'token' => $token,
 		'admin' => 1,
 		'created' => new MongoDate(),

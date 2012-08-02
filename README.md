@@ -6,10 +6,8 @@ Storage Engine for Event based Data
 Console:
 
 	php ./install/shell.php \
-		--mongodburi=mongodb://admin:admin@127.0.0.1:27017/hoard \
-		--docroot=/path/to/install \
-		--email=admin@example.com \
-		--deleteinstall=true
+		mongodburi=mongodb://user:password@127.0.0.1:27017/hoard \
+		admin=admin@example.com:password
 	
 Web (Coming Soon):
 	

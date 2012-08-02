@@ -4,7 +4,7 @@ ignore_user_abort(true);
 include dirname(__FILE__) . '/lib/core.php';
 
 // Restrict IP
-if (!in_array($_SERVER['REMOTE_ADDR'], $config['allow_ips']))
+if (!in_array('*', $config['allow_ips']) && !in_array($_SERVER['REMOTE_ADDR'], $config['allow_ips']))
 {
 	echo "Hoard is only available from your whitelisted IPs. Contact <a href='http://www.marcqualie.com/contact/'>Marc</a> for help";
 	exit;
@@ -19,12 +19,6 @@ Auth::init();
 // Detect Page Method
 $request_uri_base = '';
 $request_uri = str_replace($request_uri_base, '', $_SERVER['REQUEST_URI']);
-/*
-echo 'server: ' . $_SERVER['DOCUMENT_ROOT'] . '<br/>';
-echo 'doc: ' . DOCROOT . '<br/>';
-echo 'base: ' . $request_uri_base . '<br/>';
-echo 'uri: ' . $request_uri . '<br/>';
-*/
 define('URIBASE', $request_uri_base);
 $request_method = strtolower($_SERVER['REQUEST_METHOD']);
 list ($_uri, $_query) = explode('?', $request_uri);
