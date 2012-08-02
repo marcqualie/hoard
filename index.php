@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Root Redirect
+ * Handler for invalid Server Setup
  *
- * This file is only here incase Hoard is installed directly inside a sub folder
+ * This file should only display if there is a problem with .htaccess
  */
 
-header('Location: ' . str_replace('//', '/', $_SERVER['REQUEST_URI'] . '/server'));
+echo 'Please enable .htaccess on your server for Hoard to function correctly';

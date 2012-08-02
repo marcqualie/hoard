@@ -1,0 +1,4 @@
+RewriteEngine on
+SetEnv ORG_DOC_ROOT /server
+RewriteCond %{REQUEST_URI} !/server/
+RewriteRule .* /server/$0 [L]

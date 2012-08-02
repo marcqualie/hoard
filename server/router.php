@@ -17,7 +17,7 @@ MongoX::init($config['mongo_uri']);
 Auth::init();
 
 // Detect Page Method
-$request_uri_base = str_replace($_SERVER['DOCUMENT_ROOT'], '', DOCROOT);
+$request_uri_base = '';
 $request_uri = str_replace($request_uri_base, '', $_SERVER['REQUEST_URI']);
 /*
 echo 'server: ' . $_SERVER['DOCUMENT_ROOT'] . '<br/>';
