@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title><?=$title?></title>
-	<link href="<?=URIBASE?>/css/lib/bootstrap/min.css" rel="stylesheet"/>
-	<link href="<?=URIBASE?>/css/lib/bootstrap/responsive.min.css" rel="stylesheet"/>
-	<link href="<?=URIBASE?>/css/src/global.css" rel="stylesheet"/>
-	<script src="<?=URIBASE?>/js/lib/jquery/min.js"></script>
-	<script src="<?=URIBASE?>/js/lib/bootstrap/min.js"></script>
-	<script src="<?=URIBASE?>/js/src/global.js"></script>
+	<link href="<?=URIBASE?>/static/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="<?=URIBASE?>/static/css/bootstrap.responsive.min.css" rel="stylesheet"/>
+	<link href="<?=URIBASE?>/static/css/src/global.css" rel="stylesheet"/>
+	<script src="<?=URIBASE?>/static/js/jquery.min.js"></script>
+	<script src="<?=URIBASE?>/static/js/bootstrap.min.js"></script>
+	<script src="<?=URIBASE?>/static/js/src/global.js"></script>
 	<script>
 	  app.uribase = '<?=URIBASE?>';
 	</script>
@@ -22,18 +22,8 @@
 <? if (Auth::$id): ?>
 				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/apps">My Apps (<?=count(Auth::$apps)?>)</a></li>
 <? endif; ?>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						Tools
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="<?=URIBASE?>/viewer">Viewer</a></li>
-						<li><a href="<?=URIBASE?>/mapreduce">Map Reduce</a></li>
-					</ul>
-				</li>
-				<li<?=PAGE === 'docs' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/docs">Documentation</a></li>
-				<li<?=PAGE === 'contact' ? ' class="active"' : ''?>><a href="http://www.marcqualie.com/contact/" target="_blank">Support</a></li>
+				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/viewer">Viewer</a></li>
+				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/mapreduce">Map Reduce</a></li>
 			</ul>
 			<div class="nav-collaps">
 				<ul class="nav pull-right">

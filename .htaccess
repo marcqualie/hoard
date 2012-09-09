@@ -2,7 +2,6 @@ Options -Indexes
 
 RewriteEngine on
 RewriteBase /
-RewriteRule (css|js|images)/(.*) webroot/$1/$2 [L]
-RewriteCond %{REQUEST_URI} !router.php
-RewriteCond %{REQUEST_URI} !(webroot|install)
-RewriteRule (.*) router.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) index.php [L]

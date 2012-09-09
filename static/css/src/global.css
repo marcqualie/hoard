@@ -1,8 +1,17 @@
+/**
+ * Include Fonts
+ */
+@import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700);
+
+/**
+ * Defaults
+ */
 html, body {
 	background: #f7f7f7;
 }
 body {
-	padding-top: 85px;
+	padding-top: 70px;
+	font-size: 12px;
 }
 
 /**
@@ -15,6 +24,19 @@ body {
 /**
  * Nav
  */
+ /*
+ .navbar .brand, .navbar .nav > li > a {
+ 	font-family: 'Yanone Kaffeesatz';
+ 	font-size: 16px;
+ }
+  .navbar .brand {
+ 	color: #000;
+ 	text-transform: uppercase;
+ 	font-weight: bold;
+ 	font-size: 20px;
+ }
+ */
+ /*
 .navbar .brand, .navbar .nav > li > a {
 	text-shadow: 0px 2px 0px #000;
 }
@@ -40,6 +62,7 @@ body {
 .navbar .nav > li.active > a:hover {
 	background: transparent;
 }
+*/
 
 /**
  * Head
