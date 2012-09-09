@@ -1,4 +1,8 @@
+Options -Indexes
+
 RewriteEngine on
-SetEnv ORG_DOC_ROOT /server
-RewriteCond %{REQUEST_URI} !/server/
-RewriteRule .* /server/$0 [L]
+RewriteBase /
+RewriteRule (css|js|images)/(.*) webroot/$1/$2 [L]
+RewriteCond %{REQUEST_URI} !router.php
+RewriteCond %{REQUEST_URI} !(webroot|install)
+RewriteRule (.*) router.php [L]

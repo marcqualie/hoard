@@ -1,6 +1,6 @@
 # Hoard
 /.deploy
-/server/config.php
+/config.php
 
 # Generic
 .DS_STORE

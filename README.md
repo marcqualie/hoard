@@ -1,6 +1,8 @@
 Storage Engine for Event based Data
 ===
 
+Hoard is currently a prototype for logging event based data. It's currently in early alpha testing, and not suitable for production.
+
 ### Install
 
 Console:
