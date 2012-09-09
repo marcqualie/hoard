@@ -92,7 +92,8 @@ body {
 /**
  * Content
  */
-.viewer-content {
+#viewer-content {
+	margin-top: 30px;
 	z-index: 1;
 }
 

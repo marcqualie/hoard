@@ -3,12 +3,7 @@
 ignore_user_abort(true);
 include dirname(__FILE__) . '/lib/core.php';
 
-// Restrict IP
-if (!in_array('*', $config['allow_ips']) && !in_array($_SERVER['REMOTE_ADDR'], $config['allow_ips']))
-{
-	echo "Hoard is only available from your whitelisted IPs. Contact <a href='http://www.marcqualie.com/contact/'>Marc</a> for help";
-	exit;
-}
+date_default_timezone_set($config['timezone']);
 
 // Connect to MongoDB
 MongoX::init($config['mongo_uri']);

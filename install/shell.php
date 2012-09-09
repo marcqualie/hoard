@@ -75,13 +75,15 @@ $content = <<< EOT
  */
 
 \$config = array();
+
+// Admin Authentication
 \$config['email'] = '$email';
 
-// Database
+// Database§
 \$config['mongo_uri'] = '$mongodburi';
 
-// Access Control
-\$config['allow_ips'] = array('*'); // allow global access by default
+// Timezone
+\$config['timezone'] = 'UTC';
 
 EOT;
 $fh = fopen($config_file, 'w');
