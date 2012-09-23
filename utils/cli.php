@@ -1,9 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-include dirname(__FILE__) . '/../lib/mongox.php';
-include dirname(__FILE__) . '/../lib/auth.php';
-include dirname(__FILE__) . '/../config.php';
+define('DOCROOT', realpath(dirname(__FILE__) . '/..'));
+include DOCROOT . '/lib/mongox.php';
+include DOCROOT . '/lib/auth.php';
+$config = include DOCROOT . '/app/config/default.php';
 MongoX::init($config['mongo_uri']);
 
 /**

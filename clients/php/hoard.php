@@ -14,7 +14,7 @@
  *			'trace'		=> array()
  *		));
  *
- * @version 0.0.2
+ * @version 0.0.3
  * @author Marc Qualie <marc@marcqualie.com>
  */
 
@@ -27,8 +27,10 @@ class Hoard
 	
 	/* Remote server settings */
 	public static $server			= '';
-	public static $version			= '0.0.2';
+	public static $version			= '0.0.3';
 	public static $initialized		= false;
+
+	public static $error			= '';
 		
 	/**
 	 * Initialize Hoard Config
@@ -43,10 +45,11 @@ class Hoard
 			self::$$k = $v;
 		}
 		if (self::$server && self::$appkey && self::$secret)
-		{	
+		{
 			self::$initialized = true;
 			return true;
 		}
+		self::$error = 'Invalid Configuration';
 		return false;
 	}
 	
@@ -61,8 +64,21 @@ class Hoard
 	{
 		
 		// ONly send data if you have a valid secret
-		if (self::$initialized === false) return;
-		if (self::$appkey === '') return;
+		if (self::$initialized === false)
+		{
+			self::$error = 'Not initialized';
+			return false;
+		}
+		if (self::$server === '')
+		{
+			self::$error = 'No server defined';
+			return false;
+		}
+		if (self::$appkey === '')
+		{
+			self::$error = 'No $APPKEY';
+			return false;
+		}
 		
 		// Auto generate some data from the environment
 		$data['event']				= $event;
@@ -71,7 +87,7 @@ class Hoard
 		$data['appkey']				= self::$appkey;
 		
 		// TODO: Parse / Verify Data
-		if ($file)
+		if (array_key_exists('file', $data))
 		{
 			$data['file'] = str_replace(DOCROOT, '', $data['file']);
 		}
@@ -89,7 +105,7 @@ class Hoard
 		
 		// Check for special params
 		$async = true;
-		if ($data['$async'] && $data['$async'] === false)
+		if (array_key_exists('$async', $data) && $data['$async'] === false)
 		{
 			$async = false;
 			unset($data['$async']);
@@ -109,7 +125,7 @@ class Hoard
 		
 		// Send Data
 		$parts = parse_url(self::$server . '/track/' . $event);
-		$fp = fsockopen($parts['host'], $parts['port'] ? $parts['port'] : 80, $errno, $errstr, 30);
+		$fp = fsockopen($parts['host'], array_key_exists('port', $parts) ? $parts['port'] : 80, $errno, $errstr, 30);
 		$response = '';
 		if ($fp !== 0)
 		{
@@ -132,7 +148,7 @@ class Hoard
 		}
 		
 		// Output
-		return $response;
+		return $async ? true : $response;
 		
 	}
 	
@@ -154,6 +170,14 @@ class Hoard
 	public static function stats ()
 	{
 		
+	}
+
+	/**
+	 * Application error reporting
+	 */
+	public static function last_error ()
+	{
+		return self::$error;
 	}
 	
 }

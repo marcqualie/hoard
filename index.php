@@ -1,7 +1,7 @@
 <?php
 
 ignore_user_abort(true);
-include dirname(__FILE__) . '/lib/core.php';
+include dirname(__FILE__) . '/app/bootstrap.php';
 
 date_default_timezone_set($config['timezone']);
 
@@ -20,15 +20,18 @@ list ($_uri, $_query) = explode('?', $request_uri);
 $uri = explode('/', $_uri);
 array_shift($uri);
 $method = preg_replace('/[^a-z0-9]/', '', strtolower($uri[0]));
-if (!$method) $method = 'home';
+if ( ! $method)
+{
+	$method = 'home';
+}
 define('PAGE', $method);
 
 // Get Controller
-$file = new File(DOCROOT . '/controller/' . $method . '.php');
+$file = new File(APPROOT . '/controller/' . $method . '.php');
 if (!$file->exists())
 {
 	$method = 'error';
-	$file = new File(DOCROOT . '/controller/' . $method . '.php');	
+	$file = new File(APPROOT . '/controller/' . $method . '.php');	
 }
 
 // Start buffer
@@ -45,7 +48,7 @@ $page->{ 'req_' . $request_method }();
 $page->after();
 
 // Display View, if there is one
-$file = new File(DOCROOT . '/view/' . $method . '.tpl');
+$file = new File(APPROOT . '/view/' . $method . '.tpl');
 if ($file->exists())
 {
 	extract($page->var);
@@ -55,4 +58,4 @@ if ($file->exists())
 // Ouput HTML
 $html = ob_get_contents();
 ob_end_clean();
-include DOCROOT . '/view/layout.tpl';
+include APPROOT . '/view/layout.tpl';

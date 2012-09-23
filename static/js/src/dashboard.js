@@ -13,7 +13,7 @@ $(document).ready(function () {
 	var options = {
 		chart: {
 			renderTo: 'dashboard_chart',
-			defaultSeriesType: 'line'
+			defaultSeriesType: 'spline'
 		},
 		credits: {
 			enabled: false

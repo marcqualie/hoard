@@ -15,22 +15,33 @@ class File
 	
 	public function read ()
 	{
-		if (!$this->exists()) return false;
+		if ( ! $this->exists())
+		{
+			return false;
+		}
 		return file_get_contents($location);
 	}
 	
 	public function write ($data)
 	{
-		if (!$this->exists()) return false;
+		if ( ! $this->exists())
+		{
+			return false;
+		}
 		file_put_contents($this->location);
 		return true;
 	}
 	
 	public function exists ()
 	{
-		if ($this->exists !== null) return $this->exists;
+		if ($this->exists !== null)
+		{
+			return $this->exists;
+		}
 		$exists = file_exists($this->location);
-		$this->exists = $exists ? true : false;
+		$this->exists = $exists
+			? true
+			: false;
 		return $this->exists;
 	}
 	
