@@ -5,7 +5,7 @@ class AppsController extends PageController
 	
 	public function before ()
 	{
-		if (!Auth::$id)
+		if ( ! Auth::$id)
 		{
 			header('Location: /login');
 			exit;
@@ -17,7 +17,7 @@ class AppsController extends PageController
 		
 		if ($this->uri[1] === 'new')
 		{
-			$name = preg_replace('/[^a-zA-Z0-9\.\-_ ]/', '', $_POST['app-name']);
+			$name = preg_replace('/[^a-zA-Z0-9\.\-_ \(\)\'"]/', '', $_POST['app-name']);
 			if ($name)
 			{
 				$appkey = uniqid();
@@ -55,7 +55,7 @@ class AppsController extends PageController
 		$apps = Auth::$apps;
 		foreach ($apps as &$app)
 		{
-			$data = MongoX::selectCollection('event')->find(array('appkey' => $app['appkey']))->count();
+			$data = MongoX::selectCollection('event_' . $app['appkey'])->find()->count();
 			$app['records'] = $data;
 		}
 		array_sort($apps, 'name');

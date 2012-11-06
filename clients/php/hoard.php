@@ -158,7 +158,7 @@ class Hoard
 	 * @return		Array				Data matching your query. Blank array if no data
 	 */
 	public static function find ()
-	{	
+	{
 		return array();
 	}
 	

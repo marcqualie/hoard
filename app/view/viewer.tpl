@@ -7,7 +7,7 @@
 			<div class="pull-left clearfix">
 				
 				<div class="pull-left input-prepend margin-right">
-					<select name="appkey" class="span2" onchange="$('#viewer-form').submit()">
+					<select name="appkey" class="span2">
 						<option value="0">-- Select Your App --</option>
 <? foreach (Auth::$apps as $app): ?>
 						<option value="<?=$app['appkey']?>"><?=$app['name']?></option>

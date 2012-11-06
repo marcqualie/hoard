@@ -43,6 +43,12 @@ $(document).ready(function () {
 			
 			var viewContent = $('#viewer-content');
 			
+			// Display API Errors
+			if (j.hasOwnProperty('error')) {
+				viewContent.html('<div class="alert alert-danger"><b>Error</b> ' + j.error + '</div>');
+				return;
+			}
+
 			// 
 			if (j.length > 0) {
 				viewContent.html('');
@@ -50,25 +56,20 @@ $(document).ready(function () {
 					
 					var el = $(document.createElement('div'));
 					var data = {};
-					for (var key in arr) {
-						data[key] = arr[key];
+					for (var key in arr['d']) {
+						data[key] = arr['d'][key];
 					}
-					delete arr['_id'];
-					delete arr['appkey'];
-					delete arr['event'];
-					delete arr['date'];
-					delete arr['server'];
 					
 					// Fields
 					var fields = [];
-					for (var field in arr) {
+					for (var field in arr['d']) {
 						fields.push(
-							'"' + field + '": "' + arr[field] + '"'
+							'"' + field + '": "' + arr['d'][field] + '"'
 						);
 					}
 					
 					// Tine
-					var _date = new Date(data.date.sec * 1000);
+					var _date = new Date(arr['t']['sec'] * 1000);
 					var _dateToday = new Date();
 					if (_dateToday.getMonth() + _dateToday.getDay() == _date.getMonth() + _date.getDay()) {
 						var _hour = _date.getHours(); if (_hour < 10) _hour = '0' + _hour;
@@ -93,10 +94,10 @@ $(document).ready(function () {
 						+ '<div class="doc-oneline clearfix">'
 							+ '<div class="doc-date">' + timeText + '</div>'
 							+ '<div class="doc-snippet">'
-								+ (_hoardRequestData['event'] ? '' : '<span class="doc-event">' + data['event'] + '</span> ')
+								+ (_hoardRequestData['event'] ? '' : '<span class="doc-event">' + arr['e'] + '</span> ')
 								+ '{ ' + fields.join(', ') + ' }'
 							+ '</div>'
-							+ '<div class="doc-id hide">' + data._id + '</div>'
+							+ '<div class="doc-id hide">' + arr['_id'] + '</div>'
 						+ "</div>"
 						+ '<div class="doc-full hide">'
 							+ "<pre>" + json_full + "</pre>"
@@ -134,19 +135,36 @@ $(document).ready(function () {
 		 * Select Box
 		 */
 		var appSelector = $('[name=appkey]');
+		var viewerForm = $('#viewer-form');
+		var currentHash = location.hash;
 		appSelector.change(function () {
-			location.href = '#appkey=' + appSelector.value;
+			location.href = '#appkey=' + appSelector.val();
 		});
 		if (location.hash) {
 			var appKey = location.hash.replace('#', '').split('=')[1];
 			appSelector.val(appKey);
 		}
+		setInterval(function () {
+			if (location.hash != currentHash) {
+				currentHash = location.hash;
+				var split = currentHash.replace('#', '').split('&');
+				var _get = {};
+				for (var i = 0; i < split.length; i++) {
+					var s = split[i].split('=');
+					var k = s[0];
+					var v = s[1];
+					_get[k] = v;
+				}
+				var appkey = _get['appkey'];
+				viewerForm.submit();
+			}
+		}, 500);
 		
 		/**
 		 * Request
 		 */
 		var _hoardRequestData = '';
-		$('#viewer-form').submit(function () {
+		viewerForm.submit(function () {
 			_hoardRequestData = $(this).serializeObject();
 			sendHoardRequest();
 		}).submit();

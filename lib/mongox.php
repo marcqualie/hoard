@@ -31,7 +31,7 @@ class MongoX
 		}
 		catch (Exception $e)
 		{
-			echo 'There was a problem connecting to MongoDB';
+			echo 'There was a problem connecting to MongoDB [' . $e->getMessage() . ']';
 			exit;
 		}
 	}
@@ -43,7 +43,7 @@ class MongoX
 	
 	public static function selectCollection ($collection_name)
 	{
-		if (!self::$connected)
+		if ( ! self::$connected)
 		{
 			self::connect();
 		}

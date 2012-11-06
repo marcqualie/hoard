@@ -3,10 +3,10 @@
 class StatsController extends PageController {
 
 	public $periods = array(
-		'second'	=> array(1, 'i', 30),
-		'minute'	=> array(60, 'H:i', 30),
-		'hour'		=> array(3600, 'H', 6), 
-		'day'		=> array(86400, 'm/d', 7)
+		'second'	=> array(1, 'i', 30, 'ymdHis'),
+		'minute'	=> array(60, 'H:i', 30, 'ymdHi'),
+		'hour'		=> array(3600, 'H', 6, 'ymdH'), 
+		'day'		=> array(86400, 'm/d', 7, 'ymd')
 	);
 	public $period = 'minute';
 
@@ -37,6 +37,7 @@ class StatsController extends PageController {
 			{
 				$start = $now - ($interval * ($i + $decr));
 				$end = $now - ($interval * $i);
+				/*
 				$columns[] = date($this->periods[$this->period][1], $start);
 				$cache_key = 'data-' . $period . '-' . $key . '-' . $i . '-' . $start . '-' . $end;
 				$count = false;
@@ -49,6 +50,9 @@ class StatsController extends PageController {
 					$count = $track->find($array, array('_id' => 0))->count();
 					// set cache
 				}
+				*/
+				$e = 'e' . date($this->periods[$this->period][3], $start);
+				$count = (int) Cache::instance()->get($e);
 				$csv[$key][] = $count;
 			}
 		}
