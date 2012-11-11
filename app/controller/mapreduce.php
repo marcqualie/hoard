@@ -32,6 +32,7 @@ class MapreduceController extends PageController
 	public function req_post ()
 	{
 		
+		$this->params['appkey'] = $_POST['appkey'];
 		$this->params['query'] = $_POST['query'];
 		$this->params['map-func'] = $_POST['map-func'];
 		$this->params['reduce-func'] = $_POST['reduce-func'];
@@ -46,36 +47,44 @@ class MapreduceController extends PageController
 		
 		// Validate Sort
 		$sort = json_decode($_POST['sort'], $this->params['sort']);
-		if ($this->params['sort'] && !$sort)
+		if ($this->params['sort'] && ! $sort)
 		{
 			return $this->alert('Invalid Sort JSON');
 		}
-		if (!$sort)
+		if ( ! $sort)
 		{
 			$sort = array();
 		}
 		
 		// Validate Map
 		$map = new MongoCode($this->params['map-func']);
-		if (!$map)
+		if ( ! $map)
 		{
 			return $this->alert('Map function is not valid', 'danger');
 		}
 				
 		// Validate Reduce
 		$reduce = new MongoCode($this->params['reduce-func']);
-		if (!$reduce)
+		if ( ! $reduce)
 		{
 			return $this->alert('Reduce function is not valid', 'danger');
+		}
+
+		// Get event collection from AppKey
+		$appkey = $this->params['appkey'];
+//		print_r($this->params);
+		if ( ! $appkey)
+		{
+			return $this->alert('Please select your application from the Dropdown');
 		}
 		
 		// Run Command
 		$response = MongoX::command(array(
-			"mapreduce" => "event", 
-			"map" => $map,
-			"reduce" => $reduce,
-			"query" => $query,
-			"out" => array("replace" => "tmp_mapreduce_hoardui")
+			"mapreduce"        => 'event_' . $appkey,
+			"map"              => $map,
+			"reduce"           => $reduce,
+			"query"            => $query,
+			"out"              => array("replace" => "tmp_mapreduce_hoard")
 		));
 		$this->alert(print_r($response, true));
 		
@@ -108,7 +117,7 @@ class MapreduceController extends PageController
 		// Set default values
 		if (!$this->params['query'])
 		{
-			$this->params['query'] = '{ "event": "" }';
+			$this->params['query'] = '{ "e": "" }';
 		}
 		if (!$this->params['sort'])
 		{
@@ -116,7 +125,7 @@ class MapreduceController extends PageController
 		}
 		if (!$this->params['map-func'])
 		{
-			$this->params['map-func'] = "function () {\n  emit(this.message, 1);\n}";
+			$this->params['map-func'] = "function () {\n  emit(this.d.message, 1);\n}";
 		}
 		if (!$this->params['reduce-func'])
 		{

@@ -3,7 +3,14 @@
 	<form action="/<?=PAGE?>" class="row" method="post">
 		
 		<div class="span3">
-			<textarea name="query" placeholder="Query" class="span3 monospace" rows="3"><?=$page->params['query']?></textarea>
+
+			<select name="appkey" class="span2">
+				<option value="0" class="span3">-- Select Your App --</option>
+<?php foreach (Auth::$apps as $app): ?>
+				<option value="<?=$app['appkey']?>"<?php echo $page->prams['appkey'] === $app['appkey'] ? ' selected="true"' : ''?>><?=$app['name']?></option>
+<?php endforeach; ?>
+			</select>
+			<textarea name="query" placeholder="Query" class="span3 monospace" rows="1"><?=$page->params['query']?></textarea>
 			<textarea name="sort" placeholder="Sort" class="span3 monospace" rows="1" style="margin-top:17px"><?=$page->params['sort']?></textarea>
 		</div>
 		
