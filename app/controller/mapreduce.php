@@ -57,14 +57,14 @@ class MapreduceController extends PageController
 		}
 		
 		// Validate Map
-		$map = new MongoCode($this->params['map-func']);
+		$map = new MongoCode('function () { var data = this.d; ' . $this->params['map-func'] . ' }');
 		if ( ! $map)
 		{
 			return $this->alert('Map function is not valid', 'danger');
 		}
 				
 		// Validate Reduce
-		$reduce = new MongoCode($this->params['reduce-func']);
+		$reduce = new MongoCode('function (key, obj) { ' . $this->params['reduce-func'] . ' }');
 		if ( ! $reduce)
 		{
 			return $this->alert('Reduce function is not valid', 'danger');
@@ -125,12 +125,14 @@ class MapreduceController extends PageController
 		}
 		if (!$this->params['map-func'])
 		{
-			$this->params['map-func'] = "function () {\n  emit(this.d.message, 1);\n}";
+			$this->params['map-func'] = "emit(data.message, 1);";
 		}
 		if (!$this->params['reduce-func'])
 		{
-			$this->params['reduce-func'] = "function (key, obj) {\n  var sum = 0;\n  for (var i in obj) {\n    sum += obj[i];\n  }\n  return sum;\n}";
+			$this->params['reduce-func'] = "var sum = 0;\nfor (var i in obj) {\n  sum += obj[i];\n}\nreturn sum;";
 		}
+
+		$this->set('title', 'Hoard - Map Reduce');
 		
 	}
 	

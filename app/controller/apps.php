@@ -10,6 +10,7 @@ class AppsController extends PageController
 			header('Location: /login');
 			exit;
 		}
+		$this->set('title', 'Hoard - My Apps');
 	}
 		
 	public function req_post ()
@@ -55,10 +56,10 @@ class AppsController extends PageController
 		$apps = Auth::$apps;
 		foreach ($apps as &$app)
 		{
-			$data = MongoX::selectCollection('event_' . $app['appkey'])->find()->count();
-			$app['records'] = $data;
+			$app['records'] = MongoX::selectCollection('event_' . $app['appkey'])->find()->count();
+			$app['rps'] = MongoX::selectCollection('event_' . $app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 60))))->count() / 60;
 		}
-		array_sort($apps, 'name');
+		array_sort($apps, '!records');
 		$this->set('apps', $apps);
 		
 	}
