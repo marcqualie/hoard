@@ -12,9 +12,10 @@ Console:
 		mongodburi=mongodb://user:password@127.0.0.1:27017/hoard \
 		admin=admin@example.com:password
 	
-Web (Coming Soon, Maybe):
-	
-	http://yourserver.example.com/install/
+Heroku:
+
+	heroku addons:add mongolab:starter
+	heroku config:set MONGO_URI=mongodb://yourhost/dbname
 	
 ## Support
 
