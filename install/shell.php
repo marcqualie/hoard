@@ -1,4 +1,3 @@
-#!/app/php/bin/php -c /app/www
 <?php
 
 /**
