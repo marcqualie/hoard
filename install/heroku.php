@@ -31,7 +31,7 @@ if ( ! MongoX::$connected)
 }
 
 // Create admin user in Mongo
-$email = 'admin@exmaple.com';
+$email = 'admin@example.com';
 $password = 'password';
 $collection = MongoX::selectCollection('user');
 $user = $collection->findOne(array('email' => $email));

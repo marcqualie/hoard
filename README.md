@@ -13,9 +13,12 @@ Console:
 		admin=admin@example.com:password
 	
 Heroku:
-
+	
+	heroku config:add LD_LIBRARY_PATH=/app/php/ext:/app/apache/lib
 	heroku addons:add mongolab:starter
-	heroku config:set MONGO_URI=mongodb://yourhost/dbname
+	heroku config:set MONGO_URI=mongodb://<user>:<password>@<unique>.mongolab.com/<dbname>
+	heroku run bash
+	$ /app/php/bin/php -c /app/www /app/www/install/heroku.php
 	
 ## Support
 
