@@ -18,7 +18,7 @@ Hoard is currently a prototype for logging event based data. It's currently in e
 
 ## Clients
 
-- PHP - [marcqualie/hoard-php-client](https://github.com/marcqualie/hoard-php-cient)
+- PHP - [marcqualie/hoard-php-client](https://github.com/marcqualie/hoard-php-client)
 - Tail - [marcqualie/hoard-tail-client](https://github.com/marcqualie/hoard-tail-client)
 	
 ## Support
