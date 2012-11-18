@@ -6,11 +6,16 @@ include dirname(__FILE__) . '/app/bootstrap.php';
 date_default_timezone_set($config['timezone']);
 
 // Connect to MongoDB
-if (getenv('MONGO_URI'))
+if (getenv('HOARD_MONGO_URI'))
 {
-	$config['mongo_uri'] = getenv('MONGO_URI');
+	$config['mongo_uri'] = getenv('HOARD_MONGO_URI');
 }
-MongoX::init($config['mongo_uri']);
+MongoX::init($config['mongo_uri'], array('connect' => true));
+if ( ! MongoX::$connected)
+{
+	echo 'Could not connect to Database' . PHP_EOL;
+	exit;
+}
 
 // Authentication
 Auth::init();

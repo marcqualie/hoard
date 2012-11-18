@@ -23,16 +23,16 @@ class MongoX
 	}
 	public static function connect ()
 	{
-		self::$connected = true;
 		try
 		{
 			self::$conn = new Mongo(self::$uri);
 			self::$db = self::$conn->selectDb(self::$db_name);
+			self::$connected = true;
 		}
 		catch (Exception $e)
 		{
-			echo 'There was a problem connecting to MongoDB [' . $e->getMessage() . ']';
-			exit;
+			//echo 'There was a problem connecting to MongoDB [' . $e->getMessage() . ']';
+			//exit;
 		}
 	}
 	
