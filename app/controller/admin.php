@@ -17,12 +17,12 @@ class AdminController extends PageController
 		if ($_POST['action'] === 'create-user')
 		{
 			$email = strtolower($_POST['email']);
-			if (!$email)
+			if ( ! $email)
 			{
 				return $this->alert('You need to specify a valid email', 'danger');
 			}
 			$password = $_POST['password'];
-			if (!$password)
+			if ( ! $password)
 			{
 				return $this->alert('You cannot add an emoty password', 'danger');
 			}

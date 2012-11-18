@@ -20,13 +20,13 @@ body {
 .monospace {
 	font-family: Monospace, "Courier New";
 }
-.table td.align-center, .table th.align-center {
+.table td.align-center, .table th.align-center, .align-center {
 	text-align: center;
 }
-.align-left {
+.table td.align-left, .table th.align-left, .align-left {
 	text-align: left;
 }
-.align-right {
+.table td.align-right, .table th.align-right, .align-right {
 	text-align: right;
 }
 
@@ -76,6 +76,10 @@ body {
 /**
  * Head
  */
+.brand {
+	text-transform: uppercase;
+	font-weight: bold;
+}
 .viewer-head {
 	position: fixed;
 	top: 40px;

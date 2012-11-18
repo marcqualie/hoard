@@ -9,7 +9,11 @@
 		<tbody>
 <?php foreach ($apps as $app): ?>
 			<tr>
-				<td><?=$app['name']?></td>
+				<td>
+					<a href="/app/<?php echo $app['appkey']; ?>">
+						<?=$app['name']?>
+					</a>
+				</td>
 				<td class="align-center monospace"><?=$app['appkey']?></td>
 				<td width="150" class="align-center"><a href="/viewer/#appkey=<?=$app['appkey']?>"><?=number_format($app['records'])?></a></td>
 				<td width="150" class="align-center"><?=round($app['rps'], 2)?> / s</td>

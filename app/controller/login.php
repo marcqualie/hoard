@@ -7,14 +7,13 @@ class LoginController extends PageController
 	{
 		
 		$login = Auth::login($_POST['email'], $_POST['password']);
-		if ($login['error'])
+		if (isset($login['error']))
 		{
 			$this->alert($login['message'], 'danger');
 		}
 		else
 		{
-			//Router::location('/account');
-			header('Location: /apps');
+			header('Location: /apps/');
 			exit;
 		}
 		
@@ -23,6 +22,8 @@ class LoginController extends PageController
 	public function req_get ()
 	{
 		
+		$this->set('title', 'Hoard - Login');
+
 	}
 	
 }

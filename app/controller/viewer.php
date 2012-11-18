@@ -6,9 +6,9 @@ class ViewerController extends PageController
 	public function before ()
 	{
 		
-		if (!Auth::$id)
+		if ( ! Auth::$id)
 		{
-			header('Location: /login');
+			header('Location: /login/');
 			exit;
 		}
 		
