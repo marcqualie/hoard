@@ -2,24 +2,25 @@
 
 Hoard is currently a prototype for logging event based data. It's currently in early alpha testing, and not suitable for production.
 
-**Update:** I am currently extremely busy with work right now so I won't be concentrating on Hoard as much as I'd like. I will be putting my focus more into the next version, which will be rebuilt from the ground up with a different architetural goal in mind. Feel free to fork this version and stay tuned for my next projects.
-
 ## Install
 
-Console:
+### Console:
 
-	php ./install/shell.php \
-		mongodburi=mongodb://user:password@127.0.0.1:27017/hoard \
-		admin=admin@example.com:password
+	php install/shell.php
 	
-Heroku:
+### Heroku:
 	
 	heroku config:add LD_LIBRARY_PATH=/app/php/ext:/app/apache/lib
 	heroku addons:add mongolab:starter
-	heroku config:set MONGO_URI=mongodb://<user>:<password>@<unique>.mongolab.com/<dbname>
+	heroku config:set HOARD_MONGO_URI=mongodb://<user>:<password>@<unique>.mongolab.com/<dbname>
 	heroku run bash
 	$ /app/php/bin/php -c /app/www /app/www/install/heroku.php
+
+## Clients
+
+- PHP - [marcqualie/hoard-php-client](https://github.com/marcqualie/hoard-php-cient)
+- Tail - [marcqualie/hoard-tail-client](https://github.com/marcqualie/hoard-tail-client)
 	
 ## Support
 
-Official support is currently not available, but if you have any questions you can contact me over at [My Site](http://www.marcqualie.com/contact/)
+Official support is currently not available, but if you have any questions or suggections you can contact me over at [My Site](https://www.marcqualie.com/contact/)
