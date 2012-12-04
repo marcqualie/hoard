@@ -53,11 +53,16 @@ class TrackController extends PageController
 		// Save Data to log
 		try
 		{
+
 			$collection = MongoX::selectCollection('event_' . $appkey);
 			$collection->insert($insert);
-			echo $insert['_id'] . PHP_EOL;
+			echo $insert['_id'];
+			// removed end of line code
+
+			// Save data in temporary table for very fast real-time querying
 
 			// Track in stats engine TODO: rewrite this basic tracking in Redis or something..
+			// this is fucking awful.. fix
 			Cache::instance()->increment('e' . date('ymdHis'), 1, 3600);
 			Cache::instance()->increment('e' . date('ymdHi'), 1, 86400);
 			Cache::instance()->increment('e' . date('ymdH'), 1, 86400 * 48);
