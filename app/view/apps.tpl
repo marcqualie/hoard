@@ -18,7 +18,7 @@
 				<td width="150" class="align-center"><a href="/viewer/#appkey=<?=$app['appkey']?>"><?=number_format($app['records'])?></a></td>
 				<td width="150" class="align-center"><?=round($app['rps'], 2)?> / s</td>
 			</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 		</tbody>
 	</table>
 

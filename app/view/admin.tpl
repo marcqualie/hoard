@@ -6,11 +6,11 @@
 			<h4>Applications</h4>
 			<br/>
 			<table class="table table-bordered table-condensed table-striped">
-<? foreach ($apps as $app): ?>
+<?php foreach ($apps as $app): ?>
 				<tr>
 					<td><a href="/app/<?=$app['appkey']?>"><?=$app['name']?></a></td>
 				</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 			</table>
 		</div>
 		
@@ -18,7 +18,7 @@
 			<h4>Users</h4>
 			<br/>
 			<table class="table table-bordered table-condensed table-striped">
-<? foreach ($users as $user): ?>
+<?php foreach ($users as $user): ?>
 				<tr>
 					<td>
 <?php if ($user['admin']): ?>
@@ -26,7 +26,7 @@
 <?php endif; ?>
 						<a href="/user/<?=$user['_id']?>"><?=$user['email']?></a></td>
 				</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 			</table>
 		</div>
 		

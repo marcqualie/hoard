@@ -6,12 +6,12 @@
 			<h4>Details</h4>
 			<br/>
 			<table class="table table-bordered table-condensed table-striped">
-<? foreach ($page->user as $k => $v): ?>
+<?php foreach ($page->user as $k => $v): ?>
 				<tr>
 					<td><?=$k?></td>
 					<td><?=(String) $v?></td>
 				</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 			</table>
 		</div>
 			
@@ -19,22 +19,22 @@
 			<h4>Access</h4>
 			<br/>
 			<table class="table table-bordered table-condensed table-striped">
-<? foreach ($user_apps as $app): ?>
+<?php foreach ($user_apps as $app): ?>
 				<tr>
 					<td><a href="/app/<?=$app['appkey']?>"><?=$app['name']?></a></td>
 					<td style="text-align:center"><?=$app['roles'][$page->id]?></td>
 					<td width="10"><a href="?action=revoke-app-access&amp;appkey=<?=$app['appkey']?>"><i class="icon icon-trash"></i></a></td>
 				</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 			</table>
 			
 			<form action="<?=$_SERVER['REQUEST_URI']?>" class="clearfix" method="post">
 				<input type="hidden" name="action" value="grant-app-access"/>
 				<select name="appkey" class="span2">
 					<option value="0">-- Grant Access --</option>
-<? foreach ($apps as $app): ?>
+<?php foreach ($apps as $app): ?>
 					<option value="<?=$app['appkey']?>"><?=$app['name']?></option>
-<? endforeach; ?>
+<?php endforeach; ?>
 				</select>
 				<select name="role" class="span1">
 					<option>read</option>

@@ -74,7 +74,7 @@ if (file_exists($config_file))
 {
 	echo '[NOTICE] Config file exists, overwriting' . PHP_EOL;
 }
-$data = date('c');
+$date = date('c');
 $content = <<< EOT
 <?php
 
@@ -102,9 +102,11 @@ if (isset($user['_id']))
 {
 	echo '[NOTICE] User (' . $email . ') already exists - promoting to admin and updating password' . PHP_EOL;
 	$collection->update(array('email' => $email), array(
-		'admin' => 1,
-		'password' => Auth::password($password),
-		'updated' => new MongoDate()
+		'$set' => array(
+			'admin' => 1,
+			'password' => Auth::password($password),
+			'updated' => new \MongoDate()
+		)
 	));
 }
 else
@@ -117,8 +119,8 @@ else
 		'password' => Auth::password($password),
 		'token' => $token,
 		'admin' => 1,
-		'created' => new MongoDate(),
-		'updated' => new MongoDate()
+		'created' => new \MongoDate(),
+		'updated' => new \MongoDate()
 	));
 }
 

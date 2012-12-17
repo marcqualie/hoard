@@ -10,7 +10,7 @@
 	<script src="<?=URIBASE?>/static/js/src/global.js?t=<?php echo filemtime(DOCROOT . '/static/js/src/global.js') ?>"></script>
 	<script src="<?=URIBASE?>/static/js/src/dashboard.js"></script>
 	<script>
-	  app.uribase = '<?=URIBASE?>';
+	  app.uribase = '<?php echo URIBASE; ?>';
 	</script>
 </head>
 <body>
@@ -20,21 +20,21 @@
 		<div class="container">
 			<a href="<?=URIBASE?>/" class="brand">Hoard</a>
 			<ul class="nav pull-left">
-<? if (Auth::$id): ?>
-				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/apps/">My Apps (<?=count(Auth::$apps)?>)</a></li>
-<? endif; ?>
+<?php if (Auth::$id): ?>
+				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/apps/">Buckets (<?=count(Auth::$apps)?>)</a></li>
+<?php endif; ?>
 				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/viewer/">Viewer</a></li>
 				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/mapreduce/">Map Reduce</a></li>
 			</ul>
 			<div class="nav-collaps">
 				<ul class="nav pull-right">
-<? if (Auth::$id): ?>
-<? if (Auth::$admin): ?>
+<?php if (Auth::$id): ?>
+<?php if (Auth::$admin): ?>
 					<li<?=PAGE === 'admin' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/admin/">Admin</a></li>
-<? endif; ?>
+<?php endif; ?>
 					<li<?=PAGE === 'account' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/account/"><?= Auth::$user['email'] ?></a></li>
 					<li><a href="<?=URIBASE?>/logout/">Logout</a></li>
-<? else: ?>
+<?php else: ?>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <b class="caret"></b></a>
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
@@ -47,20 +47,20 @@
 							</form>
 						</div>
 					</li>
-<? endif; ?>
+<?php endif; ?>
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
 
-<? if ($page->alert_data['message']): ?>
+<?php if (isset($page->alert_data['message'])): ?>
 <div class="container">
 	<div class="alert alert-<?=$page->alert_data['type']?>"><?=$page->alert_data['message']?></div>
 </div>
-<? endif; ?>
+<?php endif; ?>
 
-<?=$html?>
+<?php echo $html; ?>
 
 </body>
 </html>

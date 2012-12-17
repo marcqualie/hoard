@@ -14,7 +14,7 @@ class Auth
 		
 		self::$cookie = 'u' . crc32(self::$cookie . '.' . $_SERVER['HTTP_HOST']);
 
-		$cookie = $_COOKIE[self::$cookie];
+		$cookie = isset($_COOKIE[self::$cookie]) ? $_COOKIE[self::$cookie] : '';
 		if ( ! $cookie)
 		{
 			return;

@@ -25,7 +25,11 @@ $request_uri_base = '';
 $request_uri = str_replace($request_uri_base, '', $_SERVER['REQUEST_URI']);
 define('URIBASE', $request_uri_base);
 $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-list ($_uri, $_query) = explode('?', $request_uri);
+$_uri = $request_uri;
+if (strpos($_uri, '?') !== false)
+{
+	list ($_uri, $_query) = explode('?', $request_uri);
+}
 $uri = explode('/', $_uri);
 array_shift($uri);
 $method = preg_replace('/[^a-z0-9]/', '', strtolower($uri[0]));

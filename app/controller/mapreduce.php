@@ -71,7 +71,7 @@ class MapreduceController extends PageController
 		}
 
 		// Get event collection from AppKey
-		$appkey = $this->params['appkey'];
+		$appkey = isset($this->params['appkey']) ? $this->params['appkey'] : '';
 //		print_r($this->params);
 		if ( ! $appkey)
 		{
@@ -115,19 +115,19 @@ class MapreduceController extends PageController
 	public function after ()
 	{
 		// Set default values
-		if (!$this->params['query'])
+		if ( ! isset($this->params['query']))
 		{
 			$this->params['query'] = '{ "e": "" }';
 		}
-		if (!$this->params['sort'])
+		if ( ! isset($this->params['sort']))
 		{
 			$this->params['sort'] = '{ "value": -1 }';
 		}
-		if (!$this->params['map-func'])
+		if ( ! isset($this->params['map-func']))
 		{
 			$this->params['map-func'] = "emit(data.message, 1);";
 		}
-		if (!$this->params['reduce-func'])
+		if ( ! isset($this->params['reduce-func']))
 		{
 			$this->params['reduce-func'] = "var sum = 0;\nfor (var i in obj) {\n  sum += obj[i];\n}\nreturn sum;";
 		}

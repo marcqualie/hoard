@@ -15,7 +15,8 @@ class MongoX
 	public static function init ($uri, array $opt = array())
 	{
 		self::$uri = $uri;
-		self::$db_name = end(explode('/', $uri));
+		$explode = explode('/', $uri);
+		self::$db_name = end($explode);
 		if ($opt['connect'])
 		{
 			self::connect();

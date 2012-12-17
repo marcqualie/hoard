@@ -44,11 +44,11 @@ function array_sort_func ($a, $b = null)
 }
 function array_sort (&$array)
 {
+	$keys = func_get_args();
 	if ( ! $array)
 	{
 		return $keys;
 	}
-	$keys = func_get_args();
 	array_shift($keys);
 	array_sort_func($keys);
 	usort($array, 'array_sort_func');
