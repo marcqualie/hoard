@@ -10,10 +10,10 @@ class TrackController extends PageController
 		
 		header('Content-Type: text/plain');
 
-		$format = $params['format'] ? $params['format'] : 'json';
 		$params = array_merge($_GET, $_POST);
-		$dataload = $params['data'] ? json_decode(urldecode($params['data']), true) : array();
-		$payload = $params['payload'] ? json_decode(urldecode($params['payload']), true) : array();
+		$format = isset($params['format']) ? $params['format'] : 'json';
+		$dataload = isset($params['data']) ? json_decode(urldecode($params['data']), true) : array();
+		$payload = isset($params['payload']) ? json_decode(urldecode($params['payload']), true) : array();
 		$data = array_merge($dataload, $payload);
 
 		// Special data types

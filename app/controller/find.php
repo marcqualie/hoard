@@ -76,7 +76,7 @@ class FindController extends PageController
 		}
 //		print_r($where); exit;
 
-		if ($where['_id'])
+		if (isset($where['_id']))
 		{
 			$where['_id'] = new MongoId($where['_id']);
 		}
@@ -126,7 +126,7 @@ class FindController extends PageController
 				foreach ($cursor as $row)
 				{
 					$row['_id'] = (String) $row['_id'];
-					$row['date'] = (array) $row['date'];
+					$row['date'] = (array) $row['t'];
 					$data[] = $row;
 				}
 				echo json_encode($data);

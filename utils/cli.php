@@ -10,15 +10,20 @@ MongoX::init($config['mongo_uri']);
 /**
  * Make sure this script can't be run outside web interface
  */
-if (php_sapi_name() !== 'cli' || $_SERVER['REMOTE_ADDR'])
+if (php_sapi_name() !== 'cli' || isset($_SERVER['REMOTE_ADDR']))
 {
-	exit('Must be run via CLI');
+	exit('Must be run via CLI' . PHP_EOL);
 }
 
 /**
  * Variables
  */
-$action = $argv[1];
+$action = isset($argv[1]) ? $argv[1] : '';
+if ( ! $action)
+{
+	echo 'No action specified' . PHP_EOL;
+	exit;
+}
 
 /**
  * Change User Password
@@ -105,5 +110,60 @@ if ($action === 'upgrade')
 		$old_collection->remove(array('_id' => $event['_id']));
 	}
 	print_r($stats);
+
+}
+
+/**
+ * Pipe in fake data
+ */
+if ($action === 'fake')
+{
+
+	// Assert Fake Bucket
+	$name = 'Demo Bucket';
+	$appkey = new MongoId('50cf953e4c3e4cd0d3000000');
+	$secret = sha1($appkey . 'hoard');
+	MongoX::selectCollection('app')->save(array(
+		'_id' => $appkey,
+		'name' => $name,
+		'appkey' => (String) $appkey,
+		'secret' => $secret,
+		'roles' => array(
+			'all' => 'owner'
+		),
+		'created' => new \MongoDate(),
+		'updated' => new \MongoDate()
+	));
+
+	// Events
+	$events = array('test1', 'test2', 'test3');
+
+	// Now pump data in
+	$run = true;
+	$count = 0;
+	while ($run)
+	{
+		$event = $events[array_rand($events)];
+		$post = array(
+			'appkey' => $appkey,
+			'format' => 'json',
+			'data' => json_encode(array(
+				'random1' => rand(0, 999999),
+				'random2' => rand(0, 999999),
+				'random3' => rand(0, 999999)
+			)
+		));
+		$ch = curl_init('http://dev.hoard.marcqualie.com/track/' . $event);
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => $post,
+		));
+		curl_exec($ch);
+		$count++;
+		echo "\rCount: " . $count;
+		usleep(500);
+	}
+		
 
 }

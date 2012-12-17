@@ -38,7 +38,16 @@ class Auth
 		self::$admin = $user['admin'] ? true : false;
 		
 		// Populate Apps
-		$cursor = MongoX::selectCollection('app')->find(array('roles.' . self::$id => array('$exists' => 1)));
+		$cursor = MongoX::selectCollection('app')->find(array(
+			'$or' => array(
+				array(
+					'roles.' . self::$id => array('$exists' => 1)
+				),
+				array(
+					'roles.all' => array('$exists' => 1)
+				)
+			)
+		));
 		self::$apps = iterator_to_array($cursor);
 		
 	}

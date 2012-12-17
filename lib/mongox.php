@@ -17,7 +17,7 @@ class MongoX
 		self::$uri = $uri;
 		$explode = explode('/', $uri);
 		self::$db_name = end($explode);
-		if ($opt['connect'])
+		if (isset($opt['connect']))
 		{
 			self::connect();
 		}
