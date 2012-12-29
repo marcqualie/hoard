@@ -28,15 +28,38 @@ foreach ($users as $user) {
 
 class MapreduceController extends PageController
 {
+
+	public function before ()
+	{
+
+		// Set params from $_POST
+		foreach ($_POST as $key => $value)
+		{
+			$this->params[$key] = $value;
+		}
+
+		// Set default values
+		if ( ! isset($this->params['query']))
+		{
+			$this->params['query'] = '{ "e": "" }';
+		}
+		if ( ! isset($this->params['sort']))
+		{
+			$this->params['sort'] = '{ "value": -1 }';
+		}
+		if ( ! isset($this->params['map-func']))
+		{
+			$this->params['map-func'] = "emit(data.message, 1);";
+		}
+		if ( ! isset($this->params['reduce-func']))
+		{
+			$this->params['reduce-func'] = "var sum = 0;\nfor (var i in obj) {\n  sum += obj[i];\n}\nreturn sum;";
+		}
+
+	}
 	
 	public function req_post ()
 	{
-		
-		$this->params['appkey'] = $_POST['appkey'];
-		$this->params['query'] = $_POST['query'];
-		$this->params['map-func'] = $_POST['map-func'];
-		$this->params['reduce-func'] = $_POST['reduce-func'];
-		$this->params['sort'] = $_POST['sort'];
 		
 		// Validate Query
 		$query = json_decode($_POST['query'], true);
@@ -57,7 +80,7 @@ class MapreduceController extends PageController
 		}
 		
 		// Validate Map
-		$map = new MongoCode('function () { var data = this.d; ' . $this->params['map-func'] . ' }');
+		$map = new MongoCode('function () { var data = this.d; var event = this.e; ' . $this->params['map-func'] . ' }');
 		if ( ! $map)
 		{
 			return $this->alert('Map function is not valid', 'danger');
@@ -98,6 +121,14 @@ class MapreduceController extends PageController
 			{
 				$results[] = $row;
 			}
+
+			// Output RAW Data
+			if (isset($_GET['format']) && $_GET['format'] === 'json')
+			{
+
+			}
+
+			// 
 			$this->set('output', $results);
 		}
 		else
@@ -114,23 +145,6 @@ class MapreduceController extends PageController
 	
 	public function after ()
 	{
-		// Set default values
-		if ( ! isset($this->params['query']))
-		{
-			$this->params['query'] = '{ "e": "" }';
-		}
-		if ( ! isset($this->params['sort']))
-		{
-			$this->params['sort'] = '{ "value": -1 }';
-		}
-		if ( ! isset($this->params['map-func']))
-		{
-			$this->params['map-func'] = "emit(data.message, 1);";
-		}
-		if ( ! isset($this->params['reduce-func']))
-		{
-			$this->params['reduce-func'] = "var sum = 0;\nfor (var i in obj) {\n  sum += obj[i];\n}\nreturn sum;";
-		}
 
 		$this->set('title', 'Hoard - Map Reduce');
 		

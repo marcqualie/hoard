@@ -4,6 +4,7 @@ class PageController
 {
 	
 	public $uri = array();
+	public $params = array();
 	
 	// Requests
 	public function before () { }
