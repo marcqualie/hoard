@@ -54,7 +54,7 @@ class BucketsController extends PageController
 		$collection = MongoX::selectCollection('app');
 		
 		$apps = Auth::$apps;
-		$totals = array('records' => 0, 'rps' => 0, 'storage' => 0);
+		$totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
 		foreach ($apps as &$app)
 		{
 
@@ -62,22 +62,32 @@ class BucketsController extends PageController
 			$stats_raw = MongoX::command(array(
 				'collStats' => 'event_' . $app['appkey']
 			));
+
+			// Force index creation if not already there (temp hack, should be done on creation)
+//			print_r($stats_raw);
+			if ( ! isset($stats_raw['indexSizes']['t_-1']))
+			{
+				MongoX::selectCollection('event_' . $app['appkey'])->ensureIndex(array('t' => -1));
+			}
+
 			$stats = array();
 			$app['records'] = (int) $stats_raw['count'];
 			$app['rps'] = 0;
 			$app['rps'] = (float) MongoX::selectCollection('event_' . $app['appkey'])
 				->find(
-					array('t' => array('$gte' => new MongoDate(time() - 60)))
+					array('t' => array('$gte' => new MongoDate(time() - 300)))
 				,	array('_id' => 0, 't' => 1)
 					)
-				->count() / 60;
+				->count() / 300;
 			$app['storage'] = (int) $stats_raw['size'];
+			$app['storage_index'] = (int) $stats_raw['totalIndexSize']; 
 			$app['storage_avg'] = (int) $stats_raw['avgObjSize']; 
 
 			// Calculate totals
 			$totals['records'] += $app['records'];
 			$totals['rps'] += $app['rps'];
 			$totals['storage'] += $app['storage'];
+			$totals['storage_index'] += $app['storage_index'];
 		}
 		array_sort($apps, '!records');
 		$this->set('totals', $totals);
