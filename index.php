@@ -1,9 +1,7 @@
 <?php
 
 ignore_user_abort(true);
-include dirname(__FILE__) . '/app/bootstrap.php';
-
-date_default_timezone_set($config['timezone']);
+include __DIR__ . '/app/bootstrap.php';
 
 // Connect to MongoDB
 if (getenv('HOARD_MONGO_URI'))
@@ -41,7 +39,7 @@ define('PAGE', $method);
 
 // Get Controller
 $file = new File(APPROOT . '/controller/' . $method . '.php');
-if (!$file->exists())
+if ( ! $file->exists())
 {
 	$method = 'error';
 	$file = new File(APPROOT . '/controller/' . $method . '.php');	

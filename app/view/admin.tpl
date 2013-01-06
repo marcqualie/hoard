@@ -3,7 +3,7 @@
 	<div class="row">
 		
 		<div class="span4">
-			<h4>Applications</h4>
+			<h4>Buckets</h4>
 			<br/>
 			<table class="table table-bordered table-condensed table-striped">
 <?php foreach ($apps as $app): ?>

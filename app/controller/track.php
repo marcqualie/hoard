@@ -63,10 +63,12 @@ class TrackController extends PageController
 
 			// Track in stats engine TODO: rewrite this basic tracking in Redis or something..
 			// this is fucking awful.. fix
+			/*
 			Cache::instance()->increment('e' . date('ymdHis'), 1, 3600);
 			Cache::instance()->increment('e' . date('ymdHi'), 1, 86400);
 			Cache::instance()->increment('e' . date('ymdH'), 1, 86400 * 48);
 			Cache::instance()->increment('e' . date('ymd'), 1, 86400 * 10);
+			*/
 
 			exit;
 		}

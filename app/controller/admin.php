@@ -55,6 +55,9 @@ class AdminController extends PageController
 		// Get All users
 		$cursor = MongoX::selectCollection('user')->find();
 		$this->set('users', $cursor);
+
+		// Title
+		$this->set('title', 'Hoard Admin');
 		
 	}
 	

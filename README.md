@@ -6,15 +6,7 @@ Hoard is currently a prototype for logging event based data. It's currently in e
 
 ### Console:
 
-	php install/shell.php
-	
-### Heroku:
-	
-	heroku config:add LD_LIBRARY_PATH=/app/php/ext:/app/apache/lib
-	heroku addons:add mongolab:starter
-	heroku config:set HOARD_MONGO_URI=mongodb://<user>:<password>@<unique>.mongolab.com/<dbname>
-	heroku run bash
-	$ /app/php/bin/php -c /app/www /app/www/install/heroku.php
+	php console.php install
 
 ## Clients
 
@@ -23,4 +15,4 @@ Hoard is currently a prototype for logging event based data. It's currently in e
 	
 ## Support
 
-Official support is currently not available, but if you have any questions or suggections you can contact me over at [My Site](https://www.marcqualie.com/contact/)
+Official support is currently not available, but if you have any questions or suggections you can contact me over at [My Site](https://marcqualie.com/contact/)

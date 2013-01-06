@@ -13,7 +13,7 @@ class LoginController extends PageController
 		}
 		else
 		{
-			header('Location: /apps/');
+			header('Location: /');
 			exit;
 		}
 		

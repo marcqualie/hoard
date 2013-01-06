@@ -32,6 +32,12 @@ class MapreduceController extends PageController
 	public function before ()
 	{
 
+		if ( ! Auth::$id)
+		{
+			header('Location: /login/');
+			exit;
+		}
+
 		// Set params from $_POST
 		foreach ($_POST as $key => $value)
 		{

@@ -1,10 +1,15 @@
 <?php
 
+date_default_timezone_set('UTC');
+
 // Rescriptions
-if (!in_array($_SERVER['REQUEST_METHOD'], array('GET', 'POST'))) exit('Invalid Request Method');
+if (!in_array($_SERVER['REQUEST_METHOD'], array('GET', 'POST')))
+{
+	exit('Invalid Request Method');
+}
 
 // Constants
-define('DOCROOT', realpath(dirname(__FILE__) . '/..'));
+define('DOCROOT', realpath(__DIR__ . '/..'));
 define('LIBROOT', DOCROOT . '/lib');
 define('APPROOT', DOCROOT . '/app');
 

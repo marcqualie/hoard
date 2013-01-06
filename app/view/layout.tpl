@@ -21,7 +21,7 @@
 			<a href="<?=URIBASE?>/" class="brand">Hoard</a>
 			<ul class="nav pull-left">
 <?php if (Auth::$id): ?>
-				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/apps/">Buckets (<?=count(Auth::$apps)?>)</a></li>
+				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/buckets/">Buckets (<?=count(Auth::$apps)?>)</a></li>
 <?php endif; ?>
 				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/viewer/">Viewer</a></li>
 				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/mapreduce/">Map Reduce</a></li>
