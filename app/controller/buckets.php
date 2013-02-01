@@ -81,7 +81,7 @@ class BucketsController extends PageController
 				->count() / 300;
 			$app['storage'] = (int) $stats_raw['size'];
 			$app['storage_index'] = (int) $stats_raw['totalIndexSize']; 
-			$app['storage_avg'] = (int) $stats_raw['avgObjSize']; 
+			$app['storage_avg'] = isset($stats_raw['avgObjSize']) ? (int) $stats_raw['avgObjSize'] : 0;
 
 			// Calculate totals
 			$totals['records'] += $app['records'];
