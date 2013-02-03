@@ -14,6 +14,10 @@ class MongoX
 	 */
 	public static function init ($uri, array $opt = array())
 	{
+		if ( ! $uri)
+		{
+			$uri = 'mongodb://127.0.0.1:27017';
+		}
 		self::$uri = $uri;
 		$explode = explode('/', $uri);
 		self::$db_name = end($explode);
@@ -26,7 +30,7 @@ class MongoX
 	{
 		try
 		{
-			self::$conn = new Mongo(self::$uri);
+			self::$conn = new MongoClient(self::$uri);
 			self::$db = self::$conn->selectDb(self::$db_name);
 			self::$connected = true;
 		}

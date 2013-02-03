@@ -4,8 +4,9 @@
 define('DOCROOT', __DIR__);
 include DOCROOT . '/lib/mongox.php';
 include DOCROOT . '/lib/auth.php';
-$config = include DOCROOT . '/app/config/default.php';
-MongoX::init($config['mongo_uri']);
+$config_file = DOCROOT . '/app/config/default.php';
+$config = file_exists($config_file) ? include $config_file : array();
+MongoX::init(isset($config['mongo_uri']) ? $config['mongo_uri'] : null);
 
 /**
  * Make sure this script can't be run outside web interface

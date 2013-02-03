@@ -40,6 +40,12 @@ if ( ! is_dir($docroot) || ! file_exists($docroot . '/lib/mongox.php'))
 }
 */
 
+// Check dependencies
+if ( ! class_exists('MongoClient'))
+{
+	error('Mongo PHP driver is missing.');
+}
+
 // Authentication
 $email = prompt('Admin Email', 'admin@example.com');
 $password = null;
@@ -88,6 +94,11 @@ return array(
 );
 
 EOT;
+if ( ! is_dir(dirname($config_file)))
+{
+	echo '[NOTICE] Creating config firectory' . PHP_EOL;
+	mkdir(dirname($config_file), 0775, true);
+}
 $fh = fopen($config_file, 'w');
   fwrite($fh, $content);
   fclose($fh);
