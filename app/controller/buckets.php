@@ -71,7 +71,7 @@ class BucketsController extends PageController
 			}
 
 			$stats = array();
-			$app['records'] = (int) $stats_raw['count'];
+			$app['records'] = isset ($stats_raw['count']) ? (int) $stats_raw['count'] : 0;
 			$app['rps'] = 0;
 			$app['rps'] = (float) MongoX::selectCollection('event_' . $app['appkey'])
 				->find(
@@ -79,8 +79,8 @@ class BucketsController extends PageController
 				,	array('_id' => 0, 't' => 1)
 					)
 				->count() / 300;
-			$app['storage'] = (int) $stats_raw['size'];
-			$app['storage_index'] = (int) $stats_raw['totalIndexSize']; 
+			$app['storage'] = isset ($stats_raw['size']) ? (int) $stats_raw['size'] : 0;
+			$app['storage_index'] = isset ($stats_raw['totalIndexSize']) ? (int) $stats_raw['totalIndexSize'] : 0;
 			$app['storage_avg'] = isset($stats_raw['avgObjSize']) ? (int) $stats_raw['avgObjSize'] : 0;
 
 			// Calculate totals

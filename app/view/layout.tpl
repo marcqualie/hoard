@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?=$title?></title>
+	<title><?=isset ($title) ? $title : 'Hoard'?></title>
 	<link href="<?=URIBASE?>/static/css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="<?=URIBASE?>/static/css/src/global.css" rel="stylesheet"/>
 	<script src="<?=URIBASE?>/static/js/jquery.min.js"></script>
