@@ -1,12 +1,26 @@
 #!/usr/bin/env php
 <?php
 
+// Check for composer dependencies
+if ( ! file_exists(__DIR__ . '/composer.phar'))
+{
+    echo PHP_EOL;
+    echo '    You will need to install composer. Please try the collowing command, then try again:' . PHP_EOL;
+    echo '    curl -s https://getcomposer.org/installer | php' . PHP_EOL;
+    echo PHP_EOL;
+    exit;
+}
+if ( ! is_dir(__DIR__ . '/vendor'))
+{
+    passthru('php composer.phar install --dev');
+    echo PHP_EOL;
+}
+
 define('DOCROOT', __DIR__);
 include DOCROOT . '/vendor/autoload.php';
 include DOCROOT . '/lib/auth.php';
 $config_file = DOCROOT . '/app/config/default.php';
 $config = file_exists($config_file) ? include $config_file : array();
-//App::$mongo->init(isset($config['mongo_uri']) ? $config['mongo_uri'] : null);
 
 /**
  * Make sure this script can't be run outside web interface

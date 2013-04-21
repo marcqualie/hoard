@@ -8,7 +8,8 @@
  * @param deleteinstall boolean				If set to true /install will be deleted when installtion succeeds
  */
 
-header('Content-Type: text/plain');
+// Install composer dependencies
+exec('php composer.phar install --dev');
 
 // Helpers
 function prompt ($msg = '$', $default = null)
@@ -127,14 +128,15 @@ else
 	$collection->ensureIndex(array('email' => 1), array('unique' => true));
 	$token = uniqid();
 	echo '[NOTICE] Created admin user [ email=' . $email . ', password=' . $password . ', token=' . $token . ' ]' . PHP_EOL;
-	$collection->insert(array(
+	$user = array(
 		'email' => $email,
 		'password' => Auth::password($password),
 		'token' => $token,
 		'admin' => 1,
 		'created' => new \MongoDate(),
 		'updated' => new \MongoDate()
-	));
+	);
+	$collection->insert($user);
 }
 
 // Delete install directory if set

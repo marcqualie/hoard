@@ -23,7 +23,7 @@ class BucketsController extends PageController
 			{
 				$appkey = uniqid();
 				$secret = sha1($appkey . uniqid() . $_SERVER['REMOTE_ADDR'] . rand(0, 999999));
-				App::$mongo->selectCollection('app')->insert(array(
+				$data = array(
 					'name' => $name,
 					'appkey' => $appkey,
 					'secret' => $secret,
@@ -32,7 +32,8 @@ class BucketsController extends PageController
 					),
 					'created' => new MongoDate(),
 					'updated' => new MongoDate()
-				));
+				);
+				App::$mongo->selectCollection('app')->insert($data);
 				$this->alert('Your app was created');
 			}
 			else

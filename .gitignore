@@ -1,3 +1,4 @@
 # Hoard
 /app/config
 /vendor
+composer.phar

@@ -28,17 +28,18 @@ class AdminController extends PageController
 			}
 			$token = uniqid();
 			$user = App::$mongo->selectCollection('user')->findOne(array('email' => $email));
-			if ($user['_id'])
+			if (isset($user['_id']))
 			{
 				return $this->alert('There is already a user with that email address', 'danger');
 			}
-			$id = App::$mongo->selectCollection('user')->insert(array(
+			$data = array(
 				'email' => $email,
 				'password' => Auth::password($password),
 				'token' => $token,
 				'created' => new MongoDate(),
 				'updated' => new MongoDate()
-			));
+			);
+			$id = App::$mongo->selectCollection('user')->insert($user);
 			$this->alert('User created', 'success');
 			
 		}
