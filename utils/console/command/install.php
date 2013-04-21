@@ -67,6 +67,7 @@ while ( ! $mongodb_connected)
 	if ( ! MongoX::$connected)
 	{
 		echo '[ERROR] Cannot connect using those credentials, try again' . PHP_EOL;
+		echo '        ' . $mongodb_uri . PHP_EOL;
 	}
 	else
 	{
