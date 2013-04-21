@@ -1,22 +1,7 @@
 <?php
 
 ignore_user_abort(true);
-include __DIR__ . '/app/bootstrap.php';
-
-// Connect to MongoDB
-if (getenv('HOARD_MONGO_URI'))
-{
-	$config['mongo_uri'] = getenv('HOARD_MONGO_URI');
-}
-MongoX::init($config['mongo_uri'], array('connect' => true));
-if ( ! MongoX::$connected)
-{
-	echo 'Could not connect to Database' . PHP_EOL;
-	exit;
-}
-
-// Authentication
-Auth::init();
+include dirname(__DIR__) . '/bootstrap.php';
 
 // Detect Page Method
 $request_uri_base = '';
@@ -47,7 +32,7 @@ if ( ! $file->exists())
 
 // Start buffer
 ob_start();
-	
+
 // Initialize class
 include $file->location;
 $class = ucfirst($method) . 'Controller';

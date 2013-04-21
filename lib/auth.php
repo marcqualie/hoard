@@ -12,7 +12,7 @@ class Auth
 	public static function init ()
 	{
 		
-		self::$cookie = 'u' . crc32(self::$cookie . '.' . $_SERVER['HTTP_HOST']);
+		self::$cookie = 'u' . crc32(self::$cookie . '.' . COOKIE_DOMAIN);
 
 		$cookie = isset($_COOKIE[self::$cookie]) ? $_COOKIE[self::$cookie] : '';
 		if ( ! $cookie)
