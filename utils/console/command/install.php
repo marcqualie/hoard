@@ -18,7 +18,7 @@ function prompt ($msg = '$', $default = null)
 		$msg = $msg . ' [' . $default . ']';
 	}
 	echo $msg . ' $ ';
-	$in = fgets(STDIN);
+	$in = trim(fgets(STDIN));
 	if ( ! $in)
 	{
 		$in = $default;
