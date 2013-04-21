@@ -17,7 +17,8 @@ function prompt ($msg = '$', $default = null)
 	{
 		$msg = $msg . ' [' . $default . ']';
 	}
-	$in = readline($msg . ' $ ');
+	echo $msg . ' $ ';
+	$in = trim(fgets(STDIN));
 	if ( ! $in)
 	{
 		$in = $default;
@@ -66,6 +67,7 @@ while ( ! $mongodb_connected)
 	if ( ! MongoX::$connected)
 	{
 		echo '[ERROR] Cannot connect using those credentials, try again' . PHP_EOL;
+		echo '        ' . $mongodb_uri . PHP_EOL;
 	}
 	else
 	{
