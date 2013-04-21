@@ -11,7 +11,7 @@ if ($action === 'upgrade')
 		'corrupt' => 0,
 		'skipped' => 0
 	);
-	$old_collection = MongoX::selectCollection('event');
+	$old_collection = App::$mongo->selectCollection('event');
 	$events = $old_collection->find();
 	foreach ($events as $event)
 	{
@@ -20,7 +20,7 @@ if ($action === 'upgrade')
 			$stats['corrupt']++;
 			return;
 		}
-		$new_collection = MongoX::selectCollection('event_' . $event['appkey']);
+		$new_collection = App::$mongo->selectCollection('event_' . $event['appkey']);
 		$found = $new_collection->findOne(array('_id' => $event['_id']));
 		if ($found)
 		{

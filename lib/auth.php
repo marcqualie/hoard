@@ -25,8 +25,15 @@ class Auth
 		{
 			return;
 		}
-		$collection = MongoX::selectCollection('user');
-		$user = $collection->findOne(array('_id' => new MongoId($id)), array('email' => 1, 'token' => 1, 'admin' => 1));
+		$collection = App::$mongo->selectCollection('user');
+		$user = $collection->findOne(array(
+				'_id' => new MongoId($id)
+			), array(
+				'email' => 1,
+				'token' => 1,
+				'admin' => 1
+			)
+		);
 		if (!$user)
 		{
 			return;
@@ -38,7 +45,7 @@ class Auth
 		self::$admin = $user['admin'] ? true : false;
 		
 		// Populate Apps
-		$cursor = MongoX::selectCollection('app')->find(array(
+		$cursor = App::$mongo->selectCollection('app')->find(array(
 			'$or' => array(
 				array(
 					'roles.' . self::$id => array('$exists' => 1)
@@ -57,7 +64,7 @@ class Auth
 	 */
 	public static function login ($email, $password)
 	{
-		$collection = MongoX::selectCollection('user');
+		$collection = App::$mongo->selectCollection('user');
 		$user = $collection->findOne(array("email" => $email));
 		if (!$user['password'])
 		{

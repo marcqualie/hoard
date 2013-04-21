@@ -1,7 +1,3 @@
 # Hoard
-/.deploy
-/app/config/*
-
-# Generic
-.DS_STORE
-Thumbs.db
+/app/config
+/vendor

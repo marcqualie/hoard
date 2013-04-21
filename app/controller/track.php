@@ -54,7 +54,7 @@ class TrackController extends PageController
 		try
 		{
 
-			$collection = MongoX::selectCollection('event_' . $appkey);
+			$collection = App::$mongo->selectCollection('event_' . $appkey);
 			$collection->insert($insert);
 			echo $insert['_id'];
 			// removed end of line code

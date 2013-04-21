@@ -13,7 +13,7 @@ class StatsController extends PageController {
 	public function req_get ()
 	{
 
-		$track = MongoX::selectCollection('event');
+		$track = App::$mongo->selectCollection('event');
 		$stats['all'] = array();
 
 		// Vars

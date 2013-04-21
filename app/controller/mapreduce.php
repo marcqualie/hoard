@@ -108,7 +108,7 @@ class MapreduceController extends PageController
 		}
 		
 		// Run Command
-		$response = MongoX::command(array(
+		$response = App::$mongo->command(array(
 			"mapreduce"        => 'event_' . $appkey,
 			"map"              => $map,
 			"reduce"           => $reduce,
@@ -120,7 +120,7 @@ class MapreduceController extends PageController
 		// Query over results
 		if ($response['result'])
 		{
-			$collection = MongoX::selectCollection($response['result']);
+			$collection = App::$mongo->selectCollection($response['result']);
 			$results = array();
 			$cursor = $collection->find()->sort($sort)->limit(100);
 			foreach ($cursor as $row)

@@ -63,15 +63,16 @@ while ( ! $mongodb_connected)
 	$mongodb_port = prompt('MongoDB Port', '27017');
 	$mongodb_database = prompt('MongoDB Database', 'hoard');
 	$mongodb_uri = 'mongodb://' . $mongodb_host . ':' . $mongodb_port . '/' . $mongodb_database;
-	MongoX::init($mongodb_uri, array('connect' => true));
-	if ( ! MongoX::$connected)
+	try {
+		$mongodb_client = new MongoMinify\Client($mongodb_uri, array(
+			'connect' => true
+		));
+		$mongodb_connected = true;
+	}
+	catch (Exception $e)
 	{
 		echo '[ERROR] Cannot connect using those credentials, try again' . PHP_EOL;
 		echo '        ' . $mongodb_uri . PHP_EOL;
-	}
-	else
-	{
-		$mongodb_connected = true;
 	}
 }
 
@@ -90,9 +91,10 @@ $content = <<< EOT
  */
 
 return array(
-	'timezone'     => 'UTC',
-	'email'        => '$email',
-	'mongo_uri'    => '$mongodb_uri'
+    'timezone'         => 'UTC',
+    'email'            => '$email',
+    'mongo.server'     => '$mongodb_uri',
+    'mongo.options'    => array()
 );
 
 EOT;
@@ -107,7 +109,7 @@ $fh = fopen($config_file, 'w');
 echo '[NOTICE] Config file saved to ' . $config_file . PHP_EOL;
 
 // Create admin user in Mongo
-$collection = MongoX::selectCollection('user');
+$collection = $mongodb_client->selectDb($mongodb_database)->selectCollection('user');
 $user = $collection->findOne(array('email' => $email));
 if (isset($user['_id']))
 {
@@ -124,7 +126,7 @@ else
 {
 	$collection->ensureIndex(array('email' => 1), array('unique' => true));
 	$token = uniqid();
-	echo '[NOTICE] Created admin user [email=' . $email . ', password=' . $password . ', token=' . $token . ']' . PHP_EOL;
+	echo '[NOTICE] Created admin user [ email=' . $email . ', password=' . $password . ', token=' . $token . ' ]' . PHP_EOL;
 	$collection->insert(array(
 		'email' => $email,
 		'password' => Auth::password($password),

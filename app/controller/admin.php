@@ -27,12 +27,12 @@ class AdminController extends PageController
 				return $this->alert('You cannot add an emoty password', 'danger');
 			}
 			$token = uniqid();
-			$user = MongoX::selectCollection('user')->findOne(array('email' => $email));
+			$user = App::$mongo->selectCollection('user')->findOne(array('email' => $email));
 			if ($user['_id'])
 			{
 				return $this->alert('There is already a user with that email address', 'danger');
 			}
-			$id = MongoX::selectCollection('user')->insert(array(
+			$id = App::$mongo->selectCollection('user')->insert(array(
 				'email' => $email,
 				'password' => Auth::password($password),
 				'token' => $token,
@@ -49,11 +49,11 @@ class AdminController extends PageController
 	{
 		
 		// Get all Applications
-		$cursor = MongoX::selectCollection('app')->find();
+		$cursor = App::$mongo->selectCollection('app')->find();
 		$this->set('apps', $cursor);
 		
 		// Get All users
-		$cursor = MongoX::selectCollection('user')->find();
+		$cursor = App::$mongo->selectCollection('user')->find();
 		$this->set('users', $cursor);
 
 		// Title

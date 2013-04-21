@@ -1,0 +1,11 @@
+{
+    "name": "marcqualie/hoard-server",
+    "description": "Storage engine for event based data",
+    "require": {
+        "ext-mongo": "1.3.*",
+        "marcqualie/mongominify": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}

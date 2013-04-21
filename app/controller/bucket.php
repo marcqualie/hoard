@@ -21,7 +21,7 @@ class BucketController extends PageController
 			header('Location: /apps/');
 			exit;
 		}
-		$collection = MongoX::selectCollection('app');
+		$collection = App::$mongo->selectCollection('app');
 		$this->app = $collection->findOne(array('appkey' => $this->appkey));
 		if ( ! isset($this->app['_id']))
 		{
@@ -34,13 +34,13 @@ class BucketController extends PageController
 		switch ($app_action)
 		{
 			case 'delete':
-				MongoX::selectCollection('app')->remove(array('appkey' => $this->appkey));
-				MongoX::selectCollection('event_' . $this->appkey)->drop();
+				App::$mongo->selectCollection('app')->remove(array('appkey' => $this->appkey));
+				App::$mongo->selectCollection('event_' . $this->appkey)->drop();
 				header('Location: /buckets/');
 				exit;
 				break;
 			case 'empty':
-				MongoX::selectCollection('event_' . $this->appkey)->remove();
+				App::$mongo->selectCollection('event_' . $this->appkey)->remove();
 				header('Location: /bucket/' . $this->appkey);
 				exit;
 				break;
@@ -51,11 +51,11 @@ class BucketController extends PageController
 	public function req_get ()
 	{
 
-		$this->app['records_1minute'] = MongoX::selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 60))))->count();
-		$this->app['records_1hour'] = MongoX::selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 3600))))->count();
-		$this->app['records_1day'] = MongoX::selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 3600 * 24))))->count();
-		$this->app['records_all'] = MongoX::selectCollection('event_' . $this->app['appkey'])->find()->count();
-		$this->app['rps'] = MongoX::selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 60))))->count() / 60;
+		$this->app['records_1minute'] = App::$mongo->selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 60))))->count();
+		$this->app['records_1hour'] = App::$mongo->selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 3600))))->count();
+		$this->app['records_1day'] = App::$mongo->selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 3600 * 24))))->count();
+		$this->app['records_all'] = App::$mongo->selectCollection('event_' . $this->app['appkey'])->find()->count();
+		$this->app['rps'] = App::$mongo->selectCollection('event_' . $this->app['appkey'])->find(array('t' => array('$gte' => new MongoDate(time() - 60))))->count() / 60;
 
 		$this->set('app', $this->app);
 		$this->set('title', 'Hoard - ' . $this->app['name']);

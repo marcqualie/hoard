@@ -10,7 +10,7 @@ if ($action === 'fake')
 	$name = 'Demo Bucket';
 	$appkey = '50e8d81e17466';
 	$secret = sha1($appkey . 'hoard');
-	MongoX::selectCollection('app')->save(array(
+	App::$mongo->selectCollection('app')->save(array(
 		'_id' => $appkey,
 		'name' => $name,
 		'appkey' => (String) $appkey,

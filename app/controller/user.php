@@ -12,7 +12,7 @@ class UserController extends PageController
 		
 		$id = $this->uri[1];
 		$this->id = $id;
-		$user = MongoX::selectCollection('user')->findOne(array('_id' => new MongoId($id)));
+		$user = App::$mongo->selectCollection('user')->findOne(array('_id' => new MongoId($id)));
 		if (!$user)
 		{
 			redirect('/');
@@ -32,12 +32,12 @@ class UserController extends PageController
 			{
 				return $this->alert('You need to select an appkey', 'danger');
 			}
-			$app = MongoX::selectCollection('app')->findOne(array('appkey' => $appkey));
+			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $appkey));
 			if (!$app['_id'])
 			{
 				return $this->alert('Invalid Application', 'danger');
 			}
-			MongoX::selectCollection('app')->update(
+			App::$mongo->selectCollection('app')->update(
 				array('appkey' => $appkey),
 				array('$unset' => array('roles.' . $this->id => 1))
 			);
@@ -57,7 +57,7 @@ class UserController extends PageController
 			{
 				return $this->alert('You need to select an appkey', 'danger');
 			}
-			$app = MongoX::selectCollection('app')->findOne(array('appkey' => $appkey));
+			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $appkey));
 			if (!$app['_id'])
 			{
 				return $this->alert('Invalid Application', 'danger');
@@ -67,7 +67,7 @@ class UserController extends PageController
 			{
 				return $this->alert('Invalid Role. Please select read, write, admin or owner', 'danger');
 			}
-			MongoX::selectCollection('app')->update(
+			App::$mongo->selectCollection('app')->update(
 				array('appkey' => $appkey),
 				array('$set' => array('roles.' . $this->id => $role))
 			);
@@ -84,7 +84,7 @@ class UserController extends PageController
 			}
 			$password_hash = Auth::password($password);
 			$this->user['password'] = $password_hash;
-			MongoX::selectCollection('user')->update(
+			App::$mongo->selectCollection('user')->update(
 				array('_id' => new MongoId($this->id)),
 				array('$set' => array('password' => $password_hash))
 			);
@@ -97,11 +97,11 @@ class UserController extends PageController
 	{
 		
 		// All Applications
-		$cursor = MongoX::selectCollection('app')->find();
+		$cursor = App::$mongo->selectCollection('app')->find();
 		$this->set('apps', $cursor);
 		
 		// Applications for this user
-		$cursor = MongoX::selectCollection('app')->find(array('roles.' . $this->id => array('$exists' => 1)));
+		$cursor = App::$mongo->selectCollection('app')->find(array('roles.' . $this->id => array('$exists' => 1)));
 		$this->set('user_apps', $cursor);
 		
 	}

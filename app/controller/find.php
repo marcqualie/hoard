@@ -115,7 +115,7 @@ class FindController extends PageController
 		// Save Data to log
 		try
 		{
-			$collection = MongoX::selectCollection('event_' . $appkey);
+			$collection = App::$mongo->selectCollection('event_' . $appkey);
 			try
 			{
 				$cursor = $collection

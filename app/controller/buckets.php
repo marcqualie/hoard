@@ -23,7 +23,7 @@ class BucketsController extends PageController
 			{
 				$appkey = uniqid();
 				$secret = sha1($appkey . uniqid() . $_SERVER['REMOTE_ADDR'] . rand(0, 999999));
-				MongoX::selectCollection('app')->insert(array(
+				App::$mongo->selectCollection('app')->insert(array(
 					'name' => $name,
 					'appkey' => $appkey,
 					'secret' => $secret,
@@ -42,7 +42,11 @@ class BucketsController extends PageController
 		}
 		
 		// Fallback to get
-		$cursor = MongoX::selectCollection('app')->find(array('roles.' . Auth::$id => array('$exists' => 1)));
+		$cursor = App::$mongo->selectCollection('app')->find(array(
+			'roles.' . Auth::$id => array(
+				'$exists' => 1
+			)
+		));
 		Auth::$apps = iterator_to_array($cursor);
 		return $this->req_get();
 		
@@ -51,7 +55,7 @@ class BucketsController extends PageController
 	public function req_get ()
 	{
 		
-		$collection = MongoX::selectCollection('app');
+		$collection = App::$mongo->selectCollection('app');
 		
 		$apps = Auth::$apps;
 		$totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
@@ -59,7 +63,7 @@ class BucketsController extends PageController
 		{
 
 			// Get stats from raw collection data
-			$stats_raw = MongoX::command(array(
+			$stats_raw = App::$mongo->command(array(
 				'collStats' => 'event_' . $app['appkey']
 			));
 
@@ -67,13 +71,13 @@ class BucketsController extends PageController
 //			print_r($stats_raw);
 			if ( ! isset($stats_raw['indexSizes']['t_-1']))
 			{
-				MongoX::selectCollection('event_' . $app['appkey'])->ensureIndex(array('t' => -1));
+				App::$mongo->selectCollection('event_' . $app['appkey'])->ensureIndex(array('t' => -1));
 			}
 
 			$stats = array();
 			$app['records'] = isset ($stats_raw['count']) ? (int) $stats_raw['count'] : 0;
 			$app['rps'] = 0;
-			$app['rps'] = (float) MongoX::selectCollection('event_' . $app['appkey'])
+			$app['rps'] = (float) App::$mongo->selectCollection('event_' . $app['appkey'])
 				->find(
 					array('t' => array('$gte' => new MongoDate(time() - 300)))
 				,	array('_id' => 0, 't' => 1)
