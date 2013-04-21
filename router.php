@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 // Serve static files out of CLI Server
 $path = $_SERVER['REQUEST_URI'];
-$file = __DIR__ . $path;
+$file = __DIR__ . '/public' . $path;
 $extension = pathinfo($file, PATHINFO_EXTENSION);
 if (file_exists($file) && $extension)
 {

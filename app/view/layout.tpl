@@ -2,13 +2,13 @@
 <html>
 <head>
 	<title><?=isset ($title) ? $title : 'Hoard'?></title>
-	<link href="<?=URIBASE?>/static/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="<?=URIBASE?>/static/css/src/global.css" rel="stylesheet"/>
-	<script src="<?=URIBASE?>/static/js/jquery.min.js"></script>
-	<script src="<?=URIBASE?>/static/js/bootstrap.min.js"></script>
-	<script src="<?=URIBASE?>/static/js/highcharts.min.js"></script>
-	<script src="<?=URIBASE?>/static/js/src/global.js?t=<?php echo filemtime(DOCROOT . '/static/js/src/global.js') ?>"></script>
-	<script src="<?=URIBASE?>/static/js/src/dashboard.js"></script>
+	<link href="<?=URIBASE?>/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="<?=URIBASE?>/css/src/global.css" rel="stylesheet"/>
+	<script src="<?=URIBASE?>/js/jquery.min.js"></script>
+	<script src="<?=URIBASE?>/js/bootstrap.min.js"></script>
+	<script src="<?=URIBASE?>/js/highcharts.min.js"></script>
+	<script src="<?=URIBASE?>/js/src/global.js?t=<?php echo filemtime(WEBROOT . '/js/src/global.js') ?>"></script>
+	<script src="<?=URIBASE?>/js/src/dashboard.js"></script>
 	<script>
 	  app.uribase = '<?php echo URIBASE; ?>';
 	</script>

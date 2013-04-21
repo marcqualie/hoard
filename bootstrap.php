@@ -12,6 +12,7 @@ if (!in_array($_SERVER['REQUEST_METHOD'], array('GET', 'POST')))
 define('DOCROOT', __DIR__);
 define('LIBROOT', DOCROOT . '/lib');
 define('APPROOT', DOCROOT . '/app');
+define('WEBROOT', DOCROOT . '/public');
 
 // Cookies
 //print_r($_SERVER);
