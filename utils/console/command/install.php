@@ -11,26 +11,6 @@
 // Install composer dependencies
 exec('php composer.phar install --dev');
 
-// Helpers
-function prompt ($msg = '$', $default = null)
-{
-	if ($default)
-	{
-		$msg = $msg . ' [' . $default . ']';
-	}
-	echo $msg . ' $ ';
-	$in = trim(fgets(STDIN));
-	if ( ! $in)
-	{
-		$in = $default;
-	}
-	return $in;
-}
-function error ($msg)
-{
-	exit('[ERROR] ' . $msg . PHP_EOL);
-}
-
 // Define constants
 $docroot = DOCROOT;
 /*

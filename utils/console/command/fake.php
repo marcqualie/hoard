@@ -6,11 +6,15 @@
 if ($action === 'fake')
 {
 
+	echo PHP_EOL;
+	$hoard_host = prompt('    Hoard Host', 'hoard.dev');
+	$request_count = prompt('    Request Count', 1000);
+
 	// Assert Fake Bucket
 	$name = 'Demo Bucket';
 	$appkey = '50e8d81e17466';
 	$secret = sha1($appkey . 'hoard');
-	App::$mongo->selectCollection('app')->save(array(
+	$data = array(
 		'_id' => $appkey,
 		'name' => $name,
 		'appkey' => (String) $appkey,
@@ -20,7 +24,8 @@ if ($action === 'fake')
 		),
 		'created' => new \MongoDate(),
 		'updated' => new \MongoDate()
-	));
+	);
+	App::$mongo->selectCollection('app')->save($data);
 
 	// Events
 	$events = array('test1', 'test2', 'test3');
@@ -28,7 +33,8 @@ if ($action === 'fake')
 	// Now pump data in
 	$run = true;
 	$count = 0;
-	while ($run)
+	echo PHP_EOL;
+	while ($run && $count < $request_count)
 	{
 		$event = $events[array_rand($events)];
 		$post = array(
@@ -40,7 +46,7 @@ if ($action === 'fake')
 				'random3' => rand(0, 999999)
 			)
 		));
-		$ch = curl_init('http://dev.hoard.marcqualie.com/track/' . $event);
+		$ch = curl_init('http://' . $hoard_host . '/track/' . $event);
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_POST => true,
@@ -48,9 +54,9 @@ if ($action === 'fake')
 		));
 		curl_exec($ch);
 		$count++;
-		echo "\rCount: " . $count;
-		usleep(500);
+		echo "\r    Count: " . number_format($count) . '  ';
+//		usleep(500);
 	}
-		
+	echo PHP_EOL;
 
 }

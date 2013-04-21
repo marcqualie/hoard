@@ -16,11 +16,35 @@ if ( ! is_dir(__DIR__ . '/vendor'))
     echo PHP_EOL;
 }
 
-define('DOCROOT', __DIR__);
-include DOCROOT . '/vendor/autoload.php';
-include DOCROOT . '/lib/auth.php';
-$config_file = DOCROOT . '/app/config/default.php';
-$config = file_exists($config_file) ? include $config_file : array();
+// Set variables and include environment
+$_SERVER['HTTP_HOST'] = 'localhost';
+$_SERVER['SERVER_PORT'] = 80;
+$_SERVER['REQUEST_METHOD'] = 'GET';
+include __DIR__ . '/bootstrap.php';
+
+
+/**
+ * Helpers
+ */
+function prompt ($msg = '$', $default = null)
+{
+    if ($default)
+    {
+        $msg = $msg . ' [' . $default . ']';
+    }
+    echo $msg . ': ';
+    $in = trim(fgets(STDIN));
+    if ( ! $in)
+    {
+        $in = $default;
+    }
+    return $in;
+}
+function error ($msg)
+{
+    exit('[ERROR] ' . $msg . PHP_EOL);
+}
+
 
 /**
  * Make sure this script can't be run outside web interface
@@ -29,6 +53,7 @@ if (php_sapi_name() !== 'cli' || isset($_SERVER['REMOTE_ADDR']))
 {
 	exit('Must be run via CLI' . PHP_EOL);
 }
+
 
 /**
  * Variables
@@ -39,6 +64,7 @@ if ( ! $action)
 	echo 'No action specified' . PHP_EOL;
 	exit;
 }
+
 
 /**
  * Lookup action in command directory
