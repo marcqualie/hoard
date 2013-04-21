@@ -8,8 +8,8 @@ class HomeController extends PageController
 		
 		if (Auth::$id)
 		{
-			header('Location: /buckets/');
-			exit;
+//			header('Location: /buckets/');
+//			exit;
 		}
 		else
 		{

@@ -2,6 +2,7 @@ var chart_getData
 ,	chart_dataInterval = 1000
 ,	chart_dataPeriod = 'minute'
 ,	chart_dataRequest = null
+,	chart_bucket = ''
 ;
 
 $(document).ready(function () {
@@ -41,7 +42,7 @@ $(document).ready(function () {
 		if (p) chart_dataPeriod = p;
 		if (chart_dataRequest) chart_dataRequest.abort();
 
-		chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod, function (data) {
+		chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod + '&bucket=' + chart_bucket, function (data) {
 			
 			// Split the lines
 			var lines = data.split('\n');
@@ -84,11 +85,11 @@ $(document).ready(function () {
 			
 			// Create the chart
 			chart.redraw(false);
-			setTimeout(chart_getData, chart_dataInterval);
 
 		});
 	
 	}
 	chart_getData();
+	setInterval(chart_getData, chart_dataInterval);
 
 });

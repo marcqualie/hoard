@@ -8,6 +8,14 @@
 
 	<br/>
 	<div class="clearfix">
+		<div class="pull-left">
+			<select name="bucket" onchange="chart_bucket=this.value">
+				<option value="0">-- Select Bucket --</option>
+<?php foreach (Auth::$buckets as $bucket): ?>
+				<option value="<?= $bucket['appkey'] ?>"><?= $bucket['name'] ?></option>
+<?php endforeach; ?>
+			</select>
+		</div>
 		<div class="btn-group pull-right" data-toggle="buttons-radio">
 			<button type="button" class="btn" onclick="chart_getData('second')">Second</button>
 			<button type="button" class="active btn" onclick="chart_getData('minute')">Minute</button>

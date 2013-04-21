@@ -13,11 +13,16 @@ class StatsController extends PageController {
 	public function req_get ()
 	{
 
-		$track = App::$mongo->selectCollection('event');
+		$bucket = isset($_GET['bucket']) ? $_GET['bucket'] : false;
+		if (empty($bucket))
+		{
+			exit('');
+		}
+		$collection = App::$mongo->selectCollection('event_' . $bucket);
 		$stats['all'] = array();
 
 		// Vars
-		if ($_GET['period'] && array_key_exists($_GET['period'], $this->periods))
+		if (isset($_GET['period']) && array_key_exists($_GET['period'], $this->periods))
 		{
 			$this->period = $_GET['period'];
 		}
@@ -37,22 +42,25 @@ class StatsController extends PageController {
 			{
 				$start = $now - ($interval * ($i + $decr));
 				$end = $now - ($interval * $i);
-				/*
+				
 				$columns[] = date($this->periods[$this->period][1], $start);
-				$cache_key = 'data-' . $period . '-' . $key . '-' . $i . '-' . $start . '-' . $end;
+				$cache_key = 'data-' . $this->period . '-' . $key . '-' . $i . '-' . $start . '-' . $end;
 				$count = false;
 				if ($count === false)
 				{
 					$array = array_merge(
-						array('date' => array('$gt' => new MongoDate($start), '$lte' => new MongoDate($end))),
+						array('t' => array('$gt' => new MongoDate($start), '$lte' => new MongoDate($end))),
 						$data
 						);
-					$count = $track->find($array, array('_id' => 0))->count();
+//					print_r($array);
+//					exit;
+					$count = $collection->find($array, array('_id' => 0))->count();
+					echo $count;
 					// set cache
 				}
-				*/
+				
 				$e = 'e' . date($this->periods[$this->period][3], $start);
-				$count = (int) Cache::instance()->get($e);
+//				$count = (int) Cache::instance()->get($e);
 				$csv[$key][] = $count;
 			}
 		}
