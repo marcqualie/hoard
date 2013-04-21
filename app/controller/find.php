@@ -17,8 +17,8 @@ class FindController extends PageController
 //		}
 
 		// App Key Required, Secret too in future
-		$appkey = array_key_exists('appkey', $params) ? $params['appkey'] : false;
-		if (empty($appkey))
+		$bucket = array_key_exists('bucket', $params) ? $params['bucket'] : false;
+		if (empty($bucket))
 		{
 			echo '{"error":"Application Key is required"}';
 			exit;
@@ -26,7 +26,7 @@ class FindController extends PageController
 		
 		// Vars
 		$event = isset($this->uri[1]) ? $this->uri[1] : false;
-		$limit = (int) $params['limit'];
+		$limit = isset($params['limit']) ? (int) $params['limit'] : 10;
 		if ($limit < 1) $limit = 10;
 		
 		// Where
@@ -36,9 +36,9 @@ class FindController extends PageController
 			$where['e'] = $event;
 		}
 		/*
-		if ($appkey)
+		if ($bucket)
 		{
-			$where['appkey'] = $appkey;
+			$where['appkey'] = $bucket;
 		}
 		else
 		{
@@ -50,7 +50,7 @@ class FindController extends PageController
 			$where['appkey'] = array('$in' => $app_keys);
 		}
 		*/
-		if ($params['query'])
+		if (isset($params['query']))
 		{
 			$json = $this->json2array($params['query'], true);
 			foreach ($json as $k => $v)
@@ -102,7 +102,7 @@ class FindController extends PageController
 		// Sort
 		$sort = array();
 		$sort['t'] = -1;
-		if ($params['sort'])
+		if (isset($params['sort']))
 		{
 			$json = $this->json2array($params['sort'], true);
 			foreach ($json as $k => $v)
@@ -115,7 +115,7 @@ class FindController extends PageController
 		// Save Data to log
 		try
 		{
-			$collection = App::$mongo->selectCollection('event_' . $appkey);
+			$collection = App::$mongo->selectCollection('event_' . $bucket);
 			try
 			{
 				$cursor = $collection
@@ -126,7 +126,7 @@ class FindController extends PageController
 				foreach ($cursor as $row)
 				{
 					$row['_id'] = (String) $row['_id'];
-					$row['date'] = (array) $row['t'];
+//					$row['date'] = (array) $row['t'];
 					$data[] = $row;
 				}
 				echo json_encode($data);

@@ -39,7 +39,7 @@
 						<?=$app['name']?>
 					</a>
 				</td>
-				<td width="100" class="align-center"><a href="/viewer/#appkey=<?=$app['appkey']?>"><?=number_format($app['records'])?></a></td>
+				<td width="100" class="align-center"><a href="/viewer/#bucket=<?=$app['appkey']?>"><?=number_format($app['records'])?></a></td>
 				<td width="100" class="align-center"><?=round($app['rps'], 2) > 0 ? round($app['rps'], 2) : '-'?></td>
 				<td width="100" class="align-center"><?=number_format($app['storage'] / 1024 / 1024, 2)?>M</td>
 				<td width="100" class="align-center"><?=number_format($app['storage_index'] / 1024 / 1024, 2)?>M</td>

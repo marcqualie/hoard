@@ -8,7 +8,7 @@
 			<table class="table table-bordered table-condensed table-striped">
 <?php foreach ($apps as $app): ?>
 				<tr>
-					<td><a href="/app/<?=$app['appkey']?>"><?=$app['name']?></a></td>
+					<td><a href="/bucket/<?=$app['appkey']?>"><?=$app['name']?></a></td>
 				</tr>
 <?php endforeach; ?>
 			</table>

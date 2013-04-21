@@ -29,7 +29,7 @@
 		</div>
 
 		<div class="span6">
-			<h5><a href="/viewer/#appkey=<?=$app['appkey']?>">Events</a></h5>
+			<h5><a href="/viewer/#bucket=<?=$app['appkey']?>">Events</a></h5>
 			<table class="table table-striped table-condensed">
 				<tr>
 					<td>Past Minute</td>

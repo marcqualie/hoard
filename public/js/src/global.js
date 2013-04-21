@@ -68,7 +68,7 @@ $(document).ready(function () {
 						);
 					}
 					
-					// Tine
+					// Time
 					var _date = new Date(arr['t']['sec'] * 1000);
 					var _dateToday = new Date();
 					if (_dateToday.getMonth() + _dateToday.getDay() == _date.getMonth() + _date.getDay()) {
@@ -134,15 +134,15 @@ $(document).ready(function () {
 		/**
 		 * Select Box
 		 */
-		var appSelector = $('[name=appkey]');
+		var appSelector = $('[name=bucket]');
 		var viewerForm = $('#viewer-form');
 		var currentHash = location.hash;
 		appSelector.change(function () {
-			location.href = '#appkey=' + appSelector.val();
+			location.href = '#bucket=' + appSelector.val();
 		});
 		if (location.hash) {
-			var appKey = location.hash.replace('#', '').split('=')[1];
-			appSelector.val(appKey);
+			var bucketId = location.hash.replace('#', '').split('=')[1];
+			appSelector.val(bucketId);
 		}
 		setInterval(function () {
 			if (location.hash != currentHash) {
@@ -155,7 +155,7 @@ $(document).ready(function () {
 					var v = s[1];
 					_get[k] = v;
 				}
-				var appkey = _get['appkey'];
+				var bucketId = _get['bucket'];
 				viewerForm.submit();
 			}
 		}, 500);
