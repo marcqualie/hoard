@@ -43,7 +43,7 @@ class FindController extends PageController
 		else
 		{
 			$app_keys = array();
-			foreach (Auth::$apps as $k => $app)
+			foreach (Auth::$buckets as $k => $app)
 			{
 				$app_keys[] = $app['appkey'];
 			}

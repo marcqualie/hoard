@@ -8,9 +8,9 @@
 				
 				<div class="pull-left input-prepend margin-right">
 					<select name="bucket" class="span2">
-						<option value="0">-- Select Your App --</option>
-<?php foreach (Auth::$apps as $app): ?>
-						<option value="<?=$app['appkey']?>"><?=$app['name']?></option>
+						<option value="0">-- Select Bucket --</option>
+<?php foreach (Auth::$buckets as $bucket): ?>
+						<option value="<?=$bucket['appkey']?>"><?= $bucket['name'] ?></option>
 <?php endforeach; ?>
 					</select>
 				</div>
@@ -42,11 +42,11 @@
 			</div>
 			
 		</div>
-	
+
 	</form>
 
 	<div id="viewer-content" class="container">
-		
+
 	</div>
 
 </div>

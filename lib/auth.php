@@ -7,7 +7,7 @@ class Auth
 	public static $id = null;
 	public static $admin = false;
 	public static $user = array();
-	public static $apps = array();
+	public static $buckets = array();
 	
 	public static function init ()
 	{
@@ -55,8 +55,8 @@ class Auth
 				)
 			)
 		));
-		self::$apps = iterator_to_array($cursor);
-		
+		self::$buckets = iterator_to_array($cursor);
+
 	}
 	
 	/**

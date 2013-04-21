@@ -48,7 +48,7 @@ class BucketsController extends PageController
 				'$exists' => 1
 			)
 		));
-		Auth::$apps = iterator_to_array($cursor);
+		Auth::$buckets = iterator_to_array($cursor);
 		return $this->req_get();
 		
 	}
@@ -58,7 +58,7 @@ class BucketsController extends PageController
 		
 		$collection = App::$mongo->selectCollection('app');
 		
-		$apps = Auth::$apps;
+		$apps = Auth::$buckets;
 		$totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
 		foreach ($apps as &$app)
 		{

@@ -4,10 +4,10 @@
 		
 		<div class="span3">
 
-			<select name="appkey" class="span3">
-				<option value="0">-- Select Your App --</option>
-<?php foreach (Auth::$apps as $app): ?>
-				<option value="<?=$app['appkey']?>"<?php echo $page->params['appkey'] === $app['appkey'] ? ' selected="true"' : ''?>><?php echo $app['name']?></option>
+			<select name="bucket" class="span3">
+				<option value="0">-- Select Bucket --</option>
+<?php foreach (Auth::$buckets as $bucket): ?>
+				<option value="<?= $bucket['appkey']?>"<?php if (isset($page->params['bucket'])) echo $page->params['bucket'] === $bucket['appkey'] ? ' selected="true"' : '' ?>><?php echo $bucket['name']?></option>
 <?php endforeach; ?>
 			</select>
 			<textarea name="query" placeholder="Query" class="span3 monospace" rows="1"><?php echo $page->params['query']?></textarea>

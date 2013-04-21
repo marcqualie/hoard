@@ -12,8 +12,10 @@ class UserController extends PageController
 		
 		$id = $this->uri[1];
 		$this->id = $id;
-		$user = App::$mongo->selectCollection('user')->findOne(array('_id' => new MongoId($id)));
-		if (!$user)
+		$user = App::$mongo->selectCollection('user')->findOne(array(
+			'_id' => new MongoId($id)
+		));
+		if ( ! $user)
 		{
 			redirect('/');
 		}
@@ -23,22 +25,24 @@ class UserController extends PageController
 	
 	public function req_get ()
 	{
-		
+
+		$action = isset($_GET['action']) ? $_GET['action'] : false;
+
 		// Remove User Access
-		if ($_GET['action'] === 'revoke-app-access')
+		if ($action === 'revoke-app-access')
 		{
-			$appkey = $_GET['appkey'];
-			if (!$appkey)
+			$bucket = $_GET['bucket'];
+			if ( ! $bucket)
 			{
 				return $this->alert('You need to select an appkey', 'danger');
 			}
-			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $appkey));
-			if (!$app['_id'])
+			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $bucket));
+			if ( ! $app['_id'])
 			{
 				return $this->alert('Invalid Application', 'danger');
 			}
 			App::$mongo->selectCollection('app')->update(
-				array('appkey' => $appkey),
+				array('appkey' => $bucket),
 				array('$unset' => array('roles.' . $this->id => 1))
 			);
 			$this->alert('User permission was revoked from <strong>' . $app['name'] . '</strong>');
@@ -48,17 +52,20 @@ class UserController extends PageController
 		
 	public function req_post ()
 	{
+
+		$action = isset($_POST['action']) ? $_POST['action'] : false;
+
 		// Grant user access to an application 
-		if ($_POST['action'] === 'grant-app-access')
+		if ($action === 'grant-app-access')
 		{
 			
-			$appkey = $_POST['appkey'];
-			if (!$appkey)
+			$bucket = $_POST['bucket'];
+			if (!$bucket)
 			{
 				return $this->alert('You need to select an appkey', 'danger');
 			}
-			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $appkey));
-			if (!$app['_id'])
+			$app = App::$mongo->selectCollection('app')->findOne(array('appkey' => $bucket));
+			if ( ! $app['_id'])
 			{
 				return $this->alert('Invalid Application', 'danger');
 			}
@@ -68,17 +75,17 @@ class UserController extends PageController
 				return $this->alert('Invalid Role. Please select read, write, admin or owner', 'danger');
 			}
 			App::$mongo->selectCollection('app')->update(
-				array('appkey' => $appkey),
+				array('appkey' => $bucket),
 				array('$set' => array('roles.' . $this->id => $role))
 			);
 			$this->alert('<strong>' . $this->user['email'] . '</strong> was granted <strong>' . $role . '</strong> permission to <strong>' . $app['name'] . '</strong>');
 		}
 		
 		// Change Password
-		if ($_POST['action'] === 'change-password')
+		if ($action === 'change-password')
 		{
 			$password = $_POST['password'];
-			if (!$password || strlen($password) < 4)
+			if ( ! $password || strlen($password) < 4)
 			{
 				return $this->alert('Password must be >= 4 chars', 'danger');
 			}
@@ -98,11 +105,11 @@ class UserController extends PageController
 		
 		// All Applications
 		$cursor = App::$mongo->selectCollection('app')->find();
-		$this->set('apps', $cursor);
+		$this->set('apps', iterator_to_array($cursor));
 		
 		// Applications for this user
 		$cursor = App::$mongo->selectCollection('app')->find(array('roles.' . $this->id => array('$exists' => 1)));
-		$this->set('user_apps', $cursor);
+		$this->set('user_apps', iterator_to_array($cursor));
 		
 	}
 	

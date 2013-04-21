@@ -100,16 +100,16 @@ class MapreduceController extends PageController
 		}
 
 		// Get event collection from AppKey
-		$appkey = isset($this->params['appkey']) ? $this->params['appkey'] : '';
+		$bucketId = isset($this->params['bucket']) ? $this->params['bucket'] : '';
 //		print_r($this->params);
-		if ( ! $appkey)
+		if ( ! $bucketId)
 		{
 			return $this->alert('Please select your application from the Dropdown');
 		}
 		
 		// Run Command
 		$response = App::$mongo->command(array(
-			"mapreduce"        => 'event_' . $appkey,
+			"mapreduce"        => 'event_' . $bucketId,
 			"map"              => $map,
 			"reduce"           => $reduce,
 			"query"            => $query,
@@ -118,7 +118,7 @@ class MapreduceController extends PageController
 		$this->alert(print_r($response, true));
 		
 		// Query over results
-		if ($response['result'])
+		if (isset($response['result']))
 		{
 			$collection = App::$mongo->selectCollection($response['result']);
 			$results = array();

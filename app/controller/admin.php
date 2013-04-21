@@ -39,7 +39,7 @@ class AdminController extends PageController
 				'created' => new MongoDate(),
 				'updated' => new MongoDate()
 			);
-			$id = App::$mongo->selectCollection('user')->insert($user);
+			$id = App::$mongo->selectCollection('user')->insert($data);
 			$this->alert('User created', 'success');
 			
 		}

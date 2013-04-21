@@ -21,7 +21,7 @@
 <?php foreach ($users as $user): ?>
 				<tr>
 					<td>
-<?php if ($user['admin']): ?>
+<?php if (isset($user['admin'])): ?>
 						<i class="icon icon-star"></i>
 <?php endif; ?>
 						<a href="/user/<?=$user['_id']?>"><?=$user['email']?></a></td>
