@@ -67,7 +67,7 @@ $(document).ready(function () {
 		plotOptions: {
 			spline: {
 				shadow: false,
-				lineWidth: 2
+				lineWidth: 3
 			},
 			series: {
 				threshold: 0
@@ -110,7 +110,12 @@ $(document).ready(function () {
 					var series = {
 						id: 'series-' + name,
 						name: name,
-						data: []
+						data: [],
+						color: '#428bca',
+						enabled: true,
+						marker: {
+							enabled: false
+						}
 					};
 					$.each(items, function (k, v) {
 						series.data.push(parseFloat(v));
