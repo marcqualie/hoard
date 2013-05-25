@@ -1,5 +1,4 @@
 window.app = {};
-app.uribase = '/';
 
 /**
  * Fix Bootstrap
@@ -171,7 +170,7 @@ $(document).ready(function () {
 		function sendHoardRequest () {
 			var _data = _hoardRequestData;
 			var _event = _hoardRequestData['event'] || '';
-			$.post(app.uribase + '/find/' + _event, _hoardRequestData, function (json) {
+			$.post('/find/' + _event, _hoardRequestData, function (json) {
 				renderView(json);
 			}, 'json');
 		}

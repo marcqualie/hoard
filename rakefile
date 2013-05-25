@@ -1,0 +1,22 @@
+task :default => [:build]
+
+task :build => [:bootstrap]
+
+# Install latest bootstrap version
+task :bootstrap do
+	sh "wget -O public/js/jquery.min.js http://code.jquery.com/jquery-latest.min.js"
+	sh "git clone git@github.com:twitter/bootstrap.git" unless File.exists? "bootstrap"
+	Dir.chdir("bootstrap") do
+		sh "git checkout 3.0.0-wip"
+		sh "git pull origin 3.0.0-wip"
+		sh "npm install"
+		sh "make"
+		sh "make bootstrap"
+	end
+	sh "cp -r bootstrap/bootstrap/* public/"
+end
+
+# Install
+task :install do
+	sh "php console.php install"
+end

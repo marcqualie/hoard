@@ -1,55 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?=isset ($title) ? $title : 'Hoard'?></title>
-	<link href="<?=URIBASE?>/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="<?=URIBASE?>/css/src/global.css" rel="stylesheet"/>
-	<script src="<?=URIBASE?>/js/jquery.min.js"></script>
-	<script src="<?=URIBASE?>/js/bootstrap.min.js"></script>
-	<script src="<?=URIBASE?>/js/highcharts.min.js"></script>
-	<script src="<?=URIBASE?>/js/src/global.js?t=<?php echo filemtime(WEBROOT . '/js/src/global.js') ?>"></script>
-	<script src="<?=URIBASE?>/js/src/dashboard.js"></script>
-	<script>
-	  app.uribase = '<?php echo URIBASE; ?>';
-	</script>
+	<meta charset="utf-8"/>
+	<title><?= $title ?: 'Hoard' ?></title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="/css/global.css" rel="stylesheet"/>
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/highcharts.min.js"></script>
+	<script src="/js/global.js"></script>
+	<script src="/js/dashboard.js"></script>
 </head>
 <body>
 	
 <div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<a href="<?=URIBASE?>/" class="brand">Hoard</a>
-			<ul class="nav pull-left">
+	<div class="container">
+		<a class="navbar-brand" href="/">Hoard</a>
 <?php if (Auth::$id): ?>
-				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/buckets/">Buckets (<?=count(Auth::$buckets)?>)</a></li>
-<?php endif; ?>
-				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/viewer/">Viewer</a></li>
-				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/mapreduce/">Map Reduce</a></li>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<div class="nav-collapse collapse navbar-responsive-collapse">
+			<ul class="nav navbar-nav">
+				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="/buckets/">Buckets (<?=count(Auth::$buckets)?>)</a></li>
+				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="/viewer/">Viewer</a></li>
+				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="/mapreduce/">Map Reduce</a></li>
 			</ul>
-			<div class="nav-collaps">
-				<ul class="nav pull-right">
-<?php if (Auth::$id): ?>
+			<ul class="nav navbar-nav pull-right">
 <?php if (Auth::$admin): ?>
-					<li<?=PAGE === 'admin' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/admin/">Admin</a></li>
+				<li<?=PAGE === 'admin' ? ' class="active"' : ''?>><a href="/admin/">Admin</a></li>
 <?php endif; ?>
-					<li<?=PAGE === 'account' ? ' class="active"' : ''?>><a href="<?=URIBASE?>/account/"><?= Auth::$user['email'] ?></a></li>
-					<li><a href="<?=URIBASE?>/logout/">Logout</a></li>
-<?php else: ?>
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <b class="caret"></b></a>
-						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-							<form action="<?=URIBASE?>/login/" method="post" class="clearfix">
-								<label><input type="text" name="email" value="" placeholder="Email Address" class="span3"/></label>
-								<label><input type="password" name="password" value="" placeholder="Password"/></label>
-								<div class="pull-right">
-									<input type="submit" value="Login" class="btn btn-primary"/>
-								</div>
-							</form>
-						</div>
-					</li>
+				<li<?=PAGE === 'account' ? ' class="active"' : ''?>><a href="/account/"><?= Auth::$user['email'] ?></a></li>
+				<li><a href="/logout/">Logout</a></li>
+			</ul>
+			</ul>
 <?php endif; ?>
-				</ul>
-			</div>
 		</div>
 	</div>
 </div>

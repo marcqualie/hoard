@@ -1,18 +1,13 @@
 /**
- * Include Fonts
- */
-@import url(//fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700);
-
-/**
  * Defaults
  */
 html, body {
-	background: #f7f7f7;
+	
 }
 body {
 	padding-top: 70px;
-	font-size: 12px;
 }
+
 
 /**
  * Classes
@@ -30,59 +25,17 @@ body {
 	text-align: right;
 }
 
-/**
- * Nav
- */
- /*
- .navbar .brand, .navbar .nav > li > a {
- 	font-family: 'Yanone Kaffeesatz';
- 	font-size: 16px;
- }
-  .navbar .brand {
- 	color: #000;
- 	text-transform: uppercase;
- 	font-weight: bold;
- 	font-size: 20px;
- }
- */
- /*
-.navbar .brand, .navbar .nav > li > a {
-	text-shadow: 0px 2px 0px #000;
-}
-.navbar .brand {
-	color: #fff;
-	font-weight: bold;
-	text-transform: uppercase;
-	padding: 10px 20px 10px 20px;
-}
-.navbar-inner {
-	background: #333;
-	background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, .3), rgba(255, 255, 255, 0)), url(/images/textures/dark1.png);
-	border-bottom: 2px solid #000;
-}
-.navbar .nav > li > a {
-	color: #ccc;
-	padding: 11px 10px 9px 10px;
-}
-.navbar .nav > li.active > a {
-	color: #fff;
-	background: transparent;
-}
-.navbar .nav > li.active > a:hover {
-	background: transparent;
-}
-*/
 
 /**
  * Head
  */
-.brand {
+.navbar-brand {
 	text-transform: uppercase;
 	font-weight: bold;
 }
 .viewer-head {
 	position: fixed;
-	top: 40px;
+	top: 50px;
 	left: 0;
 	width: 100%;
 	padding: 8px;
@@ -106,7 +59,7 @@ body {
  * Content
  */
 #viewer-content {
-	margin-top: 30px;
+	margin-top: 50px;
 	z-index: 1;
 }
 

@@ -2,3 +2,4 @@
 /app/config
 /vendor
 composer.phar
+bootstrap

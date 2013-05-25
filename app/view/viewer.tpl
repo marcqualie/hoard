@@ -15,24 +15,20 @@
 					</select>
 				</div>
 				
-				<div class="input-prepend pull-left margin-right">
-					<span class="add-on">Query</span><?
-					?><input type="text" name="query" value="" placeholder='{}' class="span2"/>
+				<div class="pull-left margin-right">
+					<input type="text" name="query" value="" placeholder='Query' class="span2"/>
+				</div>
+				
+				<div class="pull-left margin-right">
+					<input type="text" name="fields" value="" placeholder='Fields' class="span2"/>
 				</div>
 				
 				<div class="input-prepend pull-left margin-right">
-					<span class="add-on">Fields</span><?
-					?><input type="text" name="fields" value="" placeholder='All Fields' class="span2"/>
-				</div>
-				
-				<div class="input-prepend pull-left margin-right">
-					<span class="add-on">Sort</span><?
-					?><input type="text" name="sort" value="" placeholder='{"date": -1}' class="span2"/>
+					<input type="text" name="sort" value="" placeholder='{"date": -1}' class="span2"/>
 				</div>
 				
 				<div class="input-prepend pull-left">
-					<span class="add-on">Limit</span><?
-					?><input type="text" name="limit" value="50" placeholder="10" class="span1"/>
+					<input type="text" name="limit" value="50" placeholder="10" class="span1"/>
 				</div>
 			
 			</div>

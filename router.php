@@ -15,7 +15,11 @@ if (file_exists($file) && $extension)
         'js' => 'text/javascript',
         'jpg' => 'image/jpeg',
         'png' => 'image/png',
-        'gif' => 'image/gif'
+        'gif' => 'image/gif',
+        'eot' => 'application/vnd.ms-fontobject',
+        'ttf' => 'application/x-font-ttf',
+        'woff' => 'application/x-font-woff',
+        'svg' => 'application/xml+svg'
     );
     if (array_key_exists($extension, $mimes))
     {

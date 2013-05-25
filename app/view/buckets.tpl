@@ -1,17 +1,18 @@
 <div class="container">
 
-	<div class="pull-left clearfix">
-		<div class="pull-right input-prepend input-append">
-			<form action="/buckets/new" method="post">
-				<span class="add-on">New Bucket</span><?
-				?><input type="text" name="app-name" value="" class="span3" placeholder=""/><?
-				?><button class="btn btn-primary"><i class="icon-plus-sign icon-white"></i></button>
-			</form>
-		</div>
+	<div class="pull-left" style="width:300px">
+		<form action="/buckets/new" method="post" class="form-inline">
+			<div class="input-group">
+				<input type="text" name="app-name" value="" placeholder="New Bucket Name"/>
+				<span class="input-group-btn">
+					<button class="btn btn-primary">Create</button>
+				</span>
+			</div>
+		</form>
 	</div>
 
 	<div class="pull-right">
-		<table class="table table-condensed table-bordered">
+		<table class="table table-bordered">
 			<tbody>
 				<tr>
 					<td width="100" class="align-center"><?=number_format($totals['records'])?></td>
