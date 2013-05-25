@@ -28,6 +28,12 @@ select.input-small {
 	height: 30px;
 }
 
+@media (min-width: 768px) {
+	td.hidden-sm {
+		display: table-cell !important;
+	}
+}
+
 /**
  * Head
  */
