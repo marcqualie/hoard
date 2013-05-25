@@ -24,7 +24,9 @@ body {
 .table td.align-right, .table th.align-right, .align-right {
 	text-align: right;
 }
-
+select.input-small {
+	height: 30px;
+}
 
 /**
  * Head

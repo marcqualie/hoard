@@ -5,6 +5,26 @@ var chart_getData
 ,	chart_bucket = ''
 ;
 
+Highcharts.setOptions({
+	xAxis: {
+		lineWidth: 0,
+		tickWidth: 0,
+		tickLength: 0,
+		gridLineWidth: 1,
+		gridLineColor: 'rgba(0, 0, 0, 0)'
+	},
+	yAxis: {
+		gridLineWidth: 1,
+		gridLineColor: 'rgba(0, 0, 0, 0)'
+	},
+	chart: {
+		backgroundColor: 'rgba(0, 0, 0, 0)',
+		plotBackgroundColor: null,
+		plotShadow: false,
+		plotBorderWidth: 0
+	}
+});
+
 $(document).ready(function () {
 	
 	var dashboard_chart = $('#dashboard_chart');
@@ -14,20 +34,43 @@ $(document).ready(function () {
 	var options = {
 		chart: {
 			renderTo: 'dashboard_chart',
-			defaultSeriesType: 'spline'
+			defaultSeriesType: 'spline',
+			animation: false,
+			spacingTop: 40,
+			spacingRight: 40,
+			spacingBottom: 40
 		},
 		credits: {
 			enabled: false
 		},
+		tooltip: {
+			crosshairs: true,
+			shared: true
+		},
 		title: {
-			text: 'Tracked Events'
+			text: false
 		},
 		xAxis: {
-			categories: []
+			categories: [],
+			labels: {
+				enabled: false
+			}
 		},
 		yAxis: {
 			title: {
-				text: 'Units'
+				text: false
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			spline: {
+				shadow: false,
+				lineWidth: 2
+			},
+			series: {
+				threshold: 0
 			}
 		},
 		series: []

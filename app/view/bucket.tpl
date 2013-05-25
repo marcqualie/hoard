@@ -1,8 +1,7 @@
 <div class="container">
-
 	<div class="row">
 
-		<div class="span6">
+		<div class="col col-lg-6">
 			<h5>Information</h5>
 			<table class="table table-striped table-condensed">
 				<tr>
@@ -26,9 +25,7 @@
 					</td>
 				</tr>
 			</table>
-		</div>
 
-		<div class="span6">
 			<h5><a href="/viewer/#bucket=<?=$app['appkey']?>">Events</a></h5>
 			<table class="table table-striped table-condensed">
 				<tr>
@@ -48,23 +45,9 @@
 					<td class="align-right"><?= number_format($app['records_all']) ?></td>
 				</tr>
 			</table>
-		</div>
 
-	</div>
-
-	<div class="row">
-
-		<div class="span6">
-			<h5>Settings</h5>
+			<h5>Admin</h5>
 			<table class="table table-striped table-condensed">
-				<tr>
-					<td>Expire</td>
-					<td class="align-right"><span style="color:#999">never</span></td>
-				</tr>
-				<tr>
-					<td>Cache</td>
-					<td class="align-right"><span style="color:#999">never</span></td>
-				</tr>
 				<tr>
 					<td>Empty</td>
 					<td class="align-right"><a href="/bucket/<?= $app['appkey'] ?>/empty" onclick="if ( ! confirm('Are you sure?')) return false">clear</a></td>
@@ -73,15 +56,28 @@
 					<td class="align-right"><a href="/bucket/<?= $app['appkey'] ?>/delete" onclick="if ( ! confirm('Are you sure?')) return false">destroy</a></td>
 				</tr>
 			</table>
+
 		</div>
 
-		<div class="span6">
-			<h5>Schema</h5>
-			<table class="table table-striped table-condensed">
-				<tr>
-					<td><span style="color:#999">Coming soon</span></td>
-				</tr>
-			</table>
+		<div class="col col-lg-6">
+
+			<script>
+			  chart_bucket = '<?= $app['appkey'] ?>';
+			</script>
+			<div id="dashboard_chart" style="width:100%;height:300px;text-align:center;line-height:300px"></div>
+			<div class="row">
+				<div class="col col-offset-2 col-lg-8">
+					<div class="btn-group btn-group-justified" data-toggle="buttons-radio">
+						<a class="btn btn-default" onclick="chart_getData('second')">Second</a>
+						<a class="btn btn-default active" onclick="chart_getData('minute')">Minute</a>
+						<a class="btn btn-default" onclick="chart_getData('hour')">Hour</a>
+						<a class="btn btn-default" onclick="chart_getData('day')">Day</a>
+					</div>
+				</div>
+			</div>
+			<br/>
+
 		</div>
 
+	</div>
 </div>

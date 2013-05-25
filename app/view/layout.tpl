@@ -24,7 +24,7 @@
 		</button>
 		<div class="nav-collapse collapse navbar-responsive-collapse">
 			<ul class="nav navbar-nav">
-				<li<?=PAGE === 'apps' ? ' class="active"' : ''?>><a href="/buckets/">Buckets (<?=count(Auth::$buckets)?>)</a></li>
+				<li<?=PAGE === 'home' ? ' class="active"' : ''?>><a href="/">Buckets (<?=count(Auth::$buckets)?>)</a></li>
 				<li<?=PAGE === 'viewer' ? ' class="active"' : ''?>><a href="/viewer/">Viewer</a></li>
 				<li<?=PAGE === 'mapreduce' ? ' class="active"' : ''?>><a href="/mapreduce/">Map Reduce</a></li>
 			</ul>
