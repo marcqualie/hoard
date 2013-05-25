@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/marcqualie/mongominify.git",
-                "reference": "643cb1b13a88a728598d6c93827acda0f89ce40d"
+                "reference": "97b6db84246ee66a31ab3eb9552e487c4bc87b58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/643cb1b13a88a728598d6c93827acda0f89ce40d",
-                "reference": "643cb1b13a88a728598d6c93827acda0f89ce40d",
+                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/97b6db84246ee66a31ab3eb9552e487c4bc87b58",
+                "reference": "97b6db84246ee66a31ab3eb9552e487c4bc87b58",
                 "shasum": ""
             },
             "require": {
@@ -24,8 +24,9 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+                "phpunit/php-code-coverage": "1.2.*",
                 "phpunit/phpunit": "3.7.*",
-                "silex/silex": "1.0.*@dev"
+                "silex/silex": "1.0.*"
             },
             "type": "library",
             "autoload": {
@@ -44,22 +45,22 @@
                 "library",
                 "mongodb"
             ],
-            "time": "2013-04-21 18:59:38"
+            "time": "2013-05-25 19:53:25"
         }
     ],
     "packages-dev": [
         {
             "name": "phpunit/php-code-coverage",
-            "version": "1.2.9",
+            "version": "1.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "1.2.9"
+                "reference": "1.2.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1.2.9",
-                "reference": "1.2.9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1.2.11",
+                "reference": "1.2.11",
                 "shasum": ""
             },
             "require": {
@@ -67,6 +68,9 @@
                 "phpunit/php-file-iterator": ">=1.3.0@stable",
                 "phpunit/php-text-template": ">=1.1.1@stable",
                 "phpunit/php-token-stream": ">=1.1.3@stable"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
             },
             "suggest": {
                 "ext-dom": "*",
@@ -99,7 +103,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-02-26 18:55:56"
+            "time": "2013-05-23 18:23:24"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -281,16 +285,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "3.7.19",
+            "version": "3.7.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3.7.19"
+                "reference": "3.7.21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3.7.19",
-                "reference": "3.7.19",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3.7.21",
+                "reference": "3.7.21",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +308,7 @@
                 "phpunit/php-text-template": ">=1.1.1",
                 "phpunit/php-timer": ">=1.0.2,<1.1.0",
                 "phpunit/phpunit-mock-objects": ">=1.2.0,<1.3.0",
-                "symfony/yaml": ">=2.0.0,<2.3.0"
+                "symfony/yaml": ">=2.0,<3.0"
             },
             "require-dev": {
                 "pear-pear/pear": "1.9.4"
@@ -351,7 +355,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-03-25 11:45:06"
+            "time": "2013-05-23 18:54:29"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

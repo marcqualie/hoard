@@ -29,20 +29,20 @@
 			<h5><a href="/viewer/#bucket=<?=$app['appkey']?>">Events</a></h5>
 			<table class="table table-striped table-condensed">
 				<tr>
-					<td>Past Minute</td>
-					<td class="align-right"><?= number_format($app['records_1minute']) ?></td>
+					<td>Latest tracked</td>
+					<td class="align-right"><?= date('Y-m-d H:i', $app['latest_event']['t']->sec) ?></td>
 				</tr>
 				<tr>
-					<td>Past Hour</td>
-					<td class="align-right"><?= number_format($app['records_1hour']) ?></td>
+					<td>Count</td>
+					<td class="align-right"><?= number_format($app['stats']['count']) ?></td>
 				</tr>
 				<tr>
-					<td>Past Day</td>
-					<td class="align-right"><?= number_format($app['records_1day']) ?></td>
+					<td>Daily Req / s</td>
+					<td class="align-right"><?= number_format($app['rps'], 2); ?></td>
 				</tr>
 				<tr>
-					<td>All</td>
-					<td class="align-right"><?= number_format($app['records_all']) ?></td>
+					<td>Storage</td>
+					<td class="align-right"><?= normalize_bytes($app['stats']['storageSize'], 2, true); ?></td>
 				</tr>
 			</table>
 

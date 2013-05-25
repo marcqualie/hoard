@@ -53,3 +53,30 @@ function array_sort (&$array)
 	array_sort_func($keys);
 	usort($array, 'array_sort_func');
 }
+
+/**
+ * Convert
+ */
+function normalize_bytes ($bytes, $precision = 2, $html = false)
+{
+	$format = function ($metric, $html) {
+		if ( ! $html)
+		{
+			return $metric;
+		}
+		return ' <span class="text-muted">' . $metric . '</span>';
+	};
+	if ($bytes < 1024 * 1024)
+	{
+		return number_format($bytes / 1024, 2) . $format('kb', $html);
+	}
+	if ($bytes < 1024 * 1024 * 1024)
+	{
+		return number_format($bytes / (1024 * 1024), 2) . $format('mb', $html);
+	}
+	if ($bytes < 1024 * 1024 * 1024 * 1024)
+	{
+		return number_format($bytes / ( 1024 * 1024 * 1024), 2) . $format('gb', $html);
+	}
+	return $bytes;
+}
