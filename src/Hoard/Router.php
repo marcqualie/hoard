@@ -8,7 +8,9 @@ class Router {
     {
 
         // Detect Page Method
-        $uri_parts = explode('/', $app->request->server->get('REQUEST_URI'));
+        $uri_full = 'http://' . $app->request->server->get('HTTP_HOST') . $app->request->server->get('REQUEST_URI');
+        $uri_path = parse_url($uri_full, PHP_URL_PATH);
+        $uri_parts = explode('/', $uri_path);
         array_shift($uri_parts);
         $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'buckets';
 
