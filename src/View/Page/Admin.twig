@@ -1,0 +1,44 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col col-lg-6">
+            <h4>Buckets</h4>
+            <br/>
+            <table class="table table-bordered table-condensed table-striped">
+{% for bucket in buckets %}
+                <tr>
+                    <td><a href="/bucket/{{ bucket.appkey }}">{{ bucket.name }}</a></td>
+                </tr>
+{% endfor %}
+            </table>
+        </div>
+
+        <div class="col col-lg-6">
+
+            <h4>Users</h4>
+            <br/>
+            <form action="/admin" method="post" class="form-inline">
+                <input type="hidden" name="action" value="create-user"/>
+                <input type="text" name="email" value="" placeholder="Email Address" autocomplete="off" style="width:40%" class="input-small"/>
+                <input type="password" name="password" value="" placeholder="Password" autocomplete="no" style="width:40%" class="input-small"/>
+                <input type="submit" value="Add" class="btn btn-primary btn-small" style="width:18%"/>
+            </form>
+
+            <br/>
+            <table class="table table-bordered table-condensed table-striped">
+{% for user in users %}
+                <tr>
+                    <td>
+{% if user.admin %}
+                        <span class="glyphicon glyphicon-star"></span>
+{% endif %}
+                        <a href="/user/{{ user._id }}">{{ user.email }}</a></td>
+                </tr>
+{% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+</div>

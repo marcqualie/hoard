@@ -8,8 +8,13 @@ if ( ! array_key_exists($_SERVER['REQUEST_METHOD'], array('GET' => 1, 'POST' => 
 	exit('Invalid Request Method');
 }
 
-// Include composer autoloader
+// Include Dependencies
 include __DIR__ . '/vendor/autoload.php';
+
+// Environment
+$app = new Hoard\Application();
+$app->env = getenv('APP_ENV') ?: 'development';
+$app->config = Hoard\Config::load('default');
 
 // Constants
 define('DOCROOT', __DIR__);
@@ -22,27 +27,12 @@ define('COOKIE_DOMAIN', str_replace(':' . $_SERVER['SERVER_PORT'], '', $_SERVER[
 define('COOKIE_SECURE', false);
 define('COOKIE_HTTP', true);
 
-// Include env
-$iterator = new DirectoryIterator(LIBROOT);
-foreach ($iterator as $file)
-{
-	if ( ! $file->isDot())
-	{
-		include $file->getPathname();
-	}
-}
-
-// Environment
-App::$env = getenv('APP_ENV') ?: 'development';
-$config = Config::load('default');
-
 // Connect to MongoDB
-if (getenv('HOARD_MONGO_URI'))
-{
-    $config['mongo.server'] = getenv('HOARD_MONGO_URI');
-}
-$mongo_client = new MongoMinify\Client($config['mongo.server'], $config['mongo.options']);
-App::$mongo = $mongo_client->currentDb();
+$mongo_client = new MongoMinify\Client(
+	$app->config['mongo.server'],
+	$app->config['mongo.options']
+);
+$app->mongo = $mongo_client->currentDb();
 
-// Authentication
-Auth::init();
+// Return App Instance
+return $app;

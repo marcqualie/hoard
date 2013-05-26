@@ -20,7 +20,7 @@ if ( ! is_dir(__DIR__ . '/vendor'))
 $_SERVER['HTTP_HOST'] = 'localhost';
 $_SERVER['SERVER_PORT'] = 80;
 $_SERVER['REQUEST_METHOD'] = 'GET';
-include __DIR__ . '/bootstrap.php';
+$app = include __DIR__ . '/bootstrap.php';
 
 
 /**
