@@ -1,6 +1,7 @@
-# Storage Engine for Event based Data
+# Hoard
 
-Hoard is currently a prototype for logging event based data. It's currently in early alpha testing, and not suitable for production.
+Hoard is an Event Based Storage Engine.
+
 
 ## Install
 
@@ -23,6 +24,16 @@ You can also run via any standard web browser such as Nginx or Apache. Simply us
 - PHP - [marcqualie/hoard-php-client](https://github.com/marcqualie/hoard-php-client)
 - Tail - [marcqualie/hoard-tail-client](https://github.com/marcqualie/hoard-tail-client)
 
+
+## TODO
+
+- Unit Tests
+- Reports
+- Export / Import
+- Backup
+- Migrations
+
+
 ## Support
 
-Official support is currently not available, but if you have any questions or suggections you can contact me over at [My Site](https://marcqualie.com/contact/)
+Official support is currently not available, but if you have any questions or suggections please use the Github issue system

@@ -1,8 +1,9 @@
 {
-    "name": "marcqualie/hoard-server",
     "description": "Storage engine for event based data",
+    "license": "MIT",
     "require": {
-        "ext-mongo": "1.3.*",
+    	"php": ">=5.3.3",
+        "ext-mongo": ">=1.3.0",
         "marcqualie/mongominify": "dev-master"
     },
     "require-dev": {
