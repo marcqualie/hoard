@@ -1,0 +1,47 @@
+<div class="container">
+
+	<div class="pull-left hidden-sm" style="width:300px">
+		<form action="/" method="post" class="form-inline">
+			<input type="hidden" name="action" value="create_bucket"/>
+			<div class="input-group">
+				<input type="text" name="app-name" value="" placeholder="New Bucket Name"/>
+				<span class="input-group-btn">
+					<button class="btn btn-primary">Create</button>
+				</span>
+			</div>
+		</form>
+	</div>
+
+	<div class="pull-right">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td width="100" class="align-center">{{ totals.rps | number_format(2) }}</td>
+					<td width="100" class="align-center">{{ totals.records | number_format }}</td>
+					<td width="100" class="align-center">{{ total.storage | normalize_bytes(2, true) }}</td>
+					<td width="100" class="align-center">{{ totals.storage_index | normalize_bytes(2, true) }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<table class="table table-condensed table-bordered">
+		<tbody>
+{% for bucket in buckets %}
+			<tr>
+				<td>
+					<a href="/bucket/{{ bucket.appkey }}">
+						{{ bucket.name }}
+					</a>
+				</td>
+				<td width="100" class="align-center hidden-sm">{{ bucket.rps }}</td>
+				<td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.appkey }}">{{ bucket.records | number_format }}</a></td>
+				<td width="100" class="align-center">{{ bucket.storage | normalize_bytes(2, true) }}</td>
+				<td width="100" class="align-center hidden-sm">{{ bucket.storage_index | normalize_bytes(2, true) }}</td>
+			</tr>
+{% endfor %}
+		</tbody>
+	</table>
+
+</div>

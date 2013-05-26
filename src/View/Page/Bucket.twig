@@ -19,7 +19,7 @@
 				<tr>
 					<td>User(s)</td>
 					<td class="align-right">
-<?php foreach ($app['roles'] as $uid => $role): $user = App::$mongo->selectCollection('user')->findOne(array('_id' => new MongoId($uid))); ?>
+<?php foreach ($app['roles'] as $uid => $role): $user = $this->app->mongo->selectCollection('user')->findOne(array('_id' => new MongoId($uid))); ?>
 						<?= $user['email'] ?> 
 <?php endforeach; ?>
 					</td>

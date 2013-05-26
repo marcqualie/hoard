@@ -68,15 +68,15 @@ function normalize_bytes ($bytes, $precision = 2, $html = false)
 	};
 	if ($bytes < 1024 * 1024)
 	{
-		return number_format($bytes / 1024, 2) . $format('kb', $html);
+		return number_format($bytes / 1024, $precision) . $format('kb', $html);
 	}
 	if ($bytes < 1024 * 1024 * 1024)
 	{
-		return number_format($bytes / (1024 * 1024), 2) . $format('mb', $html);
+		return number_format($bytes / (1024 * 1024), $precision) . $format('mb', $html);
 	}
 	if ($bytes < 1024 * 1024 * 1024 * 1024)
 	{
-		return number_format($bytes / ( 1024 * 1024 * 1024), 2) . $format('gb', $html);
+		return number_format($bytes / ( 1024 * 1024 * 1024), $precision) . $format('gb', $html);
 	}
 	return $bytes;
 }

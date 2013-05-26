@@ -25,7 +25,7 @@ if ($action === 'fake')
 		'created' => new \MongoDate(),
 		'updated' => new \MongoDate()
 	);
-	App::$mongo->selectCollection('app')->save($data);
+	$this->app->mongo->selectCollection('app')->save($data);
 
 	// Events
 	$events = array('test1', 'test2', 'test3');

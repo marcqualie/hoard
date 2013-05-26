@@ -1,7 +1,9 @@
 <?php
 
+namespace Hoard;
+
 class Config {
-	
+
 	private static $data = array();
 
 	/**
@@ -9,7 +11,7 @@ class Config {
 	 */
 	public static function load ($name = 'default')
 	{
-		$file = APPROOT . '/config/' . $name . '.php';
+		$file = dirname(dirname(__DIR__)) . '/config/' . $name . '.php';
 		if (file_exists($file))
 		{
 			self::$data = include $file;

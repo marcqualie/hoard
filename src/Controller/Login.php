@@ -1,12 +1,14 @@
 <?php
 
-class LoginController extends PageController
+namespace Controller;
+
+class Login extends Base\Page
 {
-	
+
 	public function req_post ()
 	{
-		
-		$login = Auth::login($_POST['email'], $_POST['password']);
+
+		$login = $this->app->auth->login($this->app->request->get('email'), $this->app->request->get('password'));
 		if (isset($login['error']))
 		{
 			$this->alert($login['message'], 'danger');
@@ -16,14 +18,14 @@ class LoginController extends PageController
 			header('Location: /');
 			exit;
 		}
-		
+
 	}
-	
+
 	public function req_get ()
 	{
-		
+
 		$this->set('title', 'Hoard - Login');
 
 	}
-	
+
 }
