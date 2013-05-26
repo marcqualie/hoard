@@ -8,8 +8,6 @@ class Router {
     {
 
         // Detect Page Method
-//      print_r($app->request);
-//      exit;
         $uri_parts = explode('/', $app->request->server->get('REQUEST_URI'));
         array_shift($uri_parts);
         $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'index';
@@ -24,6 +22,7 @@ class Router {
 
         // Initialize class
         $page = new $class($app);
+        $page->uri = $uri_parts;
         $page->controller = $method;
         $page->config = $app->config;
         $page->before();

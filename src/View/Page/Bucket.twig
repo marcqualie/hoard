@@ -6,43 +6,31 @@
 			<table class="table table-striped table-condensed">
 				<tr>
 					<td>Name</td>
-					<td class="align-right"><?= $app['name'] ?></td>
+					<td class="align-right">{{ bucket.name }}</td>
 				</tr>
 				<tr>
 					<td>BucketID</td>
-					<td class="align-right"><?= $app['appkey'] ?></td>
-				</tr>
-				<tr>
-					<td>Secret</td>
-					<td class="align-right"><?= $app['secret'] ?></td>
-				</tr>
-				<tr>
-					<td>User(s)</td>
-					<td class="align-right">
-<?php foreach ($app['roles'] as $uid => $role): $user = $this->app->mongo->selectCollection('user')->findOne(array('_id' => new MongoId($uid))); ?>
-						<?= $user['email'] ?> 
-<?php endforeach; ?>
-					</td>
+					<td class="align-right">{{ bucket.appkey }}</td>
 				</tr>
 			</table>
 
-			<h5><a href="/viewer/#bucket=<?=$app['appkey']?>">Events</a></h5>
+			<h5><a href="/viewer/#bucket={{ bucket.appkey }}">Events</a></h5>
 			<table class="table table-striped table-condensed">
 				<tr>
 					<td>Latest tracked</td>
-					<td class="align-right"><?= date('Y-m-d H:i', $app['latest_event']['t']->sec) ?></td>
+					<td class="align-right">{{ bucket.latest_event.t.sec | date('Y-m-d H:i') }}</td>
 				</tr>
 				<tr>
 					<td>Count</td>
-					<td class="align-right"><?= number_format($app['stats']['count']) ?></td>
+					<td class="align-right">{{ bucket.stats.count | number_format }}</td>
 				</tr>
 				<tr>
 					<td>Daily Req / s</td>
-					<td class="align-right"><?= number_format($app['rps'], 2); ?></td>
+					<td class="align-right">{{ bucket.rps | number_format(2) }}</td>
 				</tr>
 				<tr>
 					<td>Storage</td>
-					<td class="align-right"><?= normalize_bytes($app['stats']['storageSize'], 2, true); ?></td>
+					<td class="align-right">{{ bucket.stats.storageSize | normalize_bytes(2, true) }}</td>
 				</tr>
 			</table>
 
@@ -50,10 +38,10 @@
 			<table class="table table-striped table-condensed">
 				<tr>
 					<td>Empty</td>
-					<td class="align-right"><a href="/bucket/<?= $app['appkey'] ?>/empty" onclick="if ( ! confirm('Are you sure?')) return false">clear</a></td>
+					<td class="align-right"><a href="/bucket/{{ bucket.appkey }}/empty" onclick="if ( ! confirm('Are you sure?')) return false">clear</a></td>
 				<tr>
 					<td>Delete</td>
-					<td class="align-right"><a href="/bucket/<?= $app['appkey'] ?>/delete" onclick="if ( ! confirm('Are you sure?')) return false">destroy</a></td>
+					<td class="align-right"><a href="/bucket/{{ bucket.appkey }}/delete" onclick="if ( ! confirm('Are you sure?')) return false">destroy</a></td>
 				</tr>
 			</table>
 
@@ -62,7 +50,7 @@
 		<div class="col col-lg-6">
 
 			<script>
-			  chart_bucket = '<?= $app['appkey'] ?>';
+			  chart_bucket = '{{ bucket.appkey }}';
 			</script>
 			<div id="dashboard_chart" style="width:100%;height:300px;text-align:center;line-height:300px"></div>
 			<div class="row">
