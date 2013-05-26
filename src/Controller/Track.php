@@ -20,7 +20,16 @@ class Track extends Base\Page
         $data = array_merge($dataload, $payload);
 
         // Event is required
-        $event = $req->get('event') ?: (isset($this->uri[1]) ? $this->uri[1] : false);
+        $event = $req->get('event') ?: (
+            isset($data['event'])
+                ? $data['event']
+                : (
+                    // Legacy, will be removed in next version
+                    (! empty($this->uri[1]))
+                        ? $this->uri[1]
+                        : false
+                )
+            );
         if ( ! $event)
         {
             echo '500 No Event Specified';
