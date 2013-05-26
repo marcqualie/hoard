@@ -10,14 +10,14 @@ class Router {
         // Detect Page Method
         $uri_parts = explode('/', $app->request->server->get('REQUEST_URI'));
         array_shift($uri_parts);
-        $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'index';
+        $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'buckets';
 
         // Check if method exists
         $class = 'Controller\\' . ucfirst($method);
         if ( ! class_exists($class))
         {
             header('HTTP/1.1 404 Not Found');
-            exit('Error 404. Page not found');
+            exit('Error 404. Page not found (' . $method . ')');
         }
 
         // Initialize class

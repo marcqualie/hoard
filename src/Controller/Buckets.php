@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-class Index extends Base\Page
+class Buckets extends Base\Page
 {
 
     public function before ()
@@ -12,28 +12,28 @@ class Index extends Base\Page
             header('Location: /login/');
             exit;
         }
-        $this->set('title', 'Buckets - Hoard');
+        $this->title = 'Hoard - My Buckets';
     }
 
     public function req_post ()
     {
 
-        if ($_POST['action'] === 'create_bucket')
+        if ($this->app->request->get('action') === 'create_bucket')
         {
-            $name = preg_replace('/[^a-zA-Z0-9\.\-_ \(\)\'"]/', '', $_POST['app-name']);
+            $name = preg_replace('/[^a-zA-Z0-9\.\-_ \(\)\'"]/', '', $this->app->request->get('bucket_name'));
             if ($name)
             {
                 $appkey = uniqid();
-                $secret = sha1($appkey . uniqid() . $_SERVER['REMOTE_ADDR'] . rand(0, 999999));
+                $secret = sha1($appkey . uniqid() . $this->app->request->server->get('REMOTE_ADDR') . rand(0, 999999));
                 $data = array(
                     'name' => $name,
                     'appkey' => $appkey,
                     'secret' => $secret,
                     'roles' => array(
-                        Auth::$id => 'owner'
+                        $this->app->auth->id => 'owner'
                     ),
-                    'created' => new MongoDate(),
-                    'updated' => new MongoDate()
+                    'created' => new \MongoDate(),
+                    'updated' => new \MongoDate()
                 );
                 $this->app->mongo->selectCollection('app')->insert($data);
                 $this->alert('Your app was created');
@@ -48,7 +48,7 @@ class Index extends Base\Page
         $cursor = $this->app->mongo->selectCollection('app')->find(array(
             '$or' => array(
                 array(
-                    'roles.' . Auth::$id => array(
+                    'roles.' . $this->app->auth->id => array(
                         '$exists' => 1
                     )
                 ),
@@ -57,7 +57,7 @@ class Index extends Base\Page
                 )
             )
         ));
-        Auth::$buckets = iterator_to_array($cursor);
+        $this->app->auth->user['buckets'] = iterator_to_array($cursor);
         return $this->req_get();
 
     }

@@ -10,7 +10,7 @@ class Page
     public $app;
 
     public $title = 'Hoard';
-    public $controller = 'index';
+    public $controller = 'buckets';
     public $template = 'Page/Error.twig';
 
     // Requests
