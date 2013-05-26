@@ -44,7 +44,7 @@ class Router {
 //            'cache' => '/tmp',
         ));
         $twig->addFilter(new \Twig_SimpleFilter('normalize_bytes', function ($bytes, $precision = 2, $html = false) {
-                return normalize_bytes($bytes, $precision, $html);
+                return \Utils::normalize_bytes($bytes, $precision, $html);
             }, array(
                 'is_safe' => array('html')
             ))

@@ -103,7 +103,7 @@ class Index extends Base\Page
             $totals['storage'] += $bucket['storage'];
             $totals['storage_index'] += $bucket['storage_index'];
         }
-        array_sort($buckets, '!records');
+        \Utils::array_sort($buckets, '!records');
         $this->set('totals', $totals);
         $this->set('buckets', $buckets);
 

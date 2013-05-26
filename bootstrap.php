@@ -10,7 +10,6 @@ if ( ! array_key_exists($_SERVER['REQUEST_METHOD'], array('GET' => 1, 'POST' => 
 
 // Include Dependencies
 include __DIR__ . '/vendor/autoload.php';
-include __DIR__ . '/lib/functions.php';
 
 // Environment
 $app = new Hoard\Application();
