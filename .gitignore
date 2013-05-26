@@ -1,5 +1,5 @@
 # Hoard
-/app/config
 /vendor
 composer.phar
 bootstrap
+app

@@ -6,7 +6,7 @@ if ( ! $email)
 	echo 'Please enter the user\'s email address';
 	return false;
 }
-$user = App::$mongo->selectCollection('user')->findOne(array('email' => $email));
+$user = $this->app->mongo->selectCollection('user')->findOne(array('email' => $email));
 if ( ! $user['_id'])
 {
 	echo 'Could not find ' . $email;
@@ -32,5 +32,5 @@ if ($pass1 !== $pass2)
 
 // Update password in database
 $user['password'] = Auth::password($pass1);
-App::$mongo->selectCollection('user')->save($user);
+$this->app->mongo->selectCollection('user')->save($user);
 echo "\r" . 'Password Updated';
