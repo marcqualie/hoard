@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8"/>
-	<title>{{ page.title }}</title>
-	<link href="/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="/css/global.css" rel="stylesheet"/>
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/highcharts.min.js"></script>
-	<script src="/js/global.js"></script>
-	<script src="/js/dashboard.js"></script>
+    <meta charset="utf-8"/>
+    <title>{{ page.title }}</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/global.css" rel="stylesheet"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/highcharts.min.js"></script>
+    <script src="/js/global.js"></script>
+    <script src="/js/dashboard.js"></script>
 </head>
 <body>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<a class="navbar-brand" href="/">Hoard</a>
+    <div class="container">
+        <a class="navbar-brand" href="/">Hoard</a>
 {% if auth.id %}
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		<div class="nav-collapse collapse navbar-responsive-collapse">
-			<ul class="nav navbar-nav">
-				<li{% if page.controller == 'buckets' %} class="active"{% endif %}><a href="/">Buckets ({{ user.buckets | length }})</a></li>
-				<li{% if page.controller == 'viewer' %} class="active"{% endif %}><a href="/viewer/">Viewer</a></li>
-			</ul>
-			<ul class="nav navbar-nav pull-right">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="nav-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li{% if page.controller == 'buckets' %} class="active"{% endif %}><a href="/">Buckets ({{ user.buckets | length }})</a></li>
+                <li{% if page.controller == 'viewer' %} class="active"{% endif %}><a href="/viewer/">Viewer</a></li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li{% if page.controller == 'account' %} class="active"{% endif %}><a>{{ user.email }}</a></li>
 {% if auth.isAdmin %}
-				<li{% if page.controller == 'admin' %} class="active"{% endif %}><a href="/admin/">Admin</a></li>
+                <li{% if page.controller == 'admin' %} class="active"{% endif %}><a href="/admin/">Admin</a></li>
 {% endif %}
-				<li{% if page.controller == 'account' %} class="active"{% endif %}><a href="/account/">{{ user.email }}</a></li>
-				<li><a href="/logout/">Logout</a></li>
-			</ul>
-			</ul>
+                <li><a href="/logout/">Logout</a></li>
+            </ul>
+            </ul>
 {% endif %}
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 {% if page.alert %}
 <div class="container">
-	<div class="alert alert-{{ page.alert.type }}">{{ page.alert.message }}</div>
+    <div class="alert alert-{{ page.alert.type }}">{{ page.alert.message | raw }}</div>
 </div>
 {% endif %}
 

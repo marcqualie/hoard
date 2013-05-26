@@ -53,7 +53,9 @@ class Buckets extends Base\Page
                     )
                 ),
                 array(
-                    'roles.all' => array('$exists' => 1)
+                    'roles.all' => array(
+                        '$exists' => 1
+                    )
                 )
             )
         ));
