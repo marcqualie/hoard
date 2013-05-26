@@ -18,8 +18,9 @@ class Router {
         $class = 'Controller\\' . ucfirst($method);
         if ( ! class_exists($class))
         {
+            $method = 'error';
             header('HTTP/1.1 404 Not Found');
-            exit('Error 404. Page not found (' . $method . ')');
+            $class = 'Controller\\Error';
         }
 
         // Initialize class
