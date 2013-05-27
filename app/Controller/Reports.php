@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-class Error extends Base\Page
+class Reports extends Base\Page
 {
 
 

@@ -37,4 +37,22 @@ class Application {
 
     }
 
+
+    /**
+     * Error and Exception Handler
+     */
+    public function error ($callback)
+    {
+        set_exception_handler(function (\Exception $e) use ($callback) {
+            $callback($e, $e->getCode());
+        });
+        set_error_handler(function ($code, $message, $file, $line) {
+            if (0 == error_reporting())
+            {
+                return;
+            }
+            throw new \ErrorException($message, 0, $code, $file, $line);
+        });
+    }
+
 }

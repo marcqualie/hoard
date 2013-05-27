@@ -4,15 +4,22 @@ namespace Hoard;
 
 class Router {
 
-    public function render ($app)
+    public function render ($app, $method = null, array $vars = array())
     {
 
         // Detect Page Method
-        $uri_full = 'http://' . $app->request->server->get('HTTP_HOST') . $app->request->server->get('REQUEST_URI');
-        $uri_path = parse_url($uri_full, PHP_URL_PATH);
-        $uri_parts = explode('/', $uri_path);
-        array_shift($uri_parts);
-        $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'buckets';
+        if ($method === null)
+        {
+            $uri_full = 'http://' . $app->request->server->get('HTTP_HOST') . $app->request->server->get('REQUEST_URI');
+            $uri_path = parse_url($uri_full, PHP_URL_PATH);
+            $uri_parts = explode('/', $uri_path);
+            array_shift($uri_parts);
+            $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'buckets';
+        }
+        else
+        {
+            $uri_parts = array('error');
+        }
 
         // Check if method exists
         $class = 'Controller\\' . ucfirst($method);
@@ -26,6 +33,7 @@ class Router {
         // Initialize class
         $page = new $class($app);
         $page->uri = $uri_parts;
+        $page->var = $vars;
         $page->controller = $method;
         $page->config = $app->config;
         $page->before();
@@ -41,7 +49,7 @@ class Router {
         $twig_variables['user'] = $app->auth->user;
 
         // Twig Setup
-        $loader = new \Twig_Loader_Filesystem(dirname(dirname(__DIR__)) . '/src/View');
+        $loader = new \Twig_Loader_Filesystem(dirname(dirname(__DIR__)) . '/app/View');
         $twig = new \Twig_Environment($loader, array(
 //            'cache' => '/tmp',
         ));

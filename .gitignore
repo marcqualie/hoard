@@ -1,5 +1,3 @@
 # Hoard
 /vendor
-composer.phar
-bootstrap
-app
+/bootstrap

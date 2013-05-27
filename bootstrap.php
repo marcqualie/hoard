@@ -5,7 +5,7 @@ date_default_timezone_set('UTC');
 // Restrict HTTP Method
 if ( ! array_key_exists($_SERVER['REQUEST_METHOD'], array('GET' => 1, 'POST' => 1)))
 {
-	exit('Invalid Request Method');
+    exit('Invalid Request Method');
 }
 
 // Include Dependencies
@@ -16,11 +16,13 @@ $app = new Hoard\Application();
 $app->env = getenv('APP_ENV') ?: 'development';
 $app->config = Hoard\Config::load('default');
 
-// Constants
-define('DOCROOT', __DIR__);
-define('LIBROOT', DOCROOT . '/lib');
-define('APPROOT', DOCROOT . '/app');
-define('WEBROOT', DOCROOT . '/public');
+// Error Handling
+$app->error(function ($e, $code) use ($app) {
+    $app->router->render($app, 'error', array(
+        'code' => $code,
+        'message' => $e->getMessage()
+    ));
+});
 
 // Cookies
 define('COOKIE_DOMAIN', str_replace(':' . $_SERVER['SERVER_PORT'], '', $_SERVER['HTTP_HOST']));
@@ -29,8 +31,8 @@ define('COOKIE_HTTP', true);
 
 // Connect to MongoDB
 $mongo_client = new MongoMinify\Client(
-	$app->config['mongo.server'],
-	$app->config['mongo.options']
+    $app->config['mongo.server'],
+    $app->config['mongo.options']
 );
 $app->mongo = $mongo_client->currentDb();
 
