@@ -18,6 +18,12 @@ $app->config = Hoard\Config::load('default');
 
 // Error Handling
 $app->error(function ($e, $code) use ($app) {
+
+	if (php_sapi_name() === 'cli')
+	{
+		echo $e->getMessage();
+		exit;
+	}
     $app->router->render($app, 'error', array(
         'code' => $code,
         'message' => $e->getMessage()
