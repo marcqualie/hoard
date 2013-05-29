@@ -54,7 +54,7 @@ while ( ! $mongodb_connected)
 }
 
 // Create config file from variables
-$config_file = $docroot . '/app/config/default.php';
+$config_file = $docroot . '/config/default.php';
 if (file_exists($config_file))
 {
 	echo '[NOTICE] Config file exists, overwriting' . PHP_EOL;
