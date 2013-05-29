@@ -94,7 +94,7 @@ if (isset($user['_id']))
 	$collection->update(array('email' => $email), array(
 		'$set' => array(
 			'admin' => 1,
-			'password' => Auth::password($password),
+			'password' => \Hoard\Auth::password($password),
 			'updated' => new \MongoDate()
 		)
 	));
@@ -106,7 +106,7 @@ else
 	echo '[NOTICE] Created admin user [ email=' . $email . ', password=' . $password . ', token=' . $token . ' ]' . PHP_EOL;
 	$user = array(
 		'email' => $email,
-		'password' => Auth::password($password),
+		'password' => \Hoard\Auth::password($password),
 		'token' => $token,
 		'admin' => 1,
 		'created' => new \MongoDate(),
