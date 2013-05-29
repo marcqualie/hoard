@@ -59,6 +59,9 @@ class Router {
                 'is_safe' => array('html')
             ))
         );
+        $twig->addFilter(new \Twig_SimpleFilter('json', function ($string) {
+            return json_encode($string, JSON_PRETTY_PRINT);
+        }));
         echo $twig->render('Layout/Default.twig', $twig_variables);
 
     }
