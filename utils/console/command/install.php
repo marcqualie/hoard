@@ -11,16 +11,12 @@
 // Install composer dependencies
 exec('php composer.phar install --dev');
 
-// Define constants
-$docroot = DOCROOT;
-/*
-$docroot = prompt('Install Directory', $docroot);
-if ( ! is_dir($docroot) || ! file_exists($docroot . '/lib/mongox.php'))
+$docroot = prompt('Install Directory', dirname(dirname(dirname(__DIR__))));
+if ( ! is_dir($docroot) || ! file_exists($docroot . '/bootstrap.php'))
 {
 	echo '[ERROR] Invalid Hoard installation at ' . $docroot . PHP_EOL;
 	exit;
 }
-*/
 
 // Check dependencies
 if ( ! class_exists('MongoClient'))
@@ -58,7 +54,7 @@ while ( ! $mongodb_connected)
 }
 
 // Create config file from variables
-$config_file = $docroot . '/app/config/default.php';
+$config_file = $docroot . '/config/default.php';
 if (file_exists($config_file))
 {
 	echo '[NOTICE] Config file exists, overwriting' . PHP_EOL;
@@ -98,7 +94,7 @@ if (isset($user['_id']))
 	$collection->update(array('email' => $email), array(
 		'$set' => array(
 			'admin' => 1,
-			'password' => Auth::password($password),
+			'password' => \Hoard\Auth::password($password),
 			'updated' => new \MongoDate()
 		)
 	));
@@ -110,7 +106,7 @@ else
 	echo '[NOTICE] Created admin user [ email=' . $email . ', password=' . $password . ', token=' . $token . ' ]' . PHP_EOL;
 	$user = array(
 		'email' => $email,
-		'password' => Auth::password($password),
+		'password' => \Hoard\Auth::password($password),
 		'token' => $token,
 		'admin' => 1,
 		'created' => new \MongoDate(),
