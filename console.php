@@ -69,7 +69,7 @@ if ( ! $action)
 /**
  * Lookup action in command directory
  */
-$command_file = DOCROOT . '/utils/console/command/' . $action . '.php';
+$command_file = __DIR__ . '/utils/console/command/' . $action . '.php';
 if (file_exists($command_file))
 {
 	$response = include $command_file;
