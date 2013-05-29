@@ -11,16 +11,12 @@
 // Install composer dependencies
 exec('php composer.phar install --dev');
 
-// Define constants
-$docroot = DOCROOT;
-/*
-$docroot = prompt('Install Directory', $docroot);
-if ( ! is_dir($docroot) || ! file_exists($docroot . '/lib/mongox.php'))
+$docroot = prompt('Install Directory', dirname(dirname(dirname(__DIR__))));
+if ( ! is_dir($docroot) || ! file_exists($docroot . '/bootstrap.php'))
 {
 	echo '[ERROR] Invalid Hoard installation at ' . $docroot . PHP_EOL;
 	exit;
 }
-*/
 
 // Check dependencies
 if ( ! class_exists('MongoClient'))
