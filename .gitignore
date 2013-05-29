@@ -1,3 +1,4 @@
 # Hoard
 /vendor
 /bootstrap
+composer.phar
