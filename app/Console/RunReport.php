@@ -58,7 +58,7 @@ class RunReport extends Command
                 $ts = new \MongoDate();
                 $report_start_time = microtime(true);
                 $results = $collection->aggregate($pipeline);
-                if (isset($results['ok']) && (int) $results['ok'] === 1)
+                if (isset($results['result'][0]) && (int) $results['ok'] === 1)
                 {
                     $keys = array();
                     foreach ($results['result'][0] as $key => $value)
@@ -97,7 +97,7 @@ class RunReport extends Command
 
                 // No results were returned
                 else {
-                    $output->writeln('<error>' . json_encode($results['result']) . '</error>');
+                    $output->writeln('<error>' . json_encode($results) . '</error>');
                 }
             }
         }
