@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "111a1852c4556292622a7a62dcdb9bf9",
+    "hash": "337c4c65bce59d69ea1be27cb0f9180e",
     "packages": [
         {
             "name": "marcqualie/mongominify",
-            "version": "v0.0.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marcqualie/mongominify.git",
-                "reference": "v0.0.4"
+                "reference": "5cc66ed2d171ae5012744ce8a6696553f2fb2307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/v0.0.4",
-                "reference": "v0.0.4",
+                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/5cc66ed2d171ae5012744ce8a6696553f2fb2307",
+                "reference": "5cc66ed2d171ae5012744ce8a6696553f2fb2307",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 "library",
                 "mongodb"
             ],
-            "time": "2013-05-25 19:53:25"
+            "time": "2013-05-30 11:34:25"
         },
         {
             "name": "symfony/http-foundation",
@@ -557,9 +557,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "marcqualie/mongominify": 20
+    },
     "platform": {
         "php": ">=5.3.3",
         "ext-mongo": ">=1.3.0"

@@ -8,8 +8,53 @@ class Reports extends Base\Page
     public function req_get ()
     {
 
-        $reports = iterator_to_array($this->app->mongo->selectCollection('report')->find());
-        $this->set('reports', $reports);
+        if (empty($this->uri[1]))
+        {
+            // List reports
+            $this->view = 'Reports/List';
+            $reports = $this->app->mongo->selectCollection('report')
+                ->find()
+                ->sort(array(
+                    'name' => 1
+                ))
+                ->as_array();
+            $this->set('reports', $reports);
+
+        }
+
+        // Create new
+        elseif ($this->uri[1] === 'create')
+        {
+
+            $this->view = 'Reports/Create';
+
+            // Create report
+            if ($this->app->request->getMethod() === 'POST')
+            {
+                $json = $this->app->request->get('report_json');
+                $data = json_decode($json, true);
+                if ( ! $data)
+                {
+                    return $this->alert('Invalid JSON', 'error');
+                }
+                unset($data['_id']);
+                if (empty($data['name']))
+                {
+                    return $this->alert('Report Name is required', 'error');
+                }
+                $this->app->mongo->selectCollection('report')
+                    ->insert($data);
+                $this->app->redirect('/report/' . (String) $data['_id']);
+            }
+
+            return;
+        }
+
+        // Error
+        else {
+            $this->app->redirect('/reports/');
+        }
+
 
     }
 

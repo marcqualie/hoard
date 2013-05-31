@@ -34,12 +34,13 @@ class Router {
         $page = new $class($app);
         $page->uri = $uri_parts;
         $page->var = $vars;
+        $page->view = $method;
         $page->controller = $method;
         $page->config = $app->config;
         $page->before();
         $page->{ 'req_' . $app->request->getMethod() }();
         $page->after();
-        $page->template = 'Page/' . ucfirst($method) . '.twig';
+        $page->template = 'Page/' . ucfirst($page->view) . '.twig';
 
         // Sort out variables
         $twig_variables = $page->var;

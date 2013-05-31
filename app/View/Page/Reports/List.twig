@@ -1,0 +1,34 @@
+<div class="container">
+
+    <div class="clearfix">
+        <Div class="pull-right btn-group">
+            <a href="/reports/create" class="btn btn-primary"><span class="icon-plus"></span> Create Report</a>
+        </div>
+    </div>
+    <br/>
+
+{% if reports | length > 0 %}
+    <table class="table table-striped table-hover">
+        <thead>
+            <th>Report Name</th>
+            <th>Last Run</th>
+            <th width="100"></th>
+        </thead>
+        <tbody>
+{% for report in reports %}
+            <tr>
+                <td><a href="/report/{{ report._id }}">{{ report.name }}</a></td>
+                <td>Never</td>
+                <td class="align-right">
+                    <a href="/report/{{ report._id }}/run" title="Run"><span class="icon icon-terminal label label-success"></span></a>
+                    <a href="/report/{{ report._id }}/edit" title="Edit"><span class="icon icon-edit label label-default"></span></a>
+                </td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info alert-block">You don't have any reports yet</div>
+{% endif %}
+
+</div>

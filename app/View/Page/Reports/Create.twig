@@ -1,0 +1,40 @@
+<div class="container">
+
+    <h2>Create New Report</h2>
+
+    <form action="/reports/create" method="post">
+        <textarea name="report_json" style="height:400px">{{ app.request.get('report_json') }}</textarea>
+        <br/>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="/reports/" href="/reports/" class="btn btn-default">Cancel</a>
+    </form>
+
+    <br/><br/>
+    <h5>Example Report</h5>
+<pre><code>{
+    "_id": {
+        "$id": "51a669174c3e4cd600002f95"
+    },
+    "name": "More Popular URLs",
+    "buckets": [
+
+    ],
+    "pipeline": [
+        {
+            "$match": {
+                "$event": "pageview"
+            }
+        },
+        {
+            "$group": {
+                "_id": "path",
+                "count": {
+                    "$sum": "$path"
+                }
+            }
+        }
+    ],
+    "schedule": "*\/6 * * * *"
+}</code></pre>
+
+</div>

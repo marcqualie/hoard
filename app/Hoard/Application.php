@@ -55,4 +55,14 @@ class Application {
         });
     }
 
+
+    /**
+     * Redirect
+     */
+    public function redirect ($url)
+    {
+        header('Location: ' . $url);
+        exit;
+    }
+
 }
