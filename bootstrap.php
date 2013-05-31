@@ -2,12 +2,6 @@
 
 date_default_timezone_set('UTC');
 
-// Restrict HTTP Method
-if ( ! array_key_exists($_SERVER['REQUEST_METHOD'], array('GET' => 1, 'POST' => 1)))
-{
-    exit('Invalid Request Method');
-}
-
 // Include Dependencies
 include __DIR__ . '/vendor/autoload.php';
 
@@ -31,7 +25,7 @@ $app->error(function ($e, $code) use ($app) {
 });
 
 // Cookies
-define('COOKIE_DOMAIN', str_replace(':' . $_SERVER['SERVER_PORT'], '', $_SERVER['HTTP_HOST']));
+define('COOKIE_DOMAIN', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '.');
 define('COOKIE_SECURE', false);
 define('COOKIE_HTTP', true);
 
