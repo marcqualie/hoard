@@ -18,6 +18,15 @@ class Reports extends Base\Page
                     'name' => 1
                 ))
                 ->as_array();
+            foreach ($reports as $index => $report)
+            {
+                $report['last_report'] = $this->app->mongo->selectCollection('report_' . (String) $report['_id'])
+                    ->find()
+                    ->sort(array('_id' => -1))
+                    ->limit(1)
+                    ->getNext();
+                $reports[$index] = $report;
+            }
             $this->set('reports', $reports);
 
         }

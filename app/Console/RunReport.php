@@ -55,6 +55,8 @@ class RunReport extends Command
             $event_count = $collection->count();
             if ($event_count > 0)
             {
+                $ts = new \MongoDate();
+                $report_start_time = microtime(true);
                 $results = $collection->aggregate($pipeline);
                 if (isset($results['ok']) && (int) $results['ok'] === 1)
                 {
@@ -79,9 +81,10 @@ class RunReport extends Command
                     $table->render($output);
 
                     // Save Report
-                    echo 'saving..';
+                    $duration = round((microtime(true) - $report_start_time), 4);
                     $report_result = array(
-                        'ts' => new \MongoDate(),
+                        'ts' => $ts,
+                        'duration' => $duration,
                         'bucket' => $bucket_id,
                         'count' => count($data),
                         'keys' => $keys,

@@ -1,0 +1,27 @@
+<Div class="container">
+    <h2>{{ report.name }}</h2>
+
+    <br/>
+{% if report.runs %}
+    <table class="table table-steiped table-hover">
+        <thead>
+            <td width="250">ID</td>
+            <th width="100" class="align-center">Results</th>
+            <th class="align-center">Duration</th>
+            <th width="200" class="align-right">Date</th>
+        </theaD>
+        <tbody>
+{% for run in report.runs %}
+            <tr>
+                <td><a href="/report/{{ report._id }}/{{ run._id }}">{{ run._id }}</a></td>
+                <td class="align-center">{{ run.count }}</td>
+                <td class="align-center">{{ run.duration }} seconds</td>
+                <td class="align-right">{{ run.ts.sec | date('Y-m-d H:i') }}</td>
+            </td>
+{% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-block alert-info">This report has never been ran before</div>
+{% endif %}
+</div>
