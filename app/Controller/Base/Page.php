@@ -57,4 +57,25 @@ class Page
         return $this->app->auth->id ? true : false;
     }
 
+
+    /**
+     * JSON Output
+     */
+    public function jsonError ($code = 500, $message = 'Application Error')
+    {
+        return $this->json(array(), $code, array(
+            'error' => $message
+        ));
+    }
+    public function json (array $data, $code = 200, array $extra = array())
+    {
+        header('Content-Type: text/json');
+        $meta = array();
+        $meta['time'] = 0;
+        echo json_encode($meta + $extra + array(
+            'data' => $data
+        ));
+        exit;
+    }
+
 }
