@@ -6,6 +6,7 @@
     <table class="table table-steiped table-hover">
         <thead>
             <td width="250">ID</td>
+            <th class="align-centr">Bucket</th>
             <th width="100" class="align-center">Results</th>
             <th class="align-center">Duration</th>
             <th width="200" class="align-right">Date</th>
@@ -14,6 +15,7 @@
 {% for run in report.runs %}
             <tr>
                 <td><a href="/report/{{ report._id }}/{{ run._id }}">{{ run._id }}</a></td>
+                <td><a href="/bucket/{{ run.bucket.name }}">{{ run.bucket.name }}</a></td>
                 <td class="align-center">{{ run.count }}</td>
                 <td class="align-center">{{ run.duration }} seconds</td>
                 <td class="align-right">{{ run.ts.sec | date('Y-m-d H:i') }}</td>

@@ -26,6 +26,15 @@ class Report extends Base\Page
                 ->find()
                 ->sort(array('_id' => -1))
                 ->as_array();
+            foreach ($report['runs'] as $index => $run)
+            {
+                $run['bucket'] = $this->app->mongo
+                    ->selectCollection('app')
+                    ->findOne(array(
+                        'appkey' => $run['bucket']
+                    ));
+                $report['runs'][$index] = $run;
+            }
             $this->view = 'Report/Overview';
         }
 
