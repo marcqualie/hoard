@@ -45,7 +45,10 @@ class Page
         {
             return $this->alert_data;
         }
-        $this->alert_data = array('message' => $str, 'type' => $type);
+        $this->alert_data = array(
+            'message' => $str,
+            'type' => $type
+        );
     }
 
 
@@ -67,14 +70,17 @@ class Page
             'error' => $message
         ));
     }
-    public function json (array $data, $code = 200, array $extra = array())
+    public function json (array $data, $code = 200, array $meta = array())
     {
         header('Content-Type: text/json');
-        $meta = array();
-        $meta['time'] = 0;
-        echo json_encode($meta + $extra + array(
-            'data' => $data
-        ));
+        $out = array();
+        $out['time'] = 0;
+        if ($meta)
+        {
+            $out['meta'] = $meta;
+        }
+        $out['data'] = $data;
+        echo json_encode($out);
         exit;
     }
 

@@ -70,7 +70,7 @@ class GenerateEvents extends Command
             curl_exec($ch);
             $count++;
             echo "\r    Count: " . number_format($count) . '  ';
-          usleep(500);
+            usleep(rand(1000, 100000));
         }
         echo PHP_EOL;
 

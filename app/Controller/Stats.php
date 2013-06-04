@@ -2,93 +2,112 @@
 
 namespace Controller;
 
-class Stats extends Base\Page
-{
+class Stats extends Base\Page {
 
-    public $periods = array(
-        'second'    => array(1, 'i', 30, 'ymdHis'),
-        'minute'    => array(60, 'H:i', 30, 'ymdHi'),
-        'hour'      => array(3600, 'H', 6, 'ymdH'),
-        'day'       => array(86400, 'm/d', 7, 'ymd')
-    );
-    public $period = 'minute';
+    public $time_start = 0;
+    public $time_end = 0;
+    public $time_step = 0;
 
     public function req_get ()
     {
 
-        $bucket = isset($_GET['bucket']) ? $_GET['bucket'] : false;
-        if (empty($bucket))
+        // Get bucket
+        $bucket = $this->app->request->get('bucket');
+        if ( ! $bucket)
         {
-            exit('500 No Bucket ID Specified');
+            return $this->jsonError(500, 'No bucket specified');
         }
-        $collection = $this->app->mongo->selectCollection('event_' . $bucket);
-        $stats['all'] = array();
+        $this->collection = $this->app->mongo->selectCollection('event_' . $bucket);
 
-        // Vars
-        if (isset($_GET['period']) && array_key_exists($_GET['period'], $this->periods))
+        // Verify input (TODO: Stronger validation and conversion)
+        $period = $this->app->request->get('period') ?: false;
+        $now = time();
+        $default_time_gap = 1800;
+        $default_time_step = 60;
+
+        // Per day
+        if ($period === 'day')
         {
-            $this->period = $_GET['period'];
+            $default_time_gap = 86400;
+            $default_time_step = 3600;
         }
-        $interval = $this->periods[$this->period][0];
-        $time = time();
-        $now = $time - ($time % $interval) + $interval;
-
-        // Build Data Array
-        $inc = 0;
-        $max = $this->periods[$this->period][2] ? $this->periods[$this->period][2] : 30;
-        $decr = 1;
-        $columns = array();
-        foreach ($stats as $key => $data)
+        elseif ($period === 'hour' || $period == '3600')
         {
-            $inc++;
-            for ($i = $max; $i >= 0; $i -= $decr)
+            $default_time_gap = 3600;
+            $default_time_step = 60;
+        }
+        elseif ($period === 'minute' || $period == '60')
+        {
+            $default_time_gap = 60;
+            $default_time_step = 1;
+        }
+        elseif ((int) $period)
+        {
+            $default_time_gap = $period;
+            $default_time_step = $default_time_gap / 30;
+        }
+
+        // Build time groups
+        $this->time_step = (int) $this->app->request->get('step') ?: $default_time_step;
+        $this->time_start = ($now - $default_time_gap) - (($now - $default_time_gap) % $this->time_step);
+        $this->time_end = $now - ($now % $this->time_step);
+
+
+        // Detect query type
+        $data = $this->action_sum();
+        return $this->json($data);
+
+    }
+
+    public function action_sum ()
+    {
+
+        $results = array();
+
+        // Loop over times
+        for ($time = $this->time_start; $time < $this->time_end; $time += $this->time_step)
+        {
+            $op = array(
+                array(
+                    '$match' => array(
+                        't' => array(
+                            '$gte' => new \MongoDate($time),
+                            '$lte' => new \MongoDate($time + $this->time_step)
+                        )
+                    ),
+                ),
+                array(
+                    '$group' => array(
+                        '_id' => '$e',
+                        'c' => array(
+                            '$sum' => 1
+                        )
+                    )
+                )
+            );
+
+            $aggregate = $this->app->mongo->command(array(
+                'aggregate' => $this->collection->getName(),
+                'pipeline' => $op
+            ));
+            $result_arr = array('all' => 0);
+            foreach ($aggregate['result'] as $result)
             {
-                $start = $now - ($interval * ($i + $decr));
-                $end = $now - ($interval * $i);
-
-                $columns[] = date($this->periods[$this->period][1], $start);
-                $cache_key = 'data-' . $this->period . '-' . $key . '-' . $i . '-' . $start . '-' . $end;
-                $count = false;
-                if ($count === false)
-                {
-                    $array = array_merge(
-                        array(
-                            't' => array(
-                                '$gt' => new \MongoDate($start),
-                                '$lte' => new \MongoDate($end)
-                            )
-                        ),
-                        $data
-                    );
-//                  print_r($array);
-//                  exit;
-                    $count = $collection->find($array, array('_id' => 0))->count();
-                    echo $count;
-                    // set cache
-                }
-
-                $e = 'e' . date($this->periods[$this->period][3], $start);
-//              $count = (int) Cache::instance()->get($e);
-                $csv[$key][] = $count;
+                $result_arr['all'] += $result['c'];
+                $result_arr[$result['_id']] = $result['c'];
             }
+            $results[] = array(
+                'range' => array($time, $time + $this->time_step),
+                'events' => $result_arr
+            );
+
         }
 
-        // Output
-        header('Content-type: text/plain');
-        foreach ($columns as $column)
-        {
-            echo ',' . $column;
-        }
-        foreach ($csv as $key => $data)
-        {
-            echo "\n";
-            echo $key;
-            foreach ($data as $count)
-            {
-                echo ',' . $count;
-            }
-        }
-        exit;
+        // Output Results
+        return $this->json($results, 200, array(
+            'range' => array($this->time_start, $this->time_end),
+            'step' => $this->time_step
+        ));
 
     }
 

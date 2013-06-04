@@ -1,143 +1,86 @@
 var chart_getData
-,	chart_dataInterval = 1000
-,	chart_dataPeriod = 'minute'
-,	chart_dataRequest = null
-,	chart_bucket = ''
+,   chart_dataInterval = 5000
+,   chart_dataPeriod = 'minute'
+,   chart_dataRequest = null
+,   chart_bucket = ''
 ;
 
-Highcharts.setOptions({
-	xAxis: {
-		lineWidth: 0,
-		tickWidth: 0,
-		tickLength: 0,
-		gridLineWidth: 1,
-		gridLineColor: 'rgba(0, 0, 0, 0)'
-	},
-	yAxis: {
-		gridLineWidth: 1,
-		gridLineColor: 'rgba(0, 0, 0, 0)'
-	},
-	chart: {
-		backgroundColor: 'rgba(0, 0, 0, 0)',
-		plotBackgroundColor: null,
-		plotShadow: false,
-		plotBorderWidth: 0
-	}
-});
 
 $(document).ready(function () {
-	
-	var dashboard_chart = $('#dashboard_chart');
-	if (dashboard_chart.length === 0) return;
 
-	// Options
-	var options = {
-		chart: {
-			renderTo: 'dashboard_chart',
-			defaultSeriesType: 'spline',
-			animation: false,
-			spacingTop: 40,
-			spacingRight: 40,
-			spacingBottom: 40
-		},
-		credits: {
-			enabled: false
-		},
-		tooltip: {
-			crosshairs: true,
-			shared: true
-		},
-		title: {
-			text: false
-		},
-		xAxis: {
-			categories: [],
-			labels: {
-				enabled: false
-			}
-		},
-		yAxis: {
-			title: {
-				text: false
-			}
-		},
-		legend: {
-			enabled: false
-		},
-		plotOptions: {
-			spline: {
-				shadow: false,
-				lineWidth: 3
-			},
-			series: {
-				threshold: 0
-			}
-		},
-		series: []
-	};
+    var dashboard_chart = $('#dashboard_chart');
+    if (dashboard_chart.length === 0) return;
 
-	// Create base Chart
-	var chart = new Highcharts.Chart(options);
+    // Get chart context
+    var ctx = document.getElementById("dashboard_chart").getContext("2d");
+    var chart = new Chart(ctx);
+    var chart_timeout = null;
 
-	// Chart generator
-	chart_getData = function (p) {
+    // Chart generator
+    chart_getData = function (p, interval) {
 
-		if (p) chart_dataPeriod = p;
-		if (chart_dataRequest) chart_dataRequest.abort();
+        if (interval) {
+            chart_dataInterval = interval * 1000;
+        }
 
-		chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod + '&bucket=' + chart_bucket, function (data) {
-			
-			// Split the lines
-			var lines = data.split('\n');
-			
-			// Iterate over the lines and add categories or series
-			$.each(lines, function (lineNo, line) {
-				var items = line.split(',');
-				var ln = lineNo - 1;
-				
-				// header line containes categories
-				if (lineNo < 1) {
-					$.each(items, function(itemNo, item) {
-						if (itemNo > 0) options.xAxis.categories.push(item);
-					});
-				}
-				
-				// Add Data
-				else {
-					
-					var name = items[0];
-					items.splice(0, 1);
-					var series = {
-						id: 'series-' + name,
-						name: name,
-						data: [],
-						color: '#428bca',
-						enabled: true,
-						marker: {
-							enabled: false
-						}
-					};
-					$.each(items, function (k, v) {
-						series.data.push(parseFloat(v));
-					});
-					var s = chart.get(series.id);
-					if ( ! s) {
-						chart.addSeries(series, false, false);
-					} else {
-						s.setData(series.data, false);
-					}
-			
-				}
-				
-			});
-			
-			// Create the chart
-			chart.redraw(false);
+        if (p) chart_dataPeriod = p;
+        if (chart_dataRequest) chart_dataRequest.abort();
 
-		});
-	
-	}
-	chart_getData();
-	setInterval(chart_getData, chart_dataInterval);
+        clearTimeout(chart_timeout);
+        chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod + '&steps=6&bucket=' + chart_bucket, function (json) {
+
+            // Split the lines
+            var data = json['data'];
+            var chartData = {
+                'labels': [],
+                'datasets': []
+            };
+
+            var events = [];
+
+            // Get Events
+            $.each(data, function (range_index, group) {
+                //chartData['labels'].push(range_index);
+                chartData['labels'].push('');
+                $.each(group['events'], function (event_key, value) {
+                    if (jQuery.inArray(event_key, events) < 0) {
+                        events.push(event_key);
+                    }
+                });
+            });
+
+            // Create Data Sets
+            $.each(events, function (ii, ev) {
+                var group_data = [];
+                if (ev !== 'all') return;
+                $.each(data, function (range_index, group) {
+                    var count = 0;
+                    if (group['events'][ev]) {
+                        count = group['events'][ev];
+                    }
+                    group_data.push(count);
+                });
+                chartData['datasets'].push(
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,220,220,1)",
+                        pointColor : "rgba(220,220,220,1)",
+                        pointStrokeColor : "#fff",
+                        data : group_data
+                    }
+                );
+            });
+
+            // Create the chart
+            chart.Line(chartData, {
+                'pointDot': false,
+                'animation': false
+            });
+            chart_timeout = setTimeout(chart_getData, chart_dataInterval);
+
+        }, 'json');
+
+    }
+    chart_getData(3600, 60);
 
 });
