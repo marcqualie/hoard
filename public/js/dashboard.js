@@ -42,34 +42,27 @@ $(document).ready(function () {
             $.each(data, function (range_index, group) {
                 //chartData['labels'].push(range_index);
                 chartData['labels'].push('');
-                $.each(group['events'], function (event_key, value) {
-                    if (jQuery.inArray(event_key, events) < 0) {
-                        events.push(event_key);
-                    }
-                });
+//                $.each(group['events'], function (event_key, value) {
+//                    if (jQuery.inArray(event_key, events) < 0) {
+//                        events.push(event_key);
+//                    }
+//                });
             });
 
             // Create Data Sets
-            $.each(events, function (ii, ev) {
-                var group_data = [];
-                if (ev !== 'all') return;
-                $.each(data, function (range_index, group) {
-                    var count = 0;
-                    if (group['events'][ev]) {
-                        count = group['events'][ev];
-                    }
-                    group_data.push(count);
-                });
-                chartData['datasets'].push(
-                    {
-                        fillColor : "rgba(220,220,220,0.5)",
-                        strokeColor : "rgba(220,220,220,1)",
-                        pointColor : "rgba(220,220,220,1)",
-                        pointStrokeColor : "#fff",
-                        data : group_data
-                    }
-                );
+            var group_data = [];
+            $.each(data, function (range_index, group) {
+                group_data.push(group.count);
             });
+            chartData['datasets'].push(
+                {
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#fff",
+                    data : group_data
+                }
+            );
 
             // Create the chart
             chart.Line(chartData, {

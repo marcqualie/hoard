@@ -43,12 +43,17 @@ class GenerateEvents extends Command
         $this->app->mongo->selectCollection('app')->save($data);
 
         // Events
-        $events = array('test1', 'test2', 'test3');
+        $events = array(
+            'test1',
+            'test2',
+            'test3',
+            'test4',
+            'test5'
+        );
 
         // Now pump data in
         $run = true;
         $count = 0;
-        echo PHP_EOL;
         while ($run && $count < $request_count)
         {
             $event = $events[array_rand($events)];
@@ -69,11 +74,9 @@ class GenerateEvents extends Command
             ));
             curl_exec($ch);
             $count++;
-            echo "\r    Count: " . number_format($count) . '  ';
+            echo "\rCount: " . number_format($count) . '  ';
             usleep(rand(1000, 100000));
         }
-        echo PHP_EOL;
-
 
     }
 }
