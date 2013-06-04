@@ -2,6 +2,8 @@
 
 Hoard is an Event Based Storage Engine.
 
+[![Hoard Graph](https://cdn.marcqualie.com/github/hoard-graph.png)](https://github.com/marcqualie/hoard)
+
 
 ## Install
 
