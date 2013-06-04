@@ -11,6 +11,7 @@ $application = new Application(
 );
 $application->addCommands(array(
     'ListReports',
-    'RunReport'
+    'RunReport',
+    'GenerateEvents',
 ));
 $application->run();
