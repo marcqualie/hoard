@@ -26,6 +26,10 @@ class Stats extends Base\Page {
         // Event filtering
         $this->event = $this->app->request->get('event');
 
+        // Custom Queries
+        $query = $this->app->request->get('query');
+        $this->query = json_decode($query, true) ?: null;
+
         // Verify input (TODO: Stronger validation and conversion)
         $period = $this->app->request->get('period') ?: false;
         $now = time();
@@ -75,6 +79,13 @@ class Stats extends Base\Page {
         if ($this->event)
         {
             $query['e'] = $this->event;
+        }
+        if ($this->query)
+        {
+            foreach ($this->query as $key => $val)
+            {
+                $query['d.' . $key] = $val;
+            }
         }
 
         // Loop over times
