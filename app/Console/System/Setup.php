@@ -1,6 +1,6 @@
 <?php
 
-namespace Console\Admin;
+namespace Console\System;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,16 +12,13 @@ class Setup extends \Console\Command
     protected function configure()
     {
         $this
-            ->setName('admin:setup')
-            ->setDescription('Setup system ready for use');
+            ->setName('system:setup')
+            ->setDescription('Initial System Setup and Configuration');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        $dialog = $this->getHelperSet()->get('dialog');
-        $email = $dialog->ask($output, 'Email Address: ', 'admin@example.com');
-        $password = $dialog->ask($output, 'Password: ', '');
+        $output->writeln('<error>Please refer to the manual for setup instructions</error>');
     }
 }

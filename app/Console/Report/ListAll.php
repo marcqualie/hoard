@@ -1,6 +1,6 @@
 <?php
 
-namespace Console\Reports;
+namespace Console\Report;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,7 +12,7 @@ class ListAll extends \Console\Command
     protected function configure()
     {
         $this
-            ->setName('reports:list')
+            ->setName('report:list')
             ->setDescription('Run a report');
         ;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Console\Reports;
+namespace Console\Report;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,7 +12,7 @@ class Run extends \Console\Command
     protected function configure()
     {
         $this
-            ->setName('reports:run')
+            ->setName('report:run')
             ->setDescription('Run a report')
             ->addArgument(
                 'id',

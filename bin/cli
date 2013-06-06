@@ -22,10 +22,11 @@ $application = new Console\Application(
 
 // Attach commands to namespace
 $application->addCommands(array(
-    'Admin\Setup',
+    'System\Setup',
+    'User\Create',
     'Generate\Events',
-    'Reports\ListAll',
-    'Reports\Run',
+    'Report\ListAll',
+    'Report\Run',
 ));
 
 // Run CLI
