@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "37a41b75cfce1a9f0d02631a559d6fab",
+    "hash": "36cfe0b0473cbb0848a71aaed85e00f2",
     "packages": [
         {
             "name": "marcqualie/mongominify",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/marcqualie/mongominify.git",
-                "reference": "5cc66ed2d171ae5012744ce8a6696553f2fb2307"
+                "reference": "50f5ce629d13a78971db897e7fd6e8f06011efbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/5cc66ed2d171ae5012744ce8a6696553f2fb2307",
-                "reference": "5cc66ed2d171ae5012744ce8a6696553f2fb2307",
+                "url": "https://api.github.com/repos/marcqualie/mongominify/zipball/50f5ce629d13a78971db897e7fd6e8f06011efbe",
+                "reference": "50f5ce629d13a78971db897e7fd6e8f06011efbe",
                 "shasum": ""
             },
             "require": {
@@ -45,21 +45,21 @@
                 "library",
                 "mongodb"
             ],
-            "time": "2013-05-30 11:34:25"
+            "time": "2013-06-04 11:53:31"
         },
         {
             "name": "symfony/console",
-            "version": "dev-master",
+            "version": "v2.3.0",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "883831e2864a702de8e8c44b4d7691fa7ec44911"
+                "reference": "v2.3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/883831e2864a702de8e8c44b4d7691fa7ec44911",
-                "reference": "883831e2864a702de8e8c44b4d7691fa7ec44911",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/v2.3.0",
+                "reference": "v2.3.0",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -98,21 +98,21 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-05-27 14:49:42"
+            "time": "2013-05-30 05:11:26"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.2.1",
+            "version": "v2.3.0",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "v2.2.1"
+                "reference": "v2.3.0-RC1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/v2.2.1",
-                "reference": "v2.2.1",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/v2.3.0-RC1",
+                "reference": "v2.3.0-RC1",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -148,20 +148,20 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-04-06 10:15:43"
+            "time": "2013-05-10 06:00:03"
         },
         {
             "name": "twig/twig",
-            "version": "v1.13.0",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "v1.13.0"
+                "reference": "v1.13.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.13.0",
-                "reference": "v1.13.0",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.13.1",
+                "reference": "v1.13.1",
                 "shasum": ""
             },
             "require": {
@@ -197,7 +197,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-05-10 15:12:43"
+            "time": "2013-06-06 06:06:01"
         }
     ],
     "packages-dev": [
@@ -560,17 +560,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.2.1",
+            "version": "v2.3.0",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "v2.2.1"
+                "reference": "v2.3.0-RC1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.1",
-                "reference": "v2.2.1",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.3.0-RC1",
+                "reference": "v2.3.0-RC1",
                 "shasum": ""
             },
             "require": {
@@ -579,7 +579,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -603,7 +603,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2013-03-23 07:49:54"
+            "time": "2013-05-10 18:12:13"
         }
     ],
     "aliases": [
@@ -611,8 +611,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "marcqualie/mongominify": 20,
-        "symfony/console": 20
+        "marcqualie/mongominify": 20
     },
     "platform": {
         "php": ">=5.3.3",
