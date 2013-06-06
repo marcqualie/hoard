@@ -1,17 +1,32 @@
 #!/usr/bin/env php
 <?php
 
-include dirname(__DIR__) . '/bootstrap.php';
-use Console\Application;
+// Make sure vendor directory exists
+if ( ! is_dir(dirname(__DIR__) . '/vendor'))
+{
+    echo "\n";
+    echo "\033[31m  It doesn't look like composer is installed. Please run:\033[0m\n";
+    echo "\n";
+    echo "\033[32m    curl -s https://getcomposer.org/installer | php && php composer.phar install --dev\033[0m\n";
+    echo "\n";
+    exit;
+}
 
-$application = new Application(
+// Setup environment
+include dirname(__DIR__) . '/bootstrap.php';
+$application = new Console\Application(
     'Hoard CLI',
     Hoard\Application::$version,
     $app
 );
+
+// Attach commands to namespace
 $application->addCommands(array(
+    'Admin\Setup',
+    'Generate\Events',
     'Reports\ListAll',
     'Reports\Run',
-    'Generate\Events',
 ));
+
+// Run CLI
 $application->run();
