@@ -32,7 +32,7 @@ class Run extends \Console\Command
             ));
         if ( ! $report)
         {
-            $this->writeln('<error>Invalid Report ID</error>');
+            $output->writeln('<error>Invalid Report ID</error>');
             return false;
         }
 
