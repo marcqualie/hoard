@@ -26,7 +26,7 @@
         </button>
         <div class="nav-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
-                <li{% if page.controller == 'buckets' %} class="active"{% endif %}><a href="/" title="My Buckets">Buckets ({{ user.buckets | length }})</a></li>
+                <li{% if page.controller == 'buckets' %} class="active"{% endif %}><a href="/buckets/" title="My Buckets">Buckets ({{ user.buckets | length }})</a></li>
                 <li{% if page.controller == 'viewer' %} class="active"{% endif %}><a href="/viewer/" title="Event Viewer">Viewer</a></li>
                 <li{% if page.controller == 'reports' %} class="active"{% endif %}><a href="/reports/" title="My Reports">Reports</a></li>
             </ul>

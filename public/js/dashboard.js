@@ -8,6 +8,46 @@ var chart_getData
 
 $(document).ready(function () {
 
+
+    /**
+     * Dashboard
+     */
+     var dashboardGraphs = $('.dashboard_graph');
+     dashboardGraphs.each(function (index, graphCanvas) {
+        var bucketId = $(graphCanvas).attr('id').replace('graph_', '');
+        $.get('/stats?period=hour&bucket=' + bucketId, function (json) {
+            var data = json['data'];
+            var ctx = graphCanvas.getContext("2d");
+            var chart = new Chart(ctx);
+            var chartData = {
+                'labels': [],
+                'datasets': []
+            };
+            var groupData = [];
+            $.each(data, function (rangIndex, group) {
+                chartData['labels'].push('');
+                groupData.push(group.count);
+            });
+            chartData['datasets'].push(
+                {
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#fff",
+                    data : groupData
+                }
+            );
+            chart.Line(chartData, {
+                'pointDot': false,
+                'animation': false
+            });
+        });
+     });
+
+
+    /**
+     * Bucket Oveview
+     */
     var dashboard_chart = $('#dashboard_chart');
     if (dashboard_chart.length === 0) return;
 
@@ -27,7 +67,7 @@ $(document).ready(function () {
         if (chart_dataRequest) chart_dataRequest.abort();
 
         clearTimeout(chart_timeout);
-        chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod + '&steps=6&bucket=' + chart_bucket, function (json) {
+        chart_dataRequest = $.get('/stats?period=' + chart_dataPeriod + '&bucket=' + chart_bucket, function (json) {
 
             // Split the lines
             var data = json['data'];
@@ -36,17 +76,9 @@ $(document).ready(function () {
                 'datasets': []
             };
 
-            var events = [];
-
-            // Get Events
+            // Populate Labels
             $.each(data, function (range_index, group) {
-                //chartData['labels'].push(range_index);
                 chartData['labels'].push('');
-//                $.each(group['events'], function (event_key, value) {
-//                    if (jQuery.inArray(event_key, events) < 0) {
-//                        events.push(event_key);
-//                    }
-//                });
             });
 
             // Create Data Sets

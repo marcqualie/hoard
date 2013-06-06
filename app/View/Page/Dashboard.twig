@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="row">
+{% for bucket in buckets %}
+{% if bucket.rps > 0 %}
+        <div class="col col-lg-4">
+            <h4>{{ bucket.name }}</h4>
+            <canvas class="dashboard_graph" id="graph_{{ bucket.appkey }}" style="width:300px;height:200px" width="300" height="200"></canvas>
+        </div>
+{% endif %}
+{% endfor %}
+    </div>
+</div>

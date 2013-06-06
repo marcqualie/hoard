@@ -14,7 +14,7 @@ class Router {
             $uri_path = parse_url($uri_full, PHP_URL_PATH);
             $uri_parts = explode('/', $uri_path);
             array_shift($uri_parts);
-            $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'buckets';
+            $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'dashboard';
         }
         else
         {
