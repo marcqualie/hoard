@@ -5,9 +5,7 @@ Hoard is an Event Based Storage Engine built ontop of MongoDB
 
 ## Install
 
-### Console:
-
-    php console.php install
+    bin/cli install
 
 
 # Running Locally
