@@ -1,19 +1,18 @@
 <?php
 
-namespace Console;
-
+namespace Console\Reports;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunReport extends Command
+class Run extends \Console\Command
 {
 
     protected function configure()
     {
         $this
-            ->setName('report:run')
+            ->setName('reports:run')
             ->setDescription('Run a report')
             ->addArgument(
                 'id',

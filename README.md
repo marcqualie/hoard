@@ -14,7 +14,7 @@ Hoard is an Event Based Storage Engine built ontop of MongoDB
 
 The easiest way is to run the built-in web server that comes with PHP 5.4
 
-    php -S 127.0.0.1:8000 -t public router.php
+    php -S 127.0.0.1:8000 -t public
 
 You can also run via any standard web browser such as Nginx or Apache. Simply use "public" as the webroot.
 

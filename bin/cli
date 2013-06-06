@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-include __DIR__ . '/bootstrap.php';
+include dirname(__DIR__) . '/bootstrap.php';
 use Console\Application;
 
 $application = new Application(
@@ -10,8 +10,8 @@ $application = new Application(
     $app
 );
 $application->addCommands(array(
-    'ListReports',
-    'RunReport',
-    'GenerateEvents',
+    'Reports\ListAll',
+    'Reports\Run',
+    'Generate\Events',
 ));
 $application->run();

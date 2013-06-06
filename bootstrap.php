@@ -25,7 +25,7 @@ $app->error(function ($e, $code) use ($app) {
 });
 
 // Cookies
-define('COOKIE_DOMAIN', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '.');
+define('COOKIE_DOMAIN', $app->request->getHost());
 define('COOKIE_SECURE', false);
 define('COOKIE_HTTP', true);
 

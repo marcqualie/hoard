@@ -1,13 +1,12 @@
 <?php
 
-namespace Console;
-
+namespace Console\Reports;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListReports extends Command
+class ListAll extends \Console\Command
 {
 
     protected function configure()
