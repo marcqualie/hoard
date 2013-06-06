@@ -17,8 +17,8 @@ class Application {
     public function __construct ()
     {
         $this->router = new Router();
-        // Internal Request
         $this->request = Request::createFromGlobals();
+        $this->auth = new Auth($this);
     }
 
 
@@ -29,7 +29,6 @@ class Application {
     {
 
         // Authentication
-        $this->auth = new Auth($this);
         $this->auth->check();
 
         // Server page
