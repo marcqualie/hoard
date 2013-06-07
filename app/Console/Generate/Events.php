@@ -22,7 +22,7 @@ class Events extends \Console\Command
 
         $dialog = $this->getHelperSet()->get('dialog');
         $hoard_host = $dialog->ask($output, 'Hoard Host: ', 'hoard.dev');
-        $request_count = $dialog->ask($output, 'Number of Events: ', 1000);
+        $request_count = $dialog->ask($output, 'Number of Events: ', 10000);
 
         // Assert Fake Bucket
         $name = 'Demo Bucket';
@@ -50,6 +50,9 @@ class Events extends \Console\Command
             'test5'
         );
 
+        // Get Faker Factory
+        $faker = \Faker\Factory::create();
+
         // Now pump data in
         $run = true;
         $count = 0;
@@ -60,9 +63,10 @@ class Events extends \Console\Command
                 'appkey' => $appkey,
                 'format' => 'json',
                 'data' => json_encode(array(
-                    'random1' => rand(0, 999999),
-                    'random2' => rand(0, 999999),
-                    'random3' => rand(0, 999999)
+                    'name' => $faker->name,
+                    'gender' => rand(0, 1) === 1 ? 'male' : 'female',
+                    'country' => $faker->countryCode,
+                    'response_time' => rand(1, 1200),
                 )
             ));
             $ch = curl_init('http://' . $hoard_host . '/track?event=' . $event);
@@ -74,7 +78,7 @@ class Events extends \Console\Command
             curl_exec($ch);
             $count++;
             echo "\rCount: " . number_format($count) . '  ';
-            usleep(rand(1000, 100000));
+            usleep(rand(100, 10000));
         }
 
     }
