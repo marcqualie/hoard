@@ -63,18 +63,8 @@ class Stats extends Base\Page {
         $this->time_start = ($now - $default_time_gap) - (($now - $default_time_gap) % $this->time_step);
         $this->time_end = $now - ($now % $this->time_step);
 
-        // Detect query type
-        $data = $this->action_sum();
-        return $this->json($data);
-
-    }
-
-    public function action_sum ()
-    {
-
-        $results = array();
-
         // Build Query
+        $results = array();
         $query = array();
         if ($this->event)
         {
@@ -85,6 +75,20 @@ class Stats extends Base\Page {
             foreach ($this->query as $key => $val)
             {
                 $query['d.' . $key] = $val;
+            }
+        }
+
+        // Function
+        $func = '$sum';
+        $func_inc = 1;
+        $func_override = $this->app->request->get('func');
+        if ($func_override)
+        {
+            list ($func_name, $func_var) = explode(':', $func_override);
+            if ($func_name === 'avg')
+            {
+                $func = '$avg';
+                $func_inc = '$d.' . $func_var;
             }
         }
 
@@ -102,8 +106,8 @@ class Stats extends Base\Page {
                 array(
                     '$group' => array(
                         '_id' => '$e',
-                        'c' => array(
-                            '$sum' => 1
+                        'v' => array(
+                            $func => $func_inc
                         )
                     )
                 )
@@ -117,11 +121,24 @@ class Stats extends Base\Page {
             $result_arr = array();
             foreach ($aggregate['result'] as $result)
             {
-                $count += $result['c'];
-                $result_arr[$result['_id']] = $result['c'];
+                $count += $result['v'];
+                $result_arr[$result['_id']] = $result['v'];
             }
+
+            // Calculate Average
+            if ($func === '$avg')
+            {
+                if ($result_arr)
+                {
+                    $count = round($count / count($result_arr), 2);
+                }
+            }
+
             $results[] = array(
-                'range' => array($time, $time + $this->time_step),
+                'range' => array(
+                    $time,
+                    $time + $this->time_step
+                ),
                 'count' => $count,
                 'events' => $result_arr
             );
@@ -130,7 +147,10 @@ class Stats extends Base\Page {
 
         // Output Results
         return $this->json($results, 200, array(
-            'range' => array($this->time_start, $this->time_end),
+            'range' => array(
+                $this->time_start,
+                $this->time_end
+            ),
             'step' => $this->time_step
         ));
 
