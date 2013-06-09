@@ -7,6 +7,7 @@ class Stats extends Base\Page {
     private $time_start = 0;
     private $time_end = 0;
     private $time_step = 0;
+    private $time_gap;
 
     private $collection;
     private $bucket;
@@ -70,7 +71,16 @@ class Stats extends Base\Page {
 
         // Build time groups
         $this->time_step = (int) $this->app->request->get('step') ?: $default_time_step;
-        $this->time_start = ($now - $default_time_gap) - (($now - $default_time_gap) % $this->time_step);
+        $this->time_gap = $default_time_gap;
+
+        // Make sure there aren't too many steps (possiblity of crashing stats engine)
+        if ($this->time_gap / $this->time_step > 300)
+        {
+            $this->time_step = $this->time_gap / 300;
+        }
+
+        // Create time ranges
+        $this->time_start = ($now - $this->time_gap) - (($now - $this->time_gap) % $this->time_step);
         $this->time_end = $now - ($now % $this->time_step);
 
         // Build Query
