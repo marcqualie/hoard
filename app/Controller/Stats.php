@@ -37,7 +37,17 @@ class Stats extends Base\Page {
         $default_time_step = 60;
 
         // Per day
-        if ($period === 'day' || $period === '86400')
+        if ($period === 'month' || $period === 18144000)
+        {
+            $default_time_gap = 18144000;
+            $default_time_step = 86400;
+        }
+        elseif ($period === 'week' || $period === 604800)
+        {
+            $default_time_gap = 604800;
+            $default_time_step = 86400;
+        }
+        elseif ($period === 'day' || $period === '86400')
         {
             $default_time_gap = 86400;
             $default_time_step = 3600;
