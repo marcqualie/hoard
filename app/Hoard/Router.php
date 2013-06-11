@@ -34,7 +34,10 @@ class Router {
         $page = new $class($app);
         $page->uri = $uri_parts;
         $page->var = $vars;
-        $page->view = $method;
+        if ($page->view === null)
+        {
+            $page->view = $method;
+        }
         $page->controller = $method;
         $page->config = $app->config;
         $page->before();

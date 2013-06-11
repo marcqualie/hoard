@@ -8,6 +8,7 @@ class Page
     public $uri = array();
     public $params = array();
     public $app;
+    public $view;
 
     public $title = 'Hoard';
     public $controller = 'buckets';

@@ -1,0 +1,30 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col col-lg-6">
+            <h4>My API Keys</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Secret</th>
+                        <th width="75">Status</th>
+                        <th width="150">Created</th>
+                    </tr>
+                </thead>
+{% for key in apikeys %}
+                <tr>
+                    <td>{{ key.apikey }}</td>
+                    <td><span style="-webkit-filter:blur(2px);">{{ key.secret }}</span></td>
+                    <td><span class="label label-success">active</span></td>
+                    <td>{{ key.created.sec | date('Y-m-d H:i:s') }}</td>
+                </tr>
+{% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
