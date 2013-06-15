@@ -1,0 +1,36 @@
+<div class="container">
+
+    <h2>Report Run: {{ run._id }}</h2>
+
+    <br/>
+    <div>
+        <strong>Generated:</strong> {{ run.ts.sec | date('Y-m-d H:i:s') }}
+    </div>
+    <div>
+        <strong>Duration:</strong> {{ run.duration }} seconds
+    </div>
+    <div>
+        <strong>Results:</strong> {{ run.count }}
+    </div>
+
+    <br/>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+{% for key in run.keys %}
+                <th>{{ key }}</th>
+{% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+{% for row in run.rows %}
+            <tr>
+{% for val in row %}
+                <td>{{ val }}</td>
+{% endfor %}
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+
+</div>

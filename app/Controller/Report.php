@@ -44,6 +44,19 @@ class Report extends Base\Page
             $this->view = 'Report/Edit';
         }
 
+        // Run
+        elseif ($this->uri[2] === 'run')
+        {
+
+            if ($this->app->request->get('process'))
+            {
+                echo shell_exec('php -f ' . DOCROOT . '/bin/cli report:run ' . $report['_id']);
+                exit;
+            }
+
+            $this->view = 'Report/Run';
+        }
+
         // Check if it's a report ID
         else {
 
@@ -53,7 +66,7 @@ class Report extends Base\Page
                     '_id' => new \MongoId($report_run_id)
                 ));
             $this->set('run', $run);
-            $this->view = 'Report/Run';
+            $this->view = 'Report/ViewRun';
 
         }
 
