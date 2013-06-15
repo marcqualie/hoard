@@ -92,6 +92,8 @@ class Run extends \Console\Command
                     $this->mongo->selectCollection('report_' . $id)
                         ->insert($report_result);
 
+                    $output->writeln('Report ID: ' . $report_result['_id']);
+
                 }
 
                 // No results were returned
