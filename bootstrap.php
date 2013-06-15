@@ -3,7 +3,8 @@
 date_default_timezone_set('UTC');
 
 // Include Dependencies
-include __DIR__ . '/vendor/autoload.php';
+define('DOCROOT', __DIR__);
+include DOCROOT . '/vendor/autoload.php';
 
 // Environment
 $app = new Hoard\Application();
