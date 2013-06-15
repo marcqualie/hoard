@@ -22,7 +22,7 @@
                     ? '<a href="/report/' ~ report._id ~ '/' ~ report.last_report._id ~ '">' ~ report.last_report.ts.sec | date('Y-m-d H:i') ~ '</a>'
                     : '<span class="text-muted">Never</span>') | raw }}</td>
                 <td class="align-right">
-                    <a href="/report/{{ report._id }}/run" title="Run"><span class="icon icon-terminal label label-success"></span></a>
+                    <a href="/report/{{ report._id }}/run" title="Run" onclick="if(!confirm('Are you sure? Using the CLI is reccomended'))return false;"><span class="icon icon-terminal label label-success"></span></a>
                     <a href="/report/{{ report._id }}/edit" title="Edit"><span class="icon icon-edit label label-default"></span></a>
                 </td>
             </tr>
