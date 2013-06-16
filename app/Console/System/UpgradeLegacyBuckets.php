@@ -64,8 +64,9 @@ class UpgradeLegacyBuckets extends \Console\Command
                     $this->mongo->selectCollection('app_legacy')->save($bucket1);
                     $collection->remove(array('_id' => $old_id));
                 }
+            } else {
+                echo ' - upgrade skipped' . PHP_EOL;
             }
-            echo ' - upgrade skipped' . PHP_EOL;
         }
 
         // Installation Complete

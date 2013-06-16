@@ -67,9 +67,9 @@ class Bucket extends Base\Page
 
     public function req_get ()
     {
-        $this->bucket->latest_event = $this->app->mongo->selectCollection('event_' . $this->bucket->appkey)->find()->sort(array('t' => -1))->limit(1)->next()->current();
-        $this->bucket->stats = $this->app->mongo->command(array('collStats' => 'event_' . $this->bucket->appkey));
-        $this->bucket->rps = $this->app->mongo->selectCollection('event_' . $this->bucket->appkey)->find(
+        $this->bucket->latest_event = $this->app->mongo->selectCollection($this->bucket->event_collection)->find()->sort(array('t' => -1))->limit(1)->next()->current();
+        $this->bucket->stats = $this->app->mongo->command(array('collStats' => $this->bucket->event_collection));
+        $this->bucket->rps = $this->app->mongo->selectCollection($this->bucket->event_collection)->find(
             array(
                 't' => array(
                     '$gte' => new \MongoDate(time() - 86400)

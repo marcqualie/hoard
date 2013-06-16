@@ -39,7 +39,7 @@
 {% endif %}
                 </td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.rps > 0 ? '%.2f' | format(bucket.rps) : '-' }}</td>
-                <td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.appkey }}">{{ bucket.records | number_format }}</a></td>
+                <td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.id }}">{{ bucket.records | number_format }}</a></td>
                 <td width="100" class="align-center">{{ bucket.storage | normalize_bytes(2, true) }}</td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.storage_index | normalize_bytes(2, true) }}</td>
             </tr>

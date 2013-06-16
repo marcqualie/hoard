@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller\Api;
+use Model\Bucket;
 
 class Track extends \Controller\Base\Api {
 
@@ -35,13 +36,9 @@ class Track extends \Controller\Base\Api {
         if (! isset($payload['bucket'])) {
             return $this->error('No Bucket name specified', 500);
         }
-        $bucket_name = $payload['bucket'];
-        $bucket = $this->app->mongo
-            ->selectCollection('app')
-            ->findOne(array(
-                'name' => $bucket_name
-            ));
-        if (! $bucket) {
+        $bucket_id = $payload['bucket'];
+        $bucket = Bucket::findById($bucket_id);
+        if ($bucket === null) {
             return $this->error('Invalid Bucket Name');
         }
 
@@ -64,7 +61,7 @@ class Track extends \Controller\Base\Api {
         // Save Data to log
         $id = null;
         try {
-            $collection = $this->app->mongo->selectCollection('event_' . $bucket['appkey']);
+            $collection = $this->app->mongo->selectCollection($bucket->event_collection);
             $collection->insert($insert);
             $id = $insert['_id'];
         }

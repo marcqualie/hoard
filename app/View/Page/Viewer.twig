@@ -10,7 +10,7 @@
                     <select name="bucket" class="span2 input-small">
                         <option value="0">-- Select Bucket --</option>
 {% for bucket in user.buckets %}
-                        <option value="{{ bucket.appkey }}">{{ bucket.name }}</option>
+                        <option value="{{ bucket.appkey ?: bucket.id }}">{{ bucket.description ?: bucket.name }}</option>
 {% endfor %}
                     </select>
                 </div>
