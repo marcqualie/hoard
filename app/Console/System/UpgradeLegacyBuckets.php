@@ -14,7 +14,13 @@ class UpgradeLegacyBuckets extends \Console\Command
     {
         $this
             ->setName('system:upgrade-legacy-buckets')
-            ->setDescription('Upgrade legacy buckets');
+            ->setDescription('Upgrade legacy buckets')
+            ->addOption(
+                'appkey',
+                'Appkey'
+//                InputOption::OPTIONAL
+            )
+            ;
         ;
     }
 
@@ -29,12 +35,21 @@ class UpgradeLegacyBuckets extends \Console\Command
 //            return;
 //        }
 
-        // Configuration
+        // Limit to one bucket (jsut to be safe)
         $collection = $this->mongo->selectCollection(Bucket::$collection);
-        foreach ($collection->find() as $bucket1) {
+        $buckets = array();
+        if ($input->getOption('appkey')) {
+            $buckets = $collection->find(array('appkey' => $input->getOption('appkey')));
+        } else {
+            $buckets = $collection->find(array('appkey' => array('$exists' => true)));
+        }
+
+        // Configuration
+        foreach ($buckets as $bucket1) {
             $old_id = $bucket1['_id'];
+            echo 'Checking: ' . $old_id . ' ... ' . PHP_EOL;
             if (is_object($old_id) && get_class($old_id) === 'MongoId' && !empty($bucket1['appkey'])) {
-                echo 'upgrade: ' . $old_id . PHP_EOL;
+                echo ' - upgraeding ...' . PHP_EOL;
                 $new_id = $bucket1['appkey'];
                 $data = array(
                     '_id' => (String) $new_id,
@@ -43,12 +58,14 @@ class UpgradeLegacyBuckets extends \Console\Command
                     'created' => isset($bucket1['created']) ? $bucket1['created'] : 0,
                     'updated' => new \MongoDate()
                 );
+//                continue;
                 $insert = $collection->insert($data);
                 if (isset($insert['ok']) && (int) $insert['ok'] === 1) {
                     $this->mongo->selectCollection('app_legacy')->save($bucket1);
                     $collection->remove(array('_id' => $old_id));
                 }
             }
+            echo ' - upgrade skipped' . PHP_EOL;
         }
 
         // Installation Complete
