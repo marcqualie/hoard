@@ -31,44 +31,33 @@ class Track extends Base\Page
                         : false
                 )
             );
-        if ( ! $event)
-        {
+        if (! $event) {
             echo '500 No Event Specified';
             exit;
         }
 
-        // Special data types
-        if ($req->get('bucket'))
-        {
-            $bucket = $req->get('bucket');
-        }
-        else
-        {
-            $bucket = array_key_exists('appkey', $params)
+        // Get Bucket Instance
+        if ($req->get('bucket')) {
+            $bucket_id = $req->get('bucket');
+        } else {
+            $bucket_id = array_key_exists('appkey', $params)
                 ? $params['appkey'] : (
                     array_key_exists('appkey', $data)
                         ? $data['appkey']
                         : false
                 );
         }
-        $bucket = trim($bucket);
-
-        // BucketID is required
-        if ( ! $bucket)
+        $bucket_id = trim($bucket_id);
+        if (! $bucket_id)
         {
             echo '500 No Bucket ID Specified';
             exit;
         }
-        $bucket_collection = $this->app->mongo->selectCollection(Bucket::$collection);
-        $bucket_exists = $bucket_collection->find(array('appkey' => $bucket))->count() > 0 ? true : false;
-        if ($bucket_exists === false) {
-            $bucket_exists = $bucket_collection->find(array('_id' => $bucket))->count() > 0 ? true : false;
-            if ($bucket_exists === false) {
-                echo '500 Invalid Bucket ID';
-                exit;
-            }
+        $bucket = Bucket::findById($bucket_id);
+        if (! $bucket) {
+            echo '500 Invalid Bucket ID';
+            exit;
         }
-        $bucket_instance = Bucket::findById($bucket);
 
         // Normalize Data
         unset($data['event']);
@@ -83,19 +72,15 @@ class Track extends Base\Page
         $insert['d'] = $data;
 
         // Save Data to log
-        try
-        {
-
-            $collection = $this->app->mongo->selectCollection($bucket_instance->event_collection);
+        try {
+            $collection = $this->app->mongo->selectCollection($bucket->event_collection);
             $collection->insert($insert);
             echo $insert['_id'];
             exit;
-
         }
 
         // Could not connect (this is where queue will be needed)
-        catch (MongoConnectionException $e)
-        {
+        catch (MongoConnectionException $e) {
             echo '503 Database Exception';
             exit;
         }

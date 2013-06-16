@@ -1,86 +1,93 @@
 <div class="container">
-	<div class="row">
+    <div class="row">
 
-		<div class="col col-lg-6">
+        <div class="col col-lg-6">
 
-			<form action="/bucket/{{ bucket.id }}/save" method="post">
-				<div class="input-group">
-					<span class="input-group-addon input-small">Description</span>
-					<input type="text"  name="description" class="input-small" value="{{ bucket.description }}"/>
-					<span class="input-group-btn">
-						<button type="submit" class="btn btn-default btn-small">Save</button>
-					</span>
-				</div>
-			</form>
+            <form action="/bucket/{{ bucket.id }}/save" method="post">
+                <div class="input-group" style="margin-bottom:10px">
+                    <span class="input-group-addon input-small" style="width:100px">Alias</span>
+                    <input type="text" name="alias" class="input-small" value="{{ bucket.alias | join(', ') }}"/>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default btn-small">Save</button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon input-small" style="width:100px">Description</span>
+                    <input type="text" name="description" class="input-small" value="{{ bucket.description }}"/>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default btn-small">Save</button>
+                    </span>
+                </div>
+            </form>
 
-			<br/>
-			<h5>Information</h5>
-			<table class="table table-striped table-condensed">
-				<tr>
-					<td>BucketID</td>
-					<td class="align-right">{{ bucket.appkey ?: bucket.id }}</td>
-				</tr>
-			</table>
+            <br/>
+            <h5>Information</h5>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <td>BucketID</td>
+                    <td class="align-right">{{ bucket.id }}</td>
+                </tr>
+            </table>
 
-			<h5><a href="/viewer/#bucket={{ bucket.appkey }}">Events</a></h5>
-			<table class="table table-striped table-condensed">
-				<tr>
-					<td>Latest tracked</td>
-					<td class="align-right">{{ bucket.latest_event.t.sec | date('Y-m-d H:i') }}</td>
-				</tr>
-				<tr>
-					<td>Count</td>
-					<td class="align-right">{{ bucket.stats.count | number_format }}</td>
-				</tr>
-				<tr>
-					<td>Daily Req / s</td>
-					<td class="align-right">{{ bucket.rps | number_format(2) }}</td>
-				</tr>
-				<tr>
-					<td>Storage</td>
-					<td class="align-right">{{ bucket.stats.storageSize | normalize_bytes(2, true) }}</td>
-				</tr>
-			</table>
+            <h5><a href="/viewer/#bucket={{ bucket.id }}">Events</a></h5>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <td>Latest tracked</td>
+                    <td class="align-right">{{ bucket.latest_event.t.sec | date('Y-m-d H:i') }}</td>
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td class="align-right">{{ bucket.stats.count | number_format }}</td>
+                </tr>
+                <tr>
+                    <td>Daily Req / s</td>
+                    <td class="align-right">{{ bucket.rps | number_format(2) }}</td>
+                </tr>
+                <tr>
+                    <td>Storage</td>
+                    <td class="align-right">{{ bucket.stats.storageSize | normalize_bytes(2, true) }}</td>
+                </tr>
+            </table>
 
-			<h5>Admin</h5>
-			<table class="table table-striped table-condensed">
-				<tr>
-					<td>Empty</td>
-					<td class="align-right"><a href="/bucket/{{ bucket.id }}/empty" onclick="if(!confirm('Warning! This will remove all events'))return false">clear</a></td>
-				<tr>
-					<td>Delete</td>
-					<td class="align-right"><a href="/bucket/{{ bucket.id }}/delete" onclick="if(!confirm('Warning! This will destroy the bucket and it\'s contents'))return false">destroy</a></td>
-				</tr>
-			</table>
+            <h5>Admin</h5>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <td>Empty</td>
+                    <td class="align-right"><a href="/bucket/{{ bucket.id }}/empty" onclick="if(!confirm('Warning! This will remove all events'))return false">clear</a></td>
+                <tr>
+                    <td>Delete</td>
+                    <td class="align-right"><a href="/bucket/{{ bucket.id }}/delete" onclick="if(!confirm('Warning! This will destroy the bucket and it\'s contents'))return false">destroy</a></td>
+                </tr>
+            </table>
 
-		</div>
+        </div>
 
-		<div class="col col-lg-6">
+        <div class="col col-lg-6">
 
-			<script>
-			  chart_bucket = '{{ bucket.id }}';
-			</script>
+            <script>
+              chart_bucket = '{{ bucket.id }}';
+            </script>
 
-			<canvas
-				id="dashboard_chart"
-				width="555" height="300"
-				style="width:555px;height:300px;text-align:center;line-height:300px"
-				>
-			</canvas>
+            <canvas
+                id="dashboard_chart"
+                width="555" height="300"
+                style="width:555px;height:300px;text-align:center;line-height:300px"
+                >
+            </canvas>
 
-			<div class="row">
-				<div class="col col-offset-2 col-lg-8">
-					<div class="btn-group btn-group-justified" data-toggle="buttons-radio">
-						<a class="btn btn-default" onclick="chart_getData(60, 1)"><span class="icon icon-time"></span> Live</a>
-						<a class="btn btn-default active" onclick="chart_getData(3600, 60)">Last Hour</a>
-						<a class="btn btn-default" onclick="chart_getData(86400, 3600)">Today</a>
-						<a class="btn btn-default" onclick="chart_getData(86400 * 7, 86400)">This Week</a>
-					</div>
-				</div>
-			</div>
-			<br/>
+            <div class="row">
+                <div class="col col-offset-2 col-lg-8">
+                    <div class="btn-group btn-group-justified" data-toggle="buttons-radio">
+                        <a class="btn btn-default" onclick="chart_getData(60, 1)"><span class="icon icon-time"></span> Live</a>
+                        <a class="btn btn-default active" onclick="chart_getData(3600, 60)">Last Hour</a>
+                        <a class="btn btn-default" onclick="chart_getData(86400, 3600)">Today</a>
+                        <a class="btn btn-default" onclick="chart_getData(86400 * 7, 86400)">This Week</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
 
-		</div>
+        </div>
 
-	</div>
+    </div>
 </div>

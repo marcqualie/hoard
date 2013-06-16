@@ -14,7 +14,7 @@ class Base
     public function __construct(array $data = array())
     {
         if ($data) {
-            $this->id = $data['_id'];
+            $this->id = isset($data['_id']) ? $data['_id'] : null;
             $this->data = $data;
         }
         $this->init();

@@ -27,27 +27,55 @@ class Bucket extends Base
     }
 
 
+    /**
+     * Generate ID
+     */
+    public function generateId()
+    {
+        return uniqid();
+    }
+
 
     /**
      * Find instance by ID
-     *
-     * LEGACY: Keep this until all buckets are transfered
      */
     public static function findById($id)
     {
         $app = self::getApp();
         $collection = $app->mongo->selectCollection(static::$collection);
-        $data = $collection->findOne(array(
-            '$or' => array(
-                array('_id' => $id),
-                array('appkey' => $id)
+        $data = $collection->findOne(
+            array(
+                '$or' => array(
+                    array('_id' => $id),
+                    array('alias' => $id)
+                )
             )
-        ));
+        );
         if ($data) {
             $model_name = get_called_class();
             return new $model_name($data);
         }
         return null;
+    }
+
+
+    /**
+     * Check if object exists
+     */
+    public static function exists($id)
+    {
+        $collection = self::getApp()->mongo->selectCollection(static::$collection);
+        return $collection->find(
+            array(
+                '$or' => array(
+                    array('_id' => $id),
+                    array('alias' => $id)
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        )->count() > 0 ? true : false;
     }
 
 
@@ -59,7 +87,7 @@ class Bucket extends Base
         return array(
             '_id' => 'String',
             'description' => 'String',
-            'appkey' => 'String',
+            'alias' => 'String',
             'roles' => 'Hash',
             'created' => 'MongoDate',
             'updated' => 'MongoDate'

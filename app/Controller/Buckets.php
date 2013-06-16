@@ -21,29 +21,31 @@ class Buckets extends Base\Page
         if ($this->app->request->get('action') === 'create_bucket') {
 
             $name = $this->app->request->get('bucket_name');
-            $id = strtolower($name);
-            $id = str_replace(array(' ', '_'), '-', $id);
+            $alias = strtolower($name);
+            $alias = str_replace(array(' ', '_'), '-', $alias);
             $pattern = Bucket::$regex_id;
 
             // No name is specified
-            if (! $id) {
-                $this->alert('You need to specify an ID');
+            if (! $alias) {
+                $this->alert('You need to specify a name');
             }
 
-            // Verify name (Names are IDs now)
-            elseif (! preg_match($pattern, $id)) {
-                $this->alert('Invalid ID. Please match <strong>' . $pattern . '</strong>');
+            // Verify alias
+            elseif (! preg_match($pattern, $alias)) {
+                $this->alert('Invalid Alias. Please match <strong>' . $pattern . '</strong>');
             }
 
             // Make sure name is unique
-            elseif (Bucket::exists($id)) {
+            elseif (Bucket::exists($alias)) {
                 $this->alert('Bucket name must be unique across cluster');
             }
 
             // Name matches, continue
             else {
                 $data = array(
-                    '_id' => $id,
+                    'alias' => array(
+                        $alias
+                    ),
                     'description' => $name,
                     'roles' => array(
                         (String) $this->app->auth->id => 'owner'
@@ -53,7 +55,7 @@ class Buckets extends Base\Page
                 );
                 $bucket = Bucket::create($data);
                 if ($bucket) {
-                    $this->alert('Your app was created');
+                    $this->alert('Your app was created. <a href="/bucket/' . $alias . '">' . $name . '</a>');
                 } else {
                     $this->alert('There was a problem creating your bucket', 'error');
                 }

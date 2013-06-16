@@ -21,7 +21,7 @@ $app->error(function ($e, $code) use ($app) {
     }
     $app->router->render($app, 'error', array(
         'code' => $code,
-        'message' => $e->getMessage()
+        'message' => $e->getMessage() . ($app->env === 'development' ? ' [' . $e->getFile() . ':' . $e->getLine() . ']' : '')
     ));
 });
 

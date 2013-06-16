@@ -7,6 +7,9 @@ window.app = {};
     $('.dropdown .dropdown-menu').click(function (e) {
         e.stopPropagation();
     });
+    $(document).tooltip({
+        'selector': 'a[data-toggle=tooltip]'
+    });
 });
 
 /**

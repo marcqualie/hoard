@@ -28,7 +28,9 @@ class Events extends \Console\Command
         // Assert Fake Bucket
         $id = 'demo-bucket';
         $data = array(
-            '_id' => $id,
+            'alias' => array(
+                $id
+            ),
             'description' => 'Demo Bucket',
             'roles' => array(
                 'all' => 'owner'

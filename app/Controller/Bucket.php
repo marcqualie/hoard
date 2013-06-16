@@ -47,11 +47,23 @@ class Bucket extends Base\Page
         switch ($app_action)
         {
             case 'save':
+                $alias_string = $this->app->request->get('alias');
+                $explode = explode(',', $alias_string);
+                $aliases = array();
+                foreach ($explode as $alias) {
+                    $alias = trim($alias);
+                    if (preg_match(BucketModel::$regex_id, $alias)) {
+                        $aliases[] = $alias;
+                    }
+                }
+                $this->bucket->alias = $aliases;
                 $this->bucket->description = $this->app->request->get('description');
                 $this->bucket->save();
                 break;
             case 'delete':
-                $collection->remove(array('_id' => $this->bucket->id));
+                $collection->remove(array(
+                    '_id' => $this->bucket->id
+                ));
                 $this->app->mongo->selectCollection($this->bucket->event_collection)->drop();
                 header('Location: /');
                 exit;

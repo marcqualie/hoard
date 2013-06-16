@@ -31,10 +31,10 @@
 {% for bucket in buckets %}
             <tr>
                 <td>
-                    <a href="/bucket/{{ bucket._id }}">{{ bucket.description }}</a>
+                    <a href="/bucket/{{ bucket.id }}">{{ bucket.description }}</a>
                 </td>
-                <td class="align-center" width="250">
-                    <span style="font-family:monospace">{{ bucket.id }}</span>
+                <td class="align-center hidden-sm" width="130">
+                    <a href="/bucket/{{ bucket.id }}" style="font-family:monospace" data-toggle="tooltip" title="{{ bucket.alias | join(', ') }}">{{ bucket.id }}</a>
                 </td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.rps > 0 ? '%.2f' | format(bucket.rps) : '-' }}</td>
                 <td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.id }}">{{ bucket.records | number_format }}</a></td>
