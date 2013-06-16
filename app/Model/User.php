@@ -47,6 +47,7 @@ class User extends Base
                 )
             )
         );
+        \Utils::model_sort($buckets, 'description');
         return $buckets;
     }
 

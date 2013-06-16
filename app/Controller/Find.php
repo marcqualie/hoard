@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use Model\Bucket as BucketModel;
 
 class Find extends Base\Page
 {
@@ -22,8 +23,11 @@ class Find extends Base\Page
         $bucket_id = $this->app->request->get('bucket') ?: $this->uri[1];
         if (empty($bucket_id))
         {
-            echo '{"error":"Bucket ID is required"}';
-            exit;
+            return $this->jsonError('Bucket ID is Required');
+        }
+        $bucket = BucketModel::findById($bucket_id);
+        if (! $bucket) {
+            return $this->jsonError('Invalid Bucket ID');
         }
 
         // Vars
@@ -118,7 +122,7 @@ class Find extends Base\Page
         // Save Data to log
         try
         {
-            $collection = $this->app->mongo->selectCollection('event_' . $bucket);
+            $collection = $this->app->mongo->selectCollection($bucket->event_collection);
             try
             {
                 $cursor = $collection

@@ -120,15 +120,12 @@ $(document).ready(function () {
                     // Events
                     el.find('.doc-snippet').click(function () {
                         var doc = el.find('.doc-full');
-                        if (doc.hasClass('hide'))
-                        {
+                        if (doc.css('display') === 'none') {
                             console.log('do open');
                             doc.removeClass('hide').stop().slideUp(0).slideDown(400);
-                        }
-                        else
-                        {
+                        } else {
                             console.log('do close');
-                            doc.addClass('hide').stop().slideUp(400);
+                            doc.stop().slideDown(0).slideUp(400);
                         }
                     })
 

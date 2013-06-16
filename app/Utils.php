@@ -34,8 +34,7 @@ class Utils {
     public static function array_sort (&$array)
     {
         $keys = func_get_args();
-        if ( ! $array)
-        {
+        if (! $array) {
             return $keys;
         }
         array_shift($keys);
@@ -63,7 +62,7 @@ class Utils {
                         : strcasecmp($b->$k, $a->$k);
                 }
             }
-            else if ($a[$k] !== $b[$k])
+            else if ($a->$k !== $b->$k)
             {
                 return is_numeric($a->$k)
                     ? $a->$k - $b->$k
@@ -75,8 +74,7 @@ class Utils {
     public static function model_sort (&$array)
     {
         $keys = func_get_args();
-        if ( ! $array)
-        {
+        if (! $array) {
             return $keys;
         }
         array_shift($keys);

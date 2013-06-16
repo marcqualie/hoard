@@ -2,7 +2,7 @@
  * Defaults
  */
 html, body {
-	
+
 }
 body {
 	padding-top: 70px;
@@ -60,7 +60,7 @@ select.input-small {
 	margin-right: 8px;
 }
 .viewer-head .input-prepend [type=text]:focus {
-	
+
 }
 
 /**
@@ -107,7 +107,6 @@ select.input-small {
 }
 .doc-snippet {
 	margin-left: 80px;
-	_margin-right: 210px;
 	opacity: .5;
 }
 .doc-full {
