@@ -19,8 +19,8 @@ class Find extends Base\Page
 //      }
 
         // App Key Required, Secret too in future
-        $bucket = $this->app->request->get('bucket') ?: $this->uri[1];
-        if (empty($bucket))
+        $bucket_id = $this->app->request->get('bucket') ?: $this->uri[1];
+        if (empty($bucket_id))
         {
             echo '{"error":"Bucket ID is required"}';
             exit;

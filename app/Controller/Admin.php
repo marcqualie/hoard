@@ -1,6 +1,8 @@
 <?php
 
 namespace Controller;
+use Model\Bucket;
+use Model\User;
 
 class Admin extends Base\Page
 {
@@ -30,7 +32,7 @@ class Admin extends Base\Page
                 return $this->alert('You cannot add an emoty password', 'danger');
             }
             $token = uniqid();
-            $user = $this->app->mongo->selectCollection('user')->findOne(array('email' => $email));
+            $user = $this->app->mongo->selectCollection(User::$collection)->findOne(array('email' => $email));
             if (isset($user['_id']))
             {
                 return $this->alert('There is already a user with that email address', 'danger');
@@ -42,7 +44,7 @@ class Admin extends Base\Page
                 'created' => new \MongoDate(),
                 'updated' => new \MongoDate()
             );
-            $id = $this->app->mongo->selectCollection('user')->insert($data);
+            $id = $this->app->mongo->selectCollection(User::$collection)->insert($data);
             $this->alert('User created', 'success');
 
         }
@@ -53,11 +55,11 @@ class Admin extends Base\Page
     {
 
         // Get all Applications
-        $cursor = $this->app->mongo->selectCollection('app')->find();
+        $cursor = $this->app->mongo->selectCollection(Bucket::$collection)->find();
         $this->set('buckets', $cursor);
 
         // Get All users
-        $cursor = $this->app->mongo->selectCollection('user')->find();
+        $cursor = $this->app->mongo->selectCollection(User::$collection)->find();
         $this->set('users', $cursor);
 
         // Title

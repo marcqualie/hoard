@@ -8,7 +8,7 @@
             <table class="table table-bordered table-condensed table-striped">
 {% for bucket in buckets %}
                 <tr>
-                    <td><a href="/bucket/{{ bucket.appkey }}">{{ bucket.name }}</a></td>
+                    <td><a href="/bucket/{{ bucket.id }}">{{ bucket.description }}</a></td>
                 </tr>
 {% endfor %}
             </table>

@@ -8,8 +8,7 @@ class Buckets extends Base\Page
 
     public function before ()
     {
-        if ( ! $this->isLoggedIn())
-        {
+        if ( ! $this->isLoggedIn()) {
             header('Location: /login/');
             exit;
         }
@@ -19,8 +18,7 @@ class Buckets extends Base\Page
     public function req_post ()
     {
 
-        if ($this->app->request->get('action') === 'create_bucket')
-        {
+        if ($this->app->request->get('action') === 'create_bucket') {
 
             $name = $this->app->request->get('bucket_name');
             $id = strtolower($name);
@@ -48,7 +46,7 @@ class Buckets extends Base\Page
                     '_id' => $id,
                     'description' => $name,
                     'roles' => array(
-                        $this->app->auth->id => 'owner'
+                        (String) $this->app->auth->id => 'owner'
                     ),
                     'created' => new \MongoDate(),
                     'updated' => new \MongoDate()
@@ -63,22 +61,7 @@ class Buckets extends Base\Page
 
         }
 
-        // Fallback to get
-        $buckets = Bucket::find(array(
-            '$or' => array(
-                array(
-                    'roles.' . $this->app->auth->id => array(
-                        '$exists' => 1
-                    )
-                ),
-                array(
-                    'roles.all' => array(
-                        '$exists' => 1
-                    )
-                )
-            )
-        ));
-        $this->app->auth->user['buckets'] = $buckets;
+        // Do normal GET request
         return $this->req_get();
 
     }
@@ -86,7 +69,7 @@ class Buckets extends Base\Page
     public function req_get ()
     {
 
-        $buckets = $this->app->auth->user['buckets'];
+        $buckets = $this->app->auth->user->getBuckets();
         $totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
         foreach ($buckets as &$bucket)
         {

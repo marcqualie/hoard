@@ -1,6 +1,8 @@
 <?php
 
 namespace Controller;
+use Model\User as UserModel;
+use Model\Bucket as BucketModel;
 
 class User extends Base\Page
 {
@@ -12,17 +14,14 @@ class User extends Base\Page
     public function before ()
     {
 
-        $id = $this->uri[1];
-        $this->id = $id;
-        $user = $this->app->mongo->selectCollection('user')->findOne(array(
-            '_id' => new \MongoId($id)
-        ));
-        if ( ! $user)
+        $this->id = isset($this->uri[1]) ? $this->uri[1] : false;
+        $this->user = UserModel::findById(new \MongoId($this->id));
+        if (! $this->user)
         {
             header('Location: /');
             exit;
         }
-        $this->user = $user;
+        $this->set('user', $this->user);
 
     }
 
@@ -107,25 +106,10 @@ class User extends Base\Page
     {
 
         // All Applications
-        $cursor = $this->app->mongo->selectCollection('app')->find();
-        $this->set('buckets', iterator_to_array($cursor));
+        $this->set('buckets', BucketModel::find());
 
         // Applications for this user
-        $cursor = $this->app->mongo->selectCollection('app')->find(array(
-            '$or' => array(
-                array(
-                    'roles.' . $this->id => array(
-                        '$exists' => 1
-                    )
-                ),
-                array(
-                    'roles.all' => array(
-                        '$exists' => 1
-                    )
-                )
-            )
-        ));
-        $this->set('user_buckets', iterator_to_array($cursor));
+        $this->set('user_buckets', $this->app->auth->user->getBuckets());
 
     }
 

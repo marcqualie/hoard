@@ -6,13 +6,31 @@
             <h4>Details</h4>
             <br/>
             <table class="table table-bordered table-condensed table-striped">
-{% for key, value in page.user %}
+                <tr>
+                    <td>ID</td>
+                    <td>{{ user.id }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            </table>
+
+            <br/>
+            <h4>API Keys</h4>
+{% if user.apikeys %}
+            <table class="table table-bordered table-condensed table-striped">
+{% for data, key in user.apikeys %}
                 <tr>
                     <td>{{ key }}</td>
-                    <td>{{ value }}</td>
+                    <td>{{ data.created | date('Y-m-d H:i') }}</td>
                 </tr>
 {% endfor %}
             </table>
+{% else %}
+            <div class="alert alert-info">No API Keys.</div>
+{% endif %}
+
 
             <br/>
             <h4>Change Password</h4>
@@ -31,9 +49,9 @@
             <table class="table table-bordered table-condensed table-striped">
 {% for bucket in user_buckets %}
                 <tr>
-                    <td><a href="/bucket/{{ bucket.appkey }}">{{ bucket.name }}</a></td>
+                    <td><a href="/bucket/{{ bucket.id }}">{{ bucket.description }}</a></td>
                     <td style="text-align:center">{{ bucket.roles[page.id] }}</td>
-                    <td width="10"><a href="?action=revoke-app-access&amp;bucket={{ bucket.appkey }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                    <td width="10"><a href="?action=revoke-app-access&amp;bucket={{ bucket.id }}"><span class="glyphicon glyphicon-trash"></span></a></td>
                 </tr>
 {% endfor %}
             </table>
@@ -46,7 +64,7 @@
                 <select name="bucket" style="width:40%" class="input-small">
                     <option value="0">-- Grant Access --</option>
 {% for bucket in buckets %}
-                    <option value="{{ bucket.appkey }}">{{ bucket.name }}</option>
+                    <option value="{{ bucket.id }}">{{ bucket.description }}</option>
 {% endfor %}
                 </select>
                 <select name="role" style="width:40%" class="input-small">

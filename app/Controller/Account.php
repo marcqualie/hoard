@@ -10,18 +10,7 @@ class Account extends Base\Page {
     {
 
         // Get API Keys
-        $apikeys = array(
-            array(
-                'apikey' => 'demokey1',
-                'secret' => 'demosecret1',
-                'created' => new \MongoDate()
-            ),
-            array(
-                'apikey' => 'demokey2',
-                'secret' => 'demosecret2',
-                'created' => new \MongoDate()
-            )
-        );
+        $apikeys = $this->app->auth->user->apikeys;
         $this->set('apikeys', $apikeys);
 
     }

@@ -1,6 +1,9 @@
 <?php
 
 namespace Hoard;
+use Model\User;
+use Model\Bucket;
+use MongoId;
 
 class Auth
 {
@@ -9,7 +12,7 @@ class Auth
 
     public $cookie = 'user';
     public $id = null;
-    public $user = array();
+    public $user;
 
     public function __construct($app)
     {
@@ -22,47 +25,27 @@ class Auth
         $this->cookie = 'u' . crc32($this->cookie . '.' . COOKIE_DOMAIN);
 
         $cookie = isset($_COOKIE[$this->cookie]) ? $_COOKIE[$this->cookie] : '';
-        if ( ! $cookie)
+        if (! $cookie)
         {
             return;
         }
         $data = $this->decrypt($cookie);
         list ($id, $token) = explode(':', $data);
-        if (!$id || !$token)
+        if (! $id || ! $token)
         {
             return;
         }
-        $collection = $this->app->mongo->selectCollection('user');
-        $user = $collection->findOne(array(
-                '_id' => new \MongoId($id)
-            ), array(
-                'email' => 1,
-                'token' => 1,
-                'admin' => 1
-            )
-        );
-        if (!$user)
-        {
+        $user = User::findById(new MongoId($id));
+        if (! $user) {
+            return;
+        }
+        if ($user->token !== $token) {
             return;
         }
 
         // Populate User Data
+        $this->id = $user->id;
         $this->user = $user;
-        $this->id = $id;
-//        $this->admin = $user['admin'] ? true : false;
-
-        // Populate Apps
-        $buckets = \Model\Bucket::find(array(
-            '$or' => array(
-                array(
-                    'roles.' . $this->id => array('$exists' => 1)
-                ),
-                array(
-                    'roles.all' => array('$exists' => 1)
-                )
-            )
-        ));
-        $this->user['buckets'] = $buckets;
 
     }
 
@@ -71,18 +54,21 @@ class Auth
      */
     public function login ($email, $password)
     {
-        $collection = $this->app->mongo->selectCollection('user');
-        $user = $collection->findOne(array("email" => $email));
-        if ( ! $user['password'])
+        $user = User::findOne(array(
+            'email' => $email
+        ));
+        if (! $user)
         {
             return array('error' => 404, 'message' => 'No such user');
         }
-        if ($user['password'] !== $this->password($password))
+        if ($user->password !== $this->password($password))
         {
             return array('error' => 401, 'message' => 'Invalid Password');
         }
-        $this->login_apply((String) $user['_id'], $user['token']);
-        return array('message' => 'Loging Success');
+        $this->login_apply((String) $user->id, $user->token);
+        return array(
+            'message' => 'Login Success'
+        );
     }
     public function login_apply ($uid, $token)
     {
@@ -135,7 +121,7 @@ class Auth
      */
     public function isAdmin ()
     {
-        return ! empty($this->user['admin']) ? true : false;
+        return $this->user->admin === 1 ? true : false;
     }
 
 }
