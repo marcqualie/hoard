@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller\Api;
+use Model\Bucket;
 
 class Stats extends \Controller\Base\Api {
 
@@ -10,6 +11,7 @@ class Stats extends \Controller\Base\Api {
     private $time_gap;
 
     private $collection;
+    private $bucket_id;
     private $bucket;
     private $event;
 
@@ -17,12 +19,15 @@ class Stats extends \Controller\Base\Api {
     {
 
         // Get bucket
-        $this->bucket = $this->app->request->get('bucket');
-        if ( ! $this->bucket)
-        {
-            return $this->error(500, 'No bucket specified');
+        $this->bucket_id = $this->app->request->get('bucket');
+        if (! $this->bucket_id) {
+            return $this->jsonError('No bucket specified');
         }
-        $this->collection = $this->app->mongo->selectCollection('event_' . $this->bucket);
+        $this->bucket = Bucket::findById($this->bucket_id);
+        if (! $this->bucket) {
+            return $this->jsonError('Invalid Bucket ID', 404);
+        }
+        $this->collection = $this->app->mongo->selectCollection($this->bucket->event_collection);
 
         // Event filtering
         $this->event = $this->app->request->get('event');
