@@ -8,6 +8,9 @@ class User extends Base
     public static $collection = 'user';
 
 
+    /**
+     * User Schema
+     */
     public function getSchema()
     {
         return array(
@@ -45,6 +48,24 @@ class User extends Base
             )
         );
         return $buckets;
+    }
+
+
+    /**
+     * Create API Key
+     */
+    public function createApiKey()
+    {
+        $key = substr(sha1(uniqid() . uniqid() . uniqid()), 0, 24);
+        $apikeys = $this->apikeys;
+        $apikeys[$key] = array(
+            'active' => true,
+            'requests' => 0,
+            'buckets' => array(),
+            'created' => new \MongoDate()
+        );
+        $this->apikeys = $apikeys;
+        $this->save();
     }
 
 

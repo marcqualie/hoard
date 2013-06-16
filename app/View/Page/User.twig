@@ -20,10 +20,12 @@
             <h4>API Keys</h4>
 {% if user.apikeys %}
             <table class="table table-bordered table-condensed table-striped">
-{% for data, key in user.apikeys %}
+{% for key, data in user.apikeys %}
                 <tr>
                     <td>{{ key }}</td>
-                    <td>{{ data.created | date('Y-m-d H:i') }}</td>
+                    <td>{{ data.requests }}</td>
+                    <td>{{ data.active ? 'active' : 'disabled' }}</td>
+                    <td>{{ data.created.sec | date('Y-m-d H:i') }}</td>
                 </tr>
 {% endfor %}
             </table>
