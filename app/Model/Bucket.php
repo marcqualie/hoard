@@ -59,6 +59,7 @@ class Bucket extends Base
         return array(
             '_id' => 'String',
             'description' => 'String',
+            'appkey' => 'String',
             'roles' => 'Hash',
             'created' => 'MongoDate',
             'updated' => 'MongoDate'
