@@ -20,16 +20,33 @@ class Buckets extends Base\Page
 
         if ($this->app->request->get('action') === 'create_bucket')
         {
+
             $name = $this->app->request->get('bucket_name');
             $pattern = '/^[a-z]+[a-z0-9\-\_]+[a-z0-9]+$/';
-            if (! preg_match($pattern, $name)) {
+
+            // No name is specified
+            if (! $name) {
+                $this->alert('You need to specify a name');
+            }
+
+            // Verify name (Names are IDs now)
+            elseif (! preg_match($pattern, $name)) {
                 $this->alert('Invalid Name. Please match <strong>' . $pattern . '</strong>');
             }
-            elseif ($name) {
-                $appkey = uniqid();
+
+            // Make sure name is unique
+            elseif ($this->app->mongo->selectCollection('app')->find(array('_id' => $name))->count() > 0) {
+                $this->alert('Bucket name must be unique across cluster');
+            }
+
+            // Name matches, continue
+            else {
+                $appkey = $name;
                 $secret = sha1($appkey . uniqid() . $this->app->request->server->get('REMOTE_ADDR') . rand(0, 999999));
                 $data = array(
+                    '_id' => $name,
                     'name' => $name,
+                    'description' => $name,
                     'appkey' => $appkey,
                     'secret' => $secret,
                     'roles' => array(
@@ -41,10 +58,7 @@ class Buckets extends Base\Page
                 $this->app->mongo->selectCollection('app')->insert($data);
                 $this->alert('Your app was created');
             }
-            else
-            {
-                $this->alert('You need to specify a name');
-            }
+
         }
 
         // Fallback to get
