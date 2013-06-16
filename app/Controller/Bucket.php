@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use Model\Bucket as BucketModel;
 
 class Bucket extends Base\Page
 {
@@ -25,10 +26,10 @@ class Bucket extends Base\Page
             header('Location: /');
             exit;
         }
-        $this->bucket = \Model\Bucket::findById($this->id);
+        $this->bucket = BucketModel::findById($this->id);
         if ($this->bucket === null) {
             // LEGACY: Check mongoid from legacy systems
-            $this->bucket = \Model\Bucket::findById(new \MongoId($this->id));
+            $this->bucket = BucketModel::findById(new \MongoId($this->id));
             if ($this->bucket === null) {
                 header('Location: /');
                 exit;
@@ -42,17 +43,22 @@ class Bucket extends Base\Page
 
         // Check action
         $app_action = isset($this->uri[2]) ? $this->uri[2] : '';
+        $collection = $this->app->mongo->selectCollection(BucketModel::$collection);
         switch ($app_action)
         {
+            case 'save':
+                $this->bucket->description = $this->app->request->get('description');
+                $this->bucket->save();
+                break;
             case 'delete':
-//                $this->app->mongo->selectCollection(Model\Bucket::$collection)->remove(array('appkey' => $this->appkey));
-//                $this->app->mongo->selectCollection('event_' . $this->appkey)->drop();
-//                header('Location: /');
+                $collection->remove(array('_id' => $this->bucket->id));
+                $this->app->mongo->selectCollection($this->bucket->event_collection)->drop();
+                header('Location: /');
                 exit;
                 break;
             case 'empty':
-//                $this->app->mongo->selectCollection('event_' . $this->appkey)->remove();
-//                header('Location: /bucket/' . $this->appkey);
+                $this->app->mongo->selectCollection($this->bucket->event_collection)->drop();
+                header('Location: /bucket/' . $this->id);
                 exit;
                 break;
         }

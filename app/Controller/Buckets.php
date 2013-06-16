@@ -23,29 +23,30 @@ class Buckets extends Base\Page
         {
 
             $name = $this->app->request->get('bucket_name');
-            $name = str_replace('_', '-', $name);
+            $id = strtolower($name);
+            $id = str_replace(array(' ', '_'), '-', $id);
             $pattern = Bucket::$regex_id;
 
             // No name is specified
-            if (! $name) {
-                $this->alert('You need to specify a name');
+            if (! $id) {
+                $this->alert('You need to specify an ID');
             }
 
             // Verify name (Names are IDs now)
-            elseif (! preg_match($pattern, $name)) {
-                $this->alert('Invalid Name. Please match <strong>' . $pattern . '</strong>');
+            elseif (! preg_match($pattern, $id)) {
+                $this->alert('Invalid ID. Please match <strong>' . $pattern . '</strong>');
             }
 
             // Make sure name is unique
-            elseif (Bucket::exists($name)) {
+            elseif (Bucket::exists($id)) {
                 $this->alert('Bucket name must be unique across cluster');
             }
 
             // Name matches, continue
             else {
                 $data = array(
-                    '_id' => $name,
-                    'description' => ucwords(str_replace('-', ' ', $name)),
+                    '_id' => $id,
+                    'description' => $name,
                     'roles' => array(
                         $this->app->auth->id => 'owner'
                     ),

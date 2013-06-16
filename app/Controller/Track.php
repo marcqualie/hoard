@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use Model\Bucket;
 
 class Track extends Base\Page
 {
@@ -58,12 +59,16 @@ class Track extends Base\Page
             echo '500 No Bucket ID Specified';
             exit;
         }
-        $bucket_exists = $this->app->mongo->selectCollection('app')->find(array('appkey' => $bucket))->count() > 0 ? true : false;
-        if ($bucket_exists === false)
-        {
-            echo '500 Invalid Bucket ID';
-            exit;
+        $bucket_collection = $this->app->mongo->selectCollection(Bucket::$collection);
+        $bucket_exists = $bucket_collection->find(array('appkey' => $bucket))->count() > 0 ? true : false;
+        if ($bucket_exists === false) {
+            $bucket_exists = $bucket_collection->find(array('_id' => $bucket))->count() > 0 ? true : false;
+            if ($bucket_exists === false) {
+                echo '500 Invalid Bucket ID';
+                exit;
+            }
         }
+        $bucket_instance = Bucket::findById($bucket);
 
         // Normalize Data
         unset($data['event']);
@@ -81,7 +86,7 @@ class Track extends Base\Page
         try
         {
 
-            $collection = $this->app->mongo->selectCollection('event_' . $bucket);
+            $collection = $this->app->mongo->selectCollection($bucket_instance->event_collection);
             $collection->insert($insert);
             echo $insert['_id'];
             exit;

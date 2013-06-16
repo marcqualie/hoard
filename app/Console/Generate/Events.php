@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Model\Bucket;
 
 class Events extends \Console\Command
 {
@@ -25,21 +26,17 @@ class Events extends \Console\Command
         $request_count = $dialog->ask($output, 'Number of Events: ', 10000);
 
         // Assert Fake Bucket
-        $name = 'demo-bucket';
-        $secret = sha1($name . 'hoard');
+        $id = 'demo-bucket';
         $data = array(
-            '_id' => $name,
-            'name' => $name,
+            '_id' => $id,
             'description' => 'Demo Bucket',
-            'appkey' => $name,
-            'secret' => $secret,
             'roles' => array(
                 'all' => 'owner'
             ),
             'created' => new \MongoDate(),
             'updated' => new \MongoDate()
         );
-        $this->app->mongo->selectCollection('app')->save($data);
+        $bucket = Bucket::create($data);
 
         // Events
         $events = array(
@@ -60,7 +57,7 @@ class Events extends \Console\Command
         {
             $event = $events[array_rand($events)];
             $post = array(
-                'appkey' => $name,
+                'appkey' => $id,
                 'format' => 'json',
                 'data' => json_encode(array(
                     'name' => $faker->name,
