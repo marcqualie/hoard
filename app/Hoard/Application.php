@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 class Application {
 
     public static $version      = '0.0.1';
+    public static $app;
 
     public $env = 'development';
     public $mongo;
@@ -19,6 +20,9 @@ class Application {
         $this->router = new Router();
         $this->request = Request::createFromGlobals();
         $this->auth = new Auth($this);
+        if (! self::$app) {
+            self::$app = $this;
+        }
     }
 
 
