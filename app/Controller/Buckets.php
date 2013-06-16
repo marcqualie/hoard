@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use Model\Bucket;
 
 class Buckets extends Base\Page
 {
@@ -18,12 +19,12 @@ class Buckets extends Base\Page
     public function req_post ()
     {
 
-        /*
         if ($this->app->request->get('action') === 'create_bucket')
         {
 
             $name = $this->app->request->get('bucket_name');
-            $pattern = '/^[a-z]+[a-z0-9\-\_]+[a-z0-9]+$/';
+            $name = str_replace('_', '-', $name);
+            $pattern = Bucket::$regex_id;
 
             // No name is specified
             if (! $name) {
@@ -36,34 +37,33 @@ class Buckets extends Base\Page
             }
 
             // Make sure name is unique
-            elseif ($this->app->mongo->selectCollection('app')->find(array('_id' => $name))->count() > 0) {
+            elseif (Bucket::exists($name)) {
                 $this->alert('Bucket name must be unique across cluster');
             }
 
             // Name matches, continue
             else {
-                $appkey = $name;
-                $secret = sha1($appkey . uniqid() . $this->app->request->server->get('REMOTE_ADDR') . rand(0, 999999));
                 $data = array(
                     '_id' => $name,
-                    'name' => $name,
-                    'description' => $name,
-                    'appkey' => $appkey,
-                    'secret' => $secret,
+                    'description' => ucwords(str_replace('-', ' ', $name)),
                     'roles' => array(
                         $this->app->auth->id => 'owner'
                     ),
                     'created' => new \MongoDate(),
                     'updated' => new \MongoDate()
                 );
-                $this->app->mongo->selectCollection('app')->insert($data);
-                $this->alert('Your app was created');
+                $bucket = Bucket::create($data);
+                if ($bucket) {
+                    $this->alert('Your app was created');
+                } else {
+                    $this->alert('There was a problem creating your bucket', 'error');
+                }
             }
 
         }
 
         // Fallback to get
-        $buckets = \Model\Bucket::find(array(
+        $buckets = Bucket::find(array(
             '$or' => array(
                 array(
                     'roles.' . $this->app->auth->id => array(
@@ -79,7 +79,6 @@ class Buckets extends Base\Page
         ));
         $this->app->auth->user['buckets'] = $buckets;
         return $this->req_get();
-        */
 
     }
 

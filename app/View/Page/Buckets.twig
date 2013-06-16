@@ -33,9 +33,9 @@
                 <td>
                     <a href="/bucket/{{ bucket._id }}">{{ bucket.description }}</a>
 {% if bucket.legacy %}
-                    [{{ bucket.appkey }}] <span class="label label-warning">lagecy</span>
+                    [{{ bucket.id }}] <span class="label label-warning">lagecy</span>
 {% else %}
-                    [{{ bucket.name }}]
+                    [{{ bucket.id }}]
 {% endif %}
                 </td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.rps > 0 ? '%.2f' | format(bucket.rps) : '-' }}</td>

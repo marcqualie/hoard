@@ -72,6 +72,36 @@ class Base
 
 
     /**
+     * Generate ID
+     */
+    public function generateId()
+    {
+        return new \MongoId();
+    }
+
+
+    /**
+     * Save data to database
+     */
+    public function save()
+    {
+        $schema = $this->getSchema();
+        $document = array();
+        foreach ($schema as $field => $type) {
+            if (isset($this->data[$field])) {
+                $document[$field] = $this->data[$field];
+            }
+        }
+        if (empty($document['_id'])) {
+            $document['_id'] = $this->generateId();
+        }
+        $collection = self::getApp()->mongo->selectCollection(static::$collection);
+        $save = $collection->save($document);
+        return isset($save['ok']) && (int) $save['ok'] === 1 ? true : false;
+    }
+
+
+    /**
      * Get application instance
      */
     public static function getApp()
@@ -112,6 +142,34 @@ class Base
             return new $model_name($data);
         }
         return null;
+    }
+
+
+    /**
+     * Check if object exists
+     */
+    public static function exists($id)
+    {
+        $collection = self::getApp()->mongo->selectCollection(static::$collection);
+        return $collection->find(
+            array('_id' => $id),
+            array('_id' => 1)
+        )->count() > 0 ? true : false;
+    }
+
+
+    /**
+     * Create new Object
+     */
+    public static function create(array $data = array())
+    {
+        $model_name = get_called_class();
+        $instance = new $model_name($data);
+        $save = $instance->save();
+        if (! $save) {
+            return false;
+        }
+        return $instance;
     }
 
 }

@@ -6,7 +6,7 @@ class Bucket extends Base
 {
 
     public static $collection = 'app';
-    public static $regex_id = '/^[a-z]+[a-z0-9\-\_]+[a-z0-9]+$/';
+    public static $regex_id = '/^[a-z]{1}[a-z0-9\-]{4,30}[a-z0-9]{1}$/';
 
     public $legacy = false;
     public $event_collection;
