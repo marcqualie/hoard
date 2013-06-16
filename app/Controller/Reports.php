@@ -5,6 +5,15 @@ namespace Controller;
 class Reports extends Base\Page
 {
 
+    public function before ()
+    {
+        if ( ! $this->app->auth->isAdmin())
+        {
+            header('Location: ' . ($this->app->auth->id ? '/account' : '/login'));
+            exit;
+        }
+    }
+
     public function req_get ()
     {
 

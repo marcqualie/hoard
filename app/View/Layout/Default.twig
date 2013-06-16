@@ -28,7 +28,9 @@
             <ul class="nav navbar-nav">
                 <li{% if page.controller == 'buckets' %} class="active"{% endif %}><a href="/buckets/" title="My Buckets">Buckets ({{ user.buckets | length }})</a></li>
                 <li{% if page.controller == 'viewer' %} class="active"{% endif %}><a href="/viewer/" title="Event Viewer">Viewer</a></li>
+{% if auth.isAdmin %}
                 <li{% if page.controller == 'reports' %} class="active"{% endif %}><a href="/reports/" title="My Reports">Reports</a></li>
+{% endif %}
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li{% if page.controller == 'account' %} class="active"{% endif %}><a href="/account/">{{ user.email }}</a></li>
