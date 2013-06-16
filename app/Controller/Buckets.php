@@ -18,6 +18,7 @@ class Buckets extends Base\Page
     public function req_post ()
     {
 
+        /*
         if ($this->app->request->get('action') === 'create_bucket')
         {
 
@@ -62,7 +63,7 @@ class Buckets extends Base\Page
         }
 
         // Fallback to get
-        $cursor = $this->app->mongo->selectCollection('app')->find(array(
+        $buckets = \Model\Bucket::find(array(
             '$or' => array(
                 array(
                     'roles.' . $this->app->auth->id => array(
@@ -76,15 +77,14 @@ class Buckets extends Base\Page
                 )
             )
         ));
-        $this->app->auth->user['buckets'] = iterator_to_array($cursor);
+        $this->app->auth->user['buckets'] = $buckets;
         return $this->req_get();
+        */
 
     }
 
     public function req_get ()
     {
-
-        $collection = $this->app->mongo->selectCollection('app');
 
         $buckets = $this->app->auth->user['buckets'];
         $totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
@@ -93,36 +93,35 @@ class Buckets extends Base\Page
 
             // Get stats from raw collection data
             $stats_raw = $this->app->mongo->command(array(
-                'collStats' => 'event_' . $bucket['appkey']
+                'collStats' => $bucket->event_collection
             ));
 
             // Force index creation if not already there (temp hack, should be done on creation)
-//          print_r($stats_raw);
             if ( ! isset($stats_raw['indexSizes']['t_-1']))
             {
-                $this->app->mongo->selectCollection('event_' . $bucket['appkey'])->ensureIndex(array('t' => -1));
+                $this->app->mongo->selectCollection($bucket->event_collection)->ensureIndex(array('t' => -1));
             }
 
             $stats = array();
-            $bucket['records'] = isset ($stats_raw['count']) ? (int) $stats_raw['count'] : 0;
-            $bucket['rps'] = 0;
-            $bucket['rps'] = (float) $this->app->mongo->selectCollection('event_' . $bucket['appkey'])
+            $bucket->records = isset ($stats_raw['count']) ? (int) $stats_raw['count'] : 0;
+            $bucket->rps = 0;
+            $bucket->rps = (float) $this->app->mongo->selectCollection($bucket->event_collection)
                 ->find(
-                    array('t' => array('$gte' => new \MongoDate(time() - 300)))
-                ,   array('_id' => 0, 't' => 1)
+                    array('t' => array('$gte' => new \MongoDate(time() - 300))),
+                    array('_id' => 0, 't' => 1)
                     )
                 ->count() / 300;
-            $bucket['storage'] = isset ($stats_raw['size']) ? (int) $stats_raw['size'] : 0;
-            $bucket['storage_index'] = isset ($stats_raw['totalIndexSize']) ? (int) $stats_raw['totalIndexSize'] : 0;
-            $bucket['storage_avg'] = isset($stats_raw['avgObjSize']) ? (int) $stats_raw['avgObjSize'] : 0;
+            $bucket->storage = isset ($stats_raw['size']) ? (int) $stats_raw['size'] : 0;
+            $bucket->storage_index = isset ($stats_raw['totalIndexSize']) ? (int) $stats_raw['totalIndexSize'] : 0;
+            $bucket->storage_avg = isset($stats_raw['avgObjSize']) ? (int) $stats_raw['avgObjSize'] : 0;
 
             // Calculate totals
-            $totals['records'] += $bucket['records'];
-            $totals['rps'] += $bucket['rps'];
-            $totals['storage'] += $bucket['storage'];
-            $totals['storage_index'] += $bucket['storage_index'];
+            $totals['records'] += $bucket->records;
+            $totals['rps'] += $bucket->rps;
+            $totals['storage'] += $bucket->storage;
+            $totals['storage_index'] += $bucket->storage_index;
         }
-        \Utils::array_sort($buckets, '!records');
+        \Utils::model_sort($buckets, '!records');
         $this->set('totals', $totals);
         $this->set('buckets', $buckets);
 

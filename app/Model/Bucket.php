@@ -6,8 +6,10 @@ class Bucket extends Base
 {
 
     public static $collection = 'app';
+    public static $regex_id = '/^[a-z]+[a-z0-9\-\_]+[a-z0-9]+$/';
 
     public $legacy = false;
+    public $event_collection;
 
 
     /**
@@ -15,8 +17,12 @@ class Bucket extends Base
      */
     public function init()
     {
+        $this->event_collection = 'event_' . ($this->appkey ?: $this->id);
         if (is_object($this->id) && get_class($this->id) === 'MongoId') {
             $this->legacy = true;
+        }
+        if (empty($this->data['description'])) {
+            $this->data['description'] = $this->data['name'];
         }
     }
 
@@ -28,7 +34,6 @@ class Bucket extends Base
     {
         return array(
             '_id' => 'String',
-            'name' => 'String',
             'description' => 'String',
             'roles' => 'Hash',
             'created' => 'MongoDate',

@@ -31,8 +31,8 @@
 {% for bucket in buckets %}
             <tr>
                 <td>
-                    <a href="/bucket/{{ bucket._id }}">{{ bucket.description ?: bucket.name }}</a>
-{% if bucket.name != bucket.appkey %}
+                    <a href="/bucket/{{ bucket._id }}">{{ bucket.description }}</a>
+{% if bucket.legacy %}
                     [{{ bucket.appkey }}] <span class="label label-warning">lagecy</span>
 {% else %}
                     [{{ bucket.name }}]

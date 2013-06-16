@@ -52,7 +52,7 @@ class Auth
 //        $this->admin = $user['admin'] ? true : false;
 
         // Populate Apps
-        $cursor = $this->app->mongo->selectCollection('app')->find(array(
+        $buckets = \Model\Bucket::find(array(
             '$or' => array(
                 array(
                     'roles.' . $this->id => array('$exists' => 1)
@@ -62,7 +62,7 @@ class Auth
                 )
             )
         ));
-        $this->user['buckets'] = iterator_to_array($cursor);
+        $this->user['buckets'] = $buckets;
 
     }
 
