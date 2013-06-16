@@ -25,13 +25,13 @@ class Events extends \Console\Command
         $request_count = $dialog->ask($output, 'Number of Events: ', 10000);
 
         // Assert Fake Bucket
-        $name = 'Demo Bucket';
-        $appkey = '50e8d81e17466';
-        $secret = sha1($appkey . 'hoard');
+        $name = 'demo-bucket';
+        $secret = sha1($name . 'hoard');
         $data = array(
-            '_id' => $appkey,
+            '_id' => $name,
             'name' => $name,
-            'appkey' => (String) $appkey,
+            'description' => 'Demo Bucket',
+            'appkey' => $name,
             'secret' => $secret,
             'roles' => array(
                 'all' => 'owner'
@@ -60,7 +60,7 @@ class Events extends \Console\Command
         {
             $event = $events[array_rand($events)];
             $post = array(
-                'appkey' => $appkey,
+                'appkey' => $name,
                 'format' => 'json',
                 'data' => json_encode(array(
                     'name' => $faker->name,
