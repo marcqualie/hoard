@@ -31,7 +31,7 @@
 {% for bucket in buckets %}
             <tr>
                 <td>
-                    <a href="/bucket/{{ bucket.appkey }}">{{ bucket.description ?: bucket.name }}</a>
+                    <a href="/bucket/{{ bucket._id }}">{{ bucket.description ?: bucket.name }}</a>
 {% if bucket.name != bucket.appkey %}
                     [{{ bucket.appkey }}] <span class="label label-warning">lagecy</span>
 {% else %}

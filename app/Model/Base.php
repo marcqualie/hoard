@@ -17,6 +17,16 @@ class Base
             $this->id = $data['_id'];
             $this->data = $data;
         }
+        $this->init();
+    }
+
+
+    /**
+     * Initialize Function to easily extend contructor
+     */
+    public function init()
+    {
+
     }
 
 
@@ -29,6 +39,35 @@ class Base
             return $this->data[$field];
         }
         return null;
+    }
+    public function __isset($field)
+    {
+        return isset($this->data[$field]);
+    }
+
+
+    /**
+     * Set Data
+     *
+     * Only data described in the schema will be saved back to database
+     */
+    public function __set($field, $value)
+    {
+        $this->data[$field] = $value;
+        return $value;
+    }
+
+
+    /**
+     * Get Schema for this Model
+     */
+    public function getSchema()
+    {
+        return array(
+            '_id' => 'MongoId',
+            'created' => 'MongoDate',
+            'updated' => 'MongoDate'
+        );
     }
 
 
@@ -72,7 +111,7 @@ class Base
             $model_name = get_called_class();
             return new $model_name($data);
         }
-        return false;
+        return null;
     }
 
 }
