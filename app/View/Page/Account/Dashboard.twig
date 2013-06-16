@@ -5,10 +5,12 @@
         <div class="col col-lg-8">
             <div class="clearfix">
                 <div class="pull-left">
-                    <h4>My API Keys</h4>
+                    <h4>My API Keys ( {{ apikeys | length }} / {{ user.apikey_limit }} )</h4>
                 </div>
                 <div class="pull-right">
+{% if apikeys | length < user.apikey_limit %}
                     <a href="?action=create-apikey">Create New Key</a>
+{% endif %}
                 </div>
             </div>
             <table class="table table-bordered table-striped">

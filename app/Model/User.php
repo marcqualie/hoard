@@ -6,7 +6,7 @@ class User extends Base
 {
 
     public static $collection = 'user';
-
+    public $apikey_limit = 5;
 
     /**
      * User Schema
@@ -56,16 +56,18 @@ class User extends Base
      */
     public function createApiKey()
     {
-        $key = substr(sha1(uniqid() . uniqid() . uniqid()), 0, 24);
-        $apikeys = $this->apikeys;
-        $apikeys[$key] = array(
-            'active' => true,
-            'requests' => 0,
-            'buckets' => array(),
-            'created' => new \MongoDate()
-        );
-        $this->apikeys = $apikeys;
-        $this->save();
+        if (count($this->apikeys) < $this->apikey_limit) {
+            $key = substr(sha1(uniqid() . uniqid() . uniqid()), 0, 24);
+            $apikeys = $this->apikeys;
+            $apikeys[$key] = array(
+                'active' => true,
+                'requests' => 0,
+                'buckets' => array(),
+                'created' => new \MongoDate()
+            );
+            $this->apikeys = $apikeys;
+            $this->save();
+        }
     }
 
 
