@@ -67,9 +67,15 @@ class Page
      */
     public function jsonError ($code = 500, $message = 'Application Error')
     {
-        return $this->json(array(), $code, array(
-            'error' => $message
-        ));
+        return $this->json(
+            array(
+                '$error' => array(
+                    'code' => $code,
+                    'message' => $message
+                )
+            ),
+            $code
+        );
     }
     public function json (array $data, $code = 200, array $meta = array())
     {
@@ -79,6 +85,11 @@ class Page
         if ($meta)
         {
             $out['meta'] = $meta;
+        }
+        if (isset($data['$error']))
+        {
+            $out['error'] = $data['$error'];
+            unset($data['$error']);
         }
         $out['data'] = $data;
         echo json_encode($out);
