@@ -20,9 +20,12 @@ class Buckets extends Base\Page
 
         if ($this->app->request->get('action') === 'create_bucket')
         {
-            $name = preg_replace('/[^a-zA-Z0-9\.\-_ \(\)\'"]/', '', $this->app->request->get('bucket_name'));
-            if ($name)
-            {
+            $name = $this->app->request->get('bucket_name');
+            $pattern = '/^[a-z]+[a-z0-9\-\_]+[a-z0-9]+$/';
+            if (! preg_match($pattern, $name)) {
+                $this->alert('Invalid Name. Please match <strong>' . $pattern . '</strong>');
+            }
+            elseif ($name) {
                 $appkey = uniqid();
                 $secret = sha1($appkey . uniqid() . $this->app->request->server->get('REMOTE_ADDR') . rand(0, 999999));
                 $data = array(
