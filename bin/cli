@@ -27,6 +27,7 @@ $application->addCommands(array(
     'Generate\Events',
     'Report\ListAll',
     'Report\Run',
+    'System\UpgradeLegacyBuckets'
 ));
 
 // Run CLI

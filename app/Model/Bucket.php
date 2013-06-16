@@ -22,7 +22,7 @@ class Bucket extends Base
             $this->legacy = true;
         }
         if (empty($this->data['description'])) {
-            $this->data['description'] = $this->id;
+            $this->data['description'] = $this->name ?: $this->id;
         }
     }
 
