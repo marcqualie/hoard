@@ -125,6 +125,11 @@ class Base
         }
         return $models;
     }
+    public static function findOne(array $query = array())
+    {
+        $objects = static::find($query);
+        return ! empty($objects[0]) ? $objects[0] : null;
+    }
 
 
     /**
