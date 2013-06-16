@@ -17,7 +17,7 @@ class Api extends Base\Page {
         // TODO: Authenticate
 
         // Initialize API
-        $api_controller_name = '\\Controller\\Api\\' . $api_method;
+        $api_controller_name = '\\Controller\\Api\\' . ucfirst($api_method);
         if ( ! class_exists($api_controller_name))
         {
             return $this->jsonError(404, 'API Method Not Found');
