@@ -31,9 +31,12 @@
 {% for bucket in buckets %}
             <tr>
                 <td>
-                    <a href="/bucket/{{ bucket.appkey }}">
-                        {{ bucket.name }}
-                    </a>
+                    <a href="/bucket/{{ bucket.appkey }}">{{ bucket.description ?: bucket.name }}</a>
+{% if bucket.name != bucket.appkey %}
+                    [{{ bucket.appkey }}] <span class="label label-warning">lagecy</span>
+{% else %}
+                    [{{ bucket.name }}]
+{% endif %}
                 </td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.rps > 0 ? '%.2f' | format(bucket.rps) : '-' }}</td>
                 <td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.appkey }}">{{ bucket.records | number_format }}</a></td>
