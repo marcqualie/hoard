@@ -7,7 +7,6 @@ class HoardServiceProvider implements ServiceProviderInterface
 {
 	public $apikey;
 	public $server;
-	public $bucket;
 
 	private $instance;
 
@@ -38,7 +37,7 @@ class HoardServiceProvider implements ServiceProviderInterface
 				throw new Exception('A valid bucket ID must be suplied.');
 			}
 
-			return $this->bucket = $this->instance->getBucket($app['hoard.bucket']);
+			return $this->instance->getBucket($app['hoard.bucket']);
 		});
 	}
 
