@@ -5,11 +5,6 @@ use Silex\ServiceProviderInterface;
 
 class HoardServiceProvider implements ServiceProviderInterface
 {
-	public $apikey;
-	public $server;
-
-	private $instance;
-
 	public function register(Application $app)
 	{
 		$app['hoard'] = $app->share(function() use ($app) {
@@ -24,12 +19,9 @@ class HoardServiceProvider implements ServiceProviderInterface
 				throw new Exception('A valid API Key must be provided.');
 			}
 
-			$this->apikey = $app['hoard.apikey'];
-			$this->server = $app['hoard.server'];
-
-			$this->instance = new \Hoard\Client(array(
-				'server' => $this->server,
-				'apikey' => $this->apikey
+			$instance = new \Hoard\Client(array(
+				'server' => $app['hoard.server'],
+				'apikey' => $app['hoard.apikey']
 			));
 
 			if (!isset($app['hoard.bucket']))
@@ -37,7 +29,7 @@ class HoardServiceProvider implements ServiceProviderInterface
 				throw new Exception('A valid bucket ID must be suplied.');
 			}
 
-			return $this->instance->getBucket($app['hoard.bucket']);
+			return $instance->getBucket($app['hoard.bucket']);
 		});
 	}
 
