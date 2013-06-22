@@ -14,6 +14,7 @@ class Stats extends Base\Page {
     private $bucket_id;
     private $bucket;
     private $event;
+    private $query = array();
 
     public function req_get ()
     {
@@ -34,7 +35,9 @@ class Stats extends Base\Page {
 
         // Custom Queries
         $query = $this->app->request->get('query');
-        $this->query = json_decode($query, true) ?: null;
+        if (is_string($query)) {
+            $this->query = json_decode($query, true) ?: null;
+        }
 
         // Verify input (TODO: Stronger validation and conversion)
         $period = $this->app->request->get('period') ?: false;

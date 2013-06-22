@@ -34,7 +34,9 @@ class Stats extends \Controller\Base\Api {
 
         // Custom Queries
         $query = $this->app->request->get('query');
-        $this->query = json_decode($query, true) ?: null;
+        if (is_string($query)) {
+            $this->query = json_decode($query, true) ?: null;
+        }
 
         // Verify input (TODO: Stronger validation and conversion)
         $period = $this->app->request->get('period') ?: false;
