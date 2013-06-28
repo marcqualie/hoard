@@ -8,6 +8,7 @@ class ApiResponse {
     public $code = 200;
     public $data = array();
     public $meta = array();
+    public $debug = array();
     public $error = null;
 
 

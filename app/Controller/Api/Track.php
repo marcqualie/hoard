@@ -2,6 +2,8 @@
 
 namespace Controller\Api;
 use Model\Bucket;
+use Hoard\Payload;
+use Exception;
 
 class Track extends \Controller\Base\Api {
 
@@ -17,53 +19,52 @@ class Track extends \Controller\Base\Api {
     public function exec ()
     {
 
-        // Get JSON Body
-        $postBody = file_get_contents('php://input');
-        if (! $postBody) {
-            return $this->error('No data', 500);
-        }
-        $payload = json_decode($postBody, true);
+        $debug = $this->app->request->get('debug') ? true : false;
 
-        // Sort Default Meta Data
-        $meta = array_merge(
-            array(
-                'time' => time()
-            ),
-            isset($payload['meta']) ? $payload['meta'] : array()
-        );
+        // Get JSON Body
+        if ($this->app->request->getMethod() === 'POST') {
+            $postBody = file_get_contents('php://input');
+            if (! $postBody) {
+                return $this->error('No data', 500);
+            }
+            $payload_data = json_decode($postBody, true);
+        } else {
+            $payload_data = json_decode($this->app->request->get('payload') ?: '', true);
+        }
+
+        // Convert into standardized payload
+        $payload = new Payload($payload_data);
+        if (! $payload->isVersionSupported()) {
+            return $this->error('Payload version ' . $payload->version . ' not supported');
+        }
 
         // Verify Bucket Credentials
-        if (! isset($payload['bucket'])) {
+        if (! $payload->bucket) {
             return $this->error('No Bucket name specified', 500);
         }
-        $bucket_id = $payload['bucket'];
+        $bucket_id = $payload->bucket;
         $bucket = Bucket::findById($bucket_id);
         if ($bucket === null) {
             return $this->error('Invalid Bucket Name');
         }
 
         // Verify Event Credentials
-        if (! $payload['event']) {
+        if (! $payload->event) {
             return $this->error('No event specified');
-        }
-
-        // Run some checks on data
-        if (! isset($payload['data'])) {
-            $payload['data'] = array();
         }
 
         // Save Event
         $insert = array();
-        $insert['t'] = new \MongoDate($meta['time']);
-        $insert['e'] = $payload['event'];
-        $insert['d'] = $payload['data'];
+        $insert['t'] = $payload->time;
+        $insert['e'] = $payload->event;
+        $insert['d'] = $payload->data;
 
         // Save Data to log
         $id = null;
         try {
             $collection = $this->app->mongo->selectCollection($bucket->event_collection);
             $collection->insert($insert);
-            $id = $insert['_id'];
+            $id = (String) $insert['_id'];
         }
 
         // Could not connect (this is where queue will be needed)
@@ -73,14 +74,17 @@ class Track extends \Controller\Base\Api {
         }
 
         // Output Results
-        return array(
+        $output = array(
             'data' => array(
                 'id' => $id
-            ),
-            'meta' => array(
-                'payload' => $payload
             )
         );
+        if ($debug) {
+            $output['debug'] = array(
+                'payload' => $payload->asArray()
+            );
+        }
+        return $output;
 
     }
 

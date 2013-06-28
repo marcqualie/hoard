@@ -77,11 +77,14 @@ class Page
             $code
         );
     }
-    public function json (array $data, $code = 200, array $meta = array())
+    public function json (array $data, $code = 200, array $meta = array(), array $debug = array())
     {
         header('Content-Type: text/json');
         $out = array();
         $out['time'] = 0;
+        if ($debug) {
+            $out['debug'] = $debug;
+        }
         if ($meta)
         {
             $out['meta'] = $meta;

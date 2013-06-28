@@ -36,7 +36,8 @@ class Api extends Base\Page {
         return $this->json(
             $response->data,
             $response->code,
-            $response->meta
+            $response->meta,
+            $response->debug
         );
 
     }
