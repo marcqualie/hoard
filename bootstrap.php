@@ -3,8 +3,8 @@
 date_default_timezone_set('UTC');
 
 // Include Dependencies
-define('DOCROOT', __DIR__);
-include DOCROOT . '/vendor/autoload.php';
+defined('DOCROOT') || define('DOCROOT', __DIR__);
+include_once DOCROOT . '/vendor/autoload.php';
 
 // Environment
 $app = new Hoard\Application();
@@ -26,9 +26,9 @@ $app->error(function ($e, $code) use ($app) {
 });
 
 // Cookies
-define('COOKIE_DOMAIN', $app->request->getHost());
-define('COOKIE_SECURE', false);
-define('COOKIE_HTTP', true);
+defined('COOKIE_DOMAIN') || define('COOKIE_DOMAIN', $app->request->getHost());
+defined('COOKIE_SECURE') || define('COOKIE_SECURE', false);
+defined('COOKIE_HTTP') || define('COOKIE_HTTP', true);
 
 // Connect to MongoDB
 $mongo_client = new MongoMinify\Client(

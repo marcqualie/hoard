@@ -1,6 +1,8 @@
 <?php
 
 namespace Hoard;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JSONResponse;
 
 class Router {
 
@@ -41,9 +43,14 @@ class Router {
         $page->controller = $method;
         $page->config = $app->config;
         $page->before();
-        $page->{ 'req_' . $app->request->getMethod() }();
+        $response = $page->{ 'req_' . $app->request->getMethod() }();
         $page->after();
         $page->template = 'Page/' . ucfirst($page->view) . '.twig';
+
+        // JSON Responses Don't need Twig
+        if ($response instanceof JsonResponse) {
+            return $response->send();
+        }
 
         // Sort out variables
         $twig_variables = $page->var;

@@ -37,4 +37,4 @@ if (php_sapi_name() === 'cli-server')
 }
 
 // Run Application
-$app->run();
+return $app->run();

@@ -3,9 +3,10 @@
 namespace Hoard;
 use Symfony\Component\HttpFoundation\Request;
 
-class Application {
+class Application
+{
 
-    public static $version      = '0.0.1';
+    public static $version = '0.0.1';
     public static $app;
 
     public $env = 'development';
@@ -35,8 +36,8 @@ class Application {
         // Authentication
         $this->auth->check();
 
-        // Server page
-        $this->router->render($this);
+        // Serve page and return response instance
+        return $this->router->render($this);
 
     }
 

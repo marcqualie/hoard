@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller\Base;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class Page
 {
@@ -79,7 +80,6 @@ class Page
     }
     public function json (array $data, $code = 200, array $meta = array(), array $debug = array())
     {
-        header('Content-Type: text/json');
         $out = array();
         $out['time'] = 0;
         if ($debug) {
@@ -95,8 +95,9 @@ class Page
             unset($data['$error']);
         }
         $out['data'] = $data;
-        echo json_encode($out);
-        exit;
+        $response = new JsonResponse();
+        $response->setData($out);
+        return $response;
     }
 
 }
