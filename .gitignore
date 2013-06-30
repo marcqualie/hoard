@@ -2,3 +2,8 @@
 /vendor
 /bootstrap
 /composer.phar
+
+# Configuration
+/app/Config/*
+!/app/Config/default.php
+!/app/Config/testing.php

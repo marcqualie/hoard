@@ -9,7 +9,7 @@ include DOCROOT . '/vendor/autoload.php';
 // Environment
 $app = new Hoard\Application();
 $app->env = getenv('APP_ENV') ?: 'development';
-$app->config = Hoard\Config::load('default');
+$app->config = Hoard\Config::instance()->load($app->env);
 
 // Error Handling
 $app->error(function ($e, $code) use ($app) {
