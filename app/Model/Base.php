@@ -1,6 +1,7 @@
 <?php
 
 namespace Model;
+use Utils;
 
 class Base
 {
@@ -8,14 +9,20 @@ class Base
     public static $collection;
 
     protected $app;
-    public $id = null;
     protected $data;
 
     public function __construct(array $data = array())
     {
         if ($data) {
-            $this->id = isset($data['_id']) ? $data['_id'] : null;
             $this->data = $data;
+        }
+        if ($this->id) {
+            $data = self::getApp()->mongo->selectCollection(static::$collection)->findOne(array(
+                '_id' => $this->id
+            ));
+            if (! empty($data['_id'])) {
+                $this->data = Utils::array_merge_recursive_distinct($data, $this->data);
+            }
         }
         $this->init();
     }
@@ -35,6 +42,9 @@ class Base
      */
     public function __get($field)
     {
+        if ($field === 'id') {
+            $field = '_id';
+        }
         if (isset($this->data[$field])) {
             return $this->data[$field];
         }
@@ -42,6 +52,9 @@ class Base
     }
     public function __isset($field)
     {
+        if ($field === 'id') {
+            $field = '_id';
+        }
         return isset($this->data[$field]);
     }
 
@@ -53,6 +66,9 @@ class Base
      */
     public function __set($field, $value)
     {
+        if ($field === 'id') {
+            $field = '_id';
+        }
         $this->data[$field] = $value;
         return $value;
     }
@@ -95,9 +111,17 @@ class Base
         if (empty($document['_id'])) {
             $document['_id'] = $this->generateId();
         }
+        if (empty($document['created'])) {
+            $document['created'] = new \MongoDate();
+        }
+        $document['updated'] = new \MongoDate();
         $collection = self::getApp()->mongo->selectCollection(static::$collection);
         $save = $collection->save($document);
-        return isset($save['ok']) && (int) $save['ok'] === 1 ? true : false;
+        if (isset($save['ok']) && (int) $save['ok'] === 1) {
+            $this->data = $document;
+            return true;
+        }
+        return false;
     }
 
 
