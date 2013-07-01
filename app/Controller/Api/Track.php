@@ -25,7 +25,7 @@ class Track extends \Controller\Base\Api {
         if ($this->app->request->getMethod() === 'POST') {
             $postBody = file_get_contents('php://input');
             if (! $postBody) {
-                return $this->error('No data', 500);
+                return $this->error('No data', 400);
             }
             $payload_data = json_decode($postBody, true);
         } else {
@@ -38,19 +38,19 @@ class Track extends \Controller\Base\Api {
             return $this->error('Payload version ' . $payload->version . ' not supported');
         }
 
+        // Verify Event Credentials
+        if (! $payload->event) {
+            return $this->error('No Event specified', 400);
+        }
+
         // Verify Bucket Credentials
         if (! $payload->bucket) {
-            return $this->error('No Bucket name specified', 500);
+            return $this->error('No Bucket specified', 400);
         }
         $bucket_id = $payload->bucket;
         $bucket = Bucket::findById($bucket_id);
         if ($bucket === null) {
-            return $this->error('Invalid Bucket Name');
-        }
-
-        // Verify Event Credentials
-        if (! $payload->event) {
-            return $this->error('No event specified');
+            return $this->error('Invalid Bucket', 404);
         }
 
         // Save Event
