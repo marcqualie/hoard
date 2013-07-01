@@ -33,7 +33,7 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?test=1&payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
 
@@ -66,14 +66,14 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?test=1&payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
 
         // Update alias and do it again
         $bucket->alias = array('test-bucket-3');
         $bucket->save();
-        $response = $this->makeRequest('GET', '/api/track?test=1&payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertEquals($data['error']['code'], 500);
         $this->assertEquals($data['error']['message'], 'Invalid Bucket Name');
@@ -81,9 +81,32 @@ class TrackingTest extends TestCase
         // Musical bucket alias's!
         $bucket->alias = array('test-bucket-2');
         $bucket->save();
-        $response = $this->makeRequest('GET', '/api/track?test=1&payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
+
+    }
+
+
+    /**
+     * Make sure non-existing buckets are caught
+     */
+    public function testNonExistingBucketPayload()
+    {
+
+        // Create payload
+        $payload = array(
+            'v' => 1,
+            'b' => 'non-existing-bucket',
+            'e' => 'test-event',
+            'd' => array()
+        );
+
+        // Make request
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals($data['error']['code'], 500);
+        $this->assertEquals($data['error']['message'], 'Invalid Bucket Name');
 
     }
 
