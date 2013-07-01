@@ -110,4 +110,26 @@ class TrackingTest extends TestCase
 
     }
 
+
+    /**
+     * A Bucket param must be passed as part of the payload
+     */
+    public function testNoBucketPayload()
+    {
+
+        // Create payload
+        $payload = array(
+            'v' => 1,
+            'e' => 'test-event',
+            'd' => array()
+        );
+
+        // Make request
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals($data['error']['code'], 500);
+        $this->assertEquals($data['error']['message'], 'No Bucket name specified');
+
+    }
+
 }
