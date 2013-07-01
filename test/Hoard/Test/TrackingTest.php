@@ -75,8 +75,8 @@ class TrackingTest extends TestCase
         $bucket->save();
         $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals($data['error']['code'], 500);
-        $this->assertEquals($data['error']['message'], 'Invalid Bucket Name');
+        $this->assertEquals($data['error']['code'], 404);
+        $this->assertEquals($data['error']['message'], 'Invalid Bucket');
 
         // Musical bucket alias's!
         $bucket->alias = array('test-bucket-2');
@@ -105,8 +105,8 @@ class TrackingTest extends TestCase
         // Make request
         $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals($data['error']['code'], 500);
-        $this->assertEquals($data['error']['message'], 'Invalid Bucket Name');
+        $this->assertEquals($data['error']['code'], 404);
+        $this->assertEquals($data['error']['message'], 'Invalid Bucket');
 
     }
 
@@ -127,8 +127,30 @@ class TrackingTest extends TestCase
         // Make request
         $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals($data['error']['code'], 500);
-        $this->assertEquals($data['error']['message'], 'No Bucket name specified');
+        $this->assertEquals($data['error']['code'], 400);
+        $this->assertEquals($data['error']['message'], 'No Bucket specified');
+
+    }
+
+
+    /**
+     * An Event param must be passed as part of the payload
+     */
+    public function testNoEventPayload()
+    {
+
+        // Create payload
+        $payload = array(
+            'v' => 1,
+            'b' => 'test-bucket',
+            'd' => array()
+        );
+
+        // Make request
+        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals($data['error']['code'], 400);
+        $this->assertEquals($data['error']['message'], 'No Event specified');
 
     }
 
