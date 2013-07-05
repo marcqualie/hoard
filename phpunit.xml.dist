@@ -10,7 +10,11 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">lib</directory>
+            <directory suffix=".php">app</directory>
+            <directory suffix=".php">public</directory>
         </whitelist>
+        <blacklist>
+            <directory suffix=".php">vendor</directory>
+        </blacklist>
     </filter>
 </phpunit>

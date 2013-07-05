@@ -56,12 +56,18 @@ class Config {
         };
 
         // Load File
-        $data = array();
         $file = dirname(__DIR__) . '/Config/' . $name . '.php';
         if (file_exists($file)) {
-            $data = include $file;
+            return include $file;
         }
-        return $data;
+
+        // Fall back to distribution file
+        if (file_exists($file . '.dist')) {
+            return include $file . '.dist';
+        }
+
+        // Could not find any files, major fail
+        return array();
     }
 
 
