@@ -2,13 +2,15 @@
 
 Hoard is an Event Based Storage Engine built ontop of MongoDB
 
+[![Build Status](https://travis-ci.org/marcqualie/hoard.png?branch=master)](https://travis-ci.org/marcqualie/hoard)
+
 
 ## Install
 
     bin/cli install
 
 
-# Running Locally
+## Running Locally
 
 The easiest way is to run the built-in web server that comes with PHP 5.4
 
@@ -17,7 +19,7 @@ The easiest way is to run the built-in web server that comes with PHP 5.4
 You can also run via any standard web browser such as Nginx or Apache. Simply use "public" as the webroot.
 
 
-## Clients
+## Clients
 
 - PHP - [marcqualie/hoard-php-client](https://github.com/marcqualie/hoard-php-client)
 - Tail - [marcqualie/hoard-tail-client](https://github.com/marcqualie/hoard-tail-client)
