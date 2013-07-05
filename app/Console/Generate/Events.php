@@ -26,10 +26,12 @@ class Events extends \Console\Command
         $request_count = $dialog->ask($output, 'Number of Events: ', 10000);
 
         // Assert Fake Bucket
-        $id = 'demo-bucket';
+        $id = '51cd6e83c2cea';
+        $alias = 'demo-bucket';
         $data = array(
+            '_id' => $id,
             'alias' => array(
-                $id
+                $alias
             ),
             'description' => 'Demo Bucket',
             'roles' => array(
@@ -58,25 +60,26 @@ class Events extends \Console\Command
         while ($run && $count < $request_count)
         {
             $event = $events[array_rand($events)];
-            $post = array(
-                'appkey' => $id,
-                'format' => 'json',
-                'data' => json_encode(array(
+            $post = json_encode(array(
+                'v' => 1,
+                'b' => $alias,
+                'e' => $event,
+                'd' => array(
                     'name' => $faker->name,
                     'gender' => rand(0, 1) === 1 ? 'male' : 'female',
                     'country' => $faker->countryCode,
-                    'response_time' => rand(1, 1200),
+                    'response_time' => rand(1, 1200)
                 )
             ));
-            $ch = curl_init('http://' . $hoard_host . '/track?event=' . $event);
+            $ch = curl_init('http://' . $hoard_host . '/api/track');
             curl_setopt_array($ch, array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => $post,
+                CURLOPT_POSTFIELDS => $post
             ));
-            curl_exec($ch);
+            $response = curl_exec($ch);
             $count++;
-            echo "\rCount: " . number_format($count) . '  ';
+            echo "\rCount: " . str_pad(number_format($count), 10, ' ', STR_PAD_RIGHT) . '  ' . $response . '  ';
             usleep(rand(100, 10000));
         }
 
