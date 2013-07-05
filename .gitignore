@@ -7,3 +7,4 @@
 /app/Config/*
 !/app/Config/default.php
 !/app/Config/testing.php
+!/app/Config/*.dist
