@@ -34,7 +34,7 @@
                     <a href="/bucket/{{ bucket.id }}">{{ bucket.description }}</a>
                 </td>
                 <td class="align-center hidden-sm" width="130">
-                    <a href="/bucket/{{ bucket.id }}" style="font-family:monospace" data-toggle="tooltip" title="{{ bucket.alias | join(', ') }}">{{ bucket.id }}</a>
+                    <span href="/bucket/{{ bucket.id }}" style="font-family:monospace" data-toggle="tooltip" title="{{ bucket.alias | join(', ') }}">{{ bucket.alias[0] }}</span>
                 </td>
                 <td width="100" class="align-center hidden-sm">{{ bucket.rps > 0 ? '%.2f' | format(bucket.rps) : '-' }}</td>
                 <td width="100" class="align-center"><a href="/viewer/#bucket={{ bucket.id }}">{{ bucket.records | number_format }}</a></td>

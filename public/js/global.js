@@ -8,7 +8,7 @@ window.app = {};
         e.stopPropagation();
     });
     $(document).tooltip({
-        'selector': 'a[data-toggle=tooltip]'
+        'selector': '*[data-toggle=tooltip]'
     });
 });
 
