@@ -26,7 +26,7 @@ class Reports extends Base\Page
                 ->sort(array(
                     'name' => 1
                 ))
-                ->as_array();
+                ->asArray();
             foreach ($reports as $index => $report)
             {
                 $report['last_report'] = $this->app->mongo->selectCollection('report_' . (String) $report['_id'])

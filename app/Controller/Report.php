@@ -25,7 +25,7 @@ class Report extends Base\Page
                 ->selectCollection('report_' . (String) $report['_id'])
                 ->find()
                 ->sort(array('_id' => -1))
-                ->as_array();
+                ->asArray();
             foreach ($report['runs'] as $index => $run)
             {
                 $run['bucket'] = $this->app->mongo
