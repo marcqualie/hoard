@@ -6,7 +6,7 @@ class User extends Base
 {
 
     public static $collection = 'user';
-    public $apikey_limit = 5;
+    public $apikey_limit = 10;
 
     /**
      * User Schema

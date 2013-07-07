@@ -15,6 +15,7 @@ class Account extends Base\Page {
         switch ($action) {
             case 'create-apikey':
                 $this->app->auth->user->createApiKey();
+                $this->app->redirect('/account/');
                 break;
             case 'update-apikey':
                 $this->app->auth->user->updateApiKey(array(
