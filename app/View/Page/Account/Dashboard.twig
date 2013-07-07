@@ -2,7 +2,7 @@
 
     <div class="row">
 
-        <div class="col col-lg-8">
+        <div class="col col-lg-12">
             <div class="clearfix">
                 <div class="pull-left">
                     <h4>My API Keys ( {{ apikeys | length }} / {{ user.apikey_limit }} )</h4>
@@ -13,18 +13,21 @@
 {% endif %}
                 </div>
             </div>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped table-condensed">
                 <thead>
                     <tr>
-                        <th>Key</th>
+                        <th class="align-center">Key</th>
+                        <th class="align-center">Name</th>
                         <th class="align-center">Requests</th>
-                        <th class="align-center" width="100">Status</th>
-                        <th width="200">Created</th>
+                        <th class="align-center" width="64">Status</th>
+                        <th class="align-center" width="200">Created</th>
+                        <th width="50"/>
                     </tr>
                 </thead>
 {% for key, data in apikeys %}
                 <tr>
-                    <td>{{ key }}</td>
+                    <td width="120"><code>{{ key }}</code></td>
+                    <td class="align-center">{{ data.name ?: key }}</td>
                     <td class="align-center">{{ data.requests }}</td>
                     <td class="align-center">
 {% if data.active %}
@@ -33,7 +36,8 @@
                         <span class="label">inactive</span>
 {% endif %}
                     </td>
-                    <td>{{ data.created.sec | date('Y-m-d H:i:s') }}</td>
+                    <td class="align-center">{{ data.created.sec | date('Y-m-d H:i:s') }}</td>
+                    <td><a class="btn btn-primary btn-small"><span class="icon-edit"></span> edit</a></td>
                 </tr>
 {% endfor %}
             </table>

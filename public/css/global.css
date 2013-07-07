@@ -7,7 +7,9 @@ html, body {
 body {
 	padding-top: 70px;
 }
-
+.table > tbody > tr > td, .table > thead > tr > th {
+	vertical-align: middle;
+}
 
 /**
  * Classes
