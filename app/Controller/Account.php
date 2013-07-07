@@ -16,6 +16,14 @@ class Account extends Base\Page {
             case 'create-apikey':
                 $this->app->auth->user->createApiKey();
                 break;
+            case 'update-apikey':
+                $this->app->auth->user->updateApiKey(array(
+                    'id' => $this->app->request->get('id'),
+                    'name' => $this->app->request->get('name'),
+                    'active' => $this->app->request->get('active'),
+                ));
+                return $this->json(array('ok' => 1));
+                break;
         }
 
         // Get API Keys

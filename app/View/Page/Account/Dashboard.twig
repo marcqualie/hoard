@@ -25,11 +25,11 @@
                     </tr>
                 </thead>
 {% for key, data in apikeys %}
-                <tr>
+                <tr id="key-{{ key }}">
                     <td width="120"><code>{{ key }}</code></td>
-                    <td class="align-center">{{ data.name ?: key }}</td>
+                    <td class="align-center key-name">{{ data.name ?: key }}</td>
                     <td class="align-center">{{ data.requests }}</td>
-                    <td class="align-center">
+                    <td class="align-center key-active" data-active="{{ data.active ? 1 : 0 }}">
 {% if data.active %}
                         <span class="label label-success">active</span>
 {% else %}
@@ -37,7 +37,7 @@
 {% endif %}
                     </td>
                     <td class="align-center">{{ data.created.sec | date('Y-m-d H:i:s') }}</td>
-                    <td><a class="btn btn-primary btn-small"><span class="icon-edit"></span> edit</a></td>
+                    <td><a class="btn btn-primary btn-small" href="javascript:EditApiKey('{{ key }}')"><span class="icon-edit"></span> edit</a></td>
                 </tr>
 {% endfor %}
             </table>
@@ -47,3 +47,57 @@
 
 </div>
 
+
+
+<!-- Editing Modal -->
+<script>
+var ApiKeyBeingEdited = null;
+function EditApiKey(key) {
+    ApiKeyBeingEdited = key;
+    var modal = $('#EditModal');
+    modal.modal('show');
+    var tr = $('#key-' + ApiKeyBeingEdited);
+    modal.find('[name=key-name]').val(tr.find('.key-name').html());
+    modal.find('[name=key-active]')[0].checked = tr.find('.key-active').attr('data-active') === '1' ? true : false;
+}
+function SaveApiKey() {
+    if (ApiKeyBeingEdited) {
+        var modal = $('#EditModal');
+        var form = $('#EditModal form');
+        var tr = $('#key-' + ApiKeyBeingEdited);
+        var data = {
+            id: ApiKeyBeingEdited,
+            name: form.find('[name=key-name]').val(),
+            active: form.find('[name=key-active]')[0].checked ? 1 : 0
+        }
+        $.post('/account/?action=update-apikey', data, function () {
+            location.reload();
+        });
+    }
+}
+</script>
+<div class="modal fade" id="EditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="javascript:void(0)" onsubmit="SaveApiKey()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Edit API Key</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="key-name" placeholder="API Key Name"/>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="key-active"/>
+                            Enable
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

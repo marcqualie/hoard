@@ -61,11 +61,38 @@ class User extends Base
             $key = substr(sha1(uniqid() . uniqid() . uniqid()), 0, 24);
             $apikeys = $this->apikeys;
             $apikeys[$key] = array(
+                'name' => $key,
                 'active' => true,
                 'requests' => 0,
                 'buckets' => array(),
-                'created' => new \MongoDate()
+                'created' => new \MongoDate(),
+                'updated' => new \MongoDate()
             );
+            $this->apikeys = $apikeys;
+            $this->save();
+        }
+    }
+
+
+    /**
+     * Update API Key
+     */
+    public function updateApiKey(array $data = array())
+    {
+        $update = array();
+        if (! isset($data['id'])) {
+            throw new \Exception('Invalid API Key');
+        }
+        $id = $data['id'];
+        $apikeys = $this->apikeys;
+        if (isset($data['name'])) {
+            $apikeys[$id]['name'] = $data['name'];
+        }
+        if (isset($data['active'])) {
+            $apikeys[$id]['active'] = (int) $data['active'] ? true : false;
+        }
+        if ($apikeys !== $this->apikeys) {
+            $apikeys[$id]['updated'] = new \MongoDate();
             $this->apikeys = $apikeys;
             $this->save();
         }
