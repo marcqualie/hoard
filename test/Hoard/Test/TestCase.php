@@ -3,6 +3,7 @@
 namespace Hoard\Test;
 use MongoMinify\Client;
 use Model\Bucket;
+use Model\User;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -11,12 +12,21 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $client;
     protected $mongo;
     protected $server;
+    protected $apikey;
 
 
     public function __construct()
     {
 
         $this->approot = dirname(dirname(dirname(__DIR__)));
+
+        // Create user
+        $user = User::create(array(
+            'email' => 'test@hoardhq.com'
+        ));
+        $apikey = $user->createApiKey();
+        $apikeys = array_keys($user->apikeys);
+        $this->apikey = $apikeys[0];
 
         // Create Environment
         $db = $this->getDb();
@@ -69,6 +79,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         // Query string
         if (isset($parsed['query'])) {
             parse_str(html_entity_decode($parsed['query']), $query);
+            $query['apikey'] = $this->apikey;
             $_GET = $query;
             $_POST = array();
         }
