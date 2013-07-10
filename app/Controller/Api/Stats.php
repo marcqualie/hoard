@@ -14,6 +14,7 @@ class Stats extends \Controller\Base\Api {
     private $bucket_id;
     private $bucket;
     private $event;
+    private $query = array();
 
     public function exec ()
     {
@@ -21,11 +22,11 @@ class Stats extends \Controller\Base\Api {
         // Get bucket
         $this->bucket_id = $this->app->request->get('bucket');
         if (! $this->bucket_id) {
-            return $this->jsonError('No bucket specified');
+            return $this->error('No bucket specified');
         }
         $this->bucket = Bucket::findById($this->bucket_id);
         if (! $this->bucket) {
-            return $this->jsonError('Invalid Bucket ID', 404);
+            return $this->error('Invalid Bucket ID', 404);
         }
         $this->collection = $this->app->mongo->selectCollection($this->bucket->event_collection);
 
