@@ -5,9 +5,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Console\Command;
 use Model\Bucket;
 
-class Events extends \Console\Command
+class Events extends Command
 {
 
     protected function configure()
@@ -71,7 +72,7 @@ class Events extends \Console\Command
                     'response_time' => rand(1, 1200)
                 )
             ));
-            $ch = curl_init('http://' . $hoard_host . '/api/track');
+            $ch = curl_init('http://' . $hoard_host . '/api/track?apikey=' . $this->apikey);
             curl_setopt_array($ch, array(
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST => true,
