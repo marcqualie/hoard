@@ -36,6 +36,7 @@ class Page
     // Initialize
     public function __construct($app)
     {
+        $this->timer_start = microtime(true);
         $this->app = $app;
     }
 
@@ -81,7 +82,7 @@ class Page
     public function json (array $data, $code = 200, array $meta = array(), array $debug = array())
     {
         $out = array();
-        $out['time'] = 0;
+        $out['time'] = round((microtime(true) - $this->timer_start) * 1000);
         if ($debug) {
             $out['debug'] = $debug;
         }
