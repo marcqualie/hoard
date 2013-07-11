@@ -21,7 +21,7 @@ class User extends Base\Page
             header('Location: /');
             exit;
         }
-        $this->set('user', $this->user);
+        $this->set('u', $this->user);
 
     }
 
@@ -61,26 +61,21 @@ class User extends Base\Page
         if ($action === 'grant-app-access')
         {
 
-            $bucket = $_POST['bucket'];
-            if (!$bucket)
+            $bucket_id = $this->app->request->get('bucket');
+            if (! $bucket_id)
             {
-                return $this->alert('You need to select an appkey', 'danger');
+                return $this->alert('You need to select a Bucket', 'danger');
             }
-            $app = $this->app->mongo->selectCollection('app')->findOne(array('appkey' => $bucket));
-            if ( ! $app['_id'])
-            {
-                return $this->alert('Invalid Application', 'danger');
+            $bucket = BucketModel::findById($bucket_id);
+            if (! $bucket) {
+                return $this->alert('Invalid Bucket ID', 'danger');
             }
-            $role = $_POST['role'];
-            if (!in_array($role, array('read', 'write', 'admin', 'owner')))
-            {
+            $role = $this->app->request->get('role');
+            if (! in_array($role, array('read', 'write', 'admin', 'owner'))) {
                 return $this->alert('Invalid Role. Please select read, write, admin or owner', 'danger');
             }
-            $this->app->mongo->selectCollection('app')->update(
-                array('appkey' => $bucket),
-                array('$set' => array('roles.' . $this->id => $role))
-            );
-            $this->alert('<strong>' . $this->user['email'] . '</strong> was granted <strong>' . $role . '</strong> permission to <strong>' . $app['name'] . '</strong>');
+            $bucket->addRole($this->id, $role);
+            $this->alert('<strong>' . $this->user->email . '</strong> was granted <strong>' . $role . '</strong> permission to <strong>' . $bucket->id . '</strong>');
         }
 
         // Change Password
@@ -109,7 +104,7 @@ class User extends Base\Page
         $this->set('buckets', BucketModel::find());
 
         // Applications for this user
-        $this->set('user_buckets', $this->app->auth->user->getBuckets());
+        $this->set('user_buckets', $this->user->getBuckets());
 
     }
 

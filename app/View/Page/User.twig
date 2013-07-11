@@ -8,19 +8,19 @@
             <table class="table table-bordered table-condensed table-striped">
                 <tr>
                     <td>ID</td>
-                    <td>{{ user.id }}</td>
+                    <td>{{ u.id }}</td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td>{{ user.email }}</td>
+                    <td>{{ u.email }}</td>
                 </tr>
             </table>
 
             <br/>
             <h4>API Keys</h4>
-{% if user.apikeys %}
+{% if u.apikeys %}
             <table class="table table-bordered table-condensed table-striped">
-{% for key, data in user.apikeys %}
+{% for key, data in u.apikeys %}
                 <tr>
                     <td>{{ key }}</td>
                     <td>{{ data.requests }}</td>

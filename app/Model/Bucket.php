@@ -94,4 +94,16 @@ class Bucket extends Base
         );
     }
 
+
+    /**
+     * Add Role
+     */
+    public function addRole($user_id, $role)
+    {
+        $roles = $this->roles;
+        $roles[$user_id] = $role;
+        $this->roles = $roles;
+        $this->save();
+    }
+
 }
