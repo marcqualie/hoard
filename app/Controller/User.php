@@ -81,18 +81,17 @@ class User extends Base\Page
         // Change Password
         if ($action === 'change-password')
         {
-            $password = $_POST['password'];
-            if ( ! $password || strlen($password) < 4)
-            {
+            $password = $this->app->request->get('password');
+            if (! $password || strlen($password) < 4) {
                 return $this->alert('Password must be >= 4 chars', 'danger');
             }
-            $password_hash = $this->app->auth->password($password);
-            $this->user['password'] = $password_hash;
-            $this->app->mongo->selectCollection('user')->update(
-                array('_id' => new \MongoId($this->id)),
-                array('$set' => array('password' => $password_hash))
-            );
-            $this->alert('Password updated', 'success');
+            $saved = $this->user->setPassword($password);
+            if ($saved === 0) {
+                $this->user->save();
+                $this->alert('Password updated', 'success');
+            } else {
+                $this->alert($saved, 'danger');
+            }
         }
 
     }

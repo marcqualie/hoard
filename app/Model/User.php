@@ -99,4 +99,18 @@ class User extends Base
     }
 
 
+    /**
+     * Helper for updating user passwords
+     */
+    public function setPassword($password)
+    {
+        if (strlen($password) < 4) {
+            return 'Password must be longer than 4 chars';
+        }
+        $this->password = $this->getApp()->auth->password($password);
+        $this->save();
+        return 0;
+    }
+
+
 }
