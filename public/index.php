@@ -1,5 +1,15 @@
 <?php
 
+// Check existence of dependencies
+if (! is_dir(dirname(__DIR__) . '/vendor')) {
+    echo "<br/>";
+    echo "&nbsp;&nbsp;<strong>Oh, no!</strong> It doesn't look like composer is installed. Please run:";
+    echo "<br/><br/>";
+    echo "<span style='color:#090'>&nbsp;&nbsp;&nbsp;&nbsp;curl -s https://getcomposer.org/installer | php && php composer.phar install --dev</span>";
+    exit;
+}
+
+// Get environment
 ignore_user_abort(true);
 $app = include dirname(__DIR__) . '/bootstrap.php';
 
