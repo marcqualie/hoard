@@ -15,8 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Hoard\\Test": "test",
-            "": "app"
+            "": ["app", "test"]
         }
     }
 }
