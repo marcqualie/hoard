@@ -6,14 +6,14 @@
             <form action="/bucket/{{ bucket.id }}/save" method="post">
                 <div class="input-group" style="margin-bottom:10px">
                     <span class="input-group-addon input-small" style="width:100px">Alias</span>
-                    <input type="text" name="alias" class="input-small" value="{{ bucket.alias | join(', ') }}"/>
+                    <input type="text" name="alias" class="input-small form-control" value="{{ bucket.alias | join(', ') }}"/>
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-default btn-small">Save</button>
                     </span>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon input-small" style="width:100px">Description</span>
-                    <input type="text" name="description" class="input-small" value="{{ bucket.description }}"/>
+                    <input type="text" name="description" class="input-small form-control" value="{{ bucket.description }}"/>
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-default btn-small">Save</button>
                     </span>
