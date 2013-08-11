@@ -48,8 +48,7 @@ class Track extends Base\Page
                 );
         }
         $bucket_id = trim($bucket_id);
-        if (! $bucket_id)
-        {
+        if (! $bucket_id) {
             echo '500 No Bucket ID Specified';
             exit;
         }

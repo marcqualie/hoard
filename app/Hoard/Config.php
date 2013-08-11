@@ -3,9 +3,8 @@
 namespace Hoard;
 use Utils;
 
-class Config {
-
-
+class Config
+{
     /**
      * Get Instance
      */
@@ -17,9 +16,9 @@ class Config {
         }
         $instance = new Config();
         self::$instances[$name] = $instance;
+
         return $instance;
     }
-
 
     /**
      * Load configuration file
@@ -38,9 +37,9 @@ class Config {
 
         // Read from file
         $this->data = $this->loadByName($name);
+
         return $this->data;
     }
-
 
     /**
      * Load file by name
@@ -52,6 +51,7 @@ class Config {
         $self = $this;
         $extend = function ($name, $data) use ($self) {
             $original = $self->loadByName($name);
+
             return is_array($original) ? Utils::array_merge_recursive_distinct($original, $data) : $data;
         };
 
@@ -70,7 +70,6 @@ class Config {
         return array();
     }
 
-
     /**
      * Read config data
      */
@@ -79,6 +78,7 @@ class Config {
         if (isset($this->data[$key])) {
             return $this->data[$key];
         }
+
         return null;
     }
 

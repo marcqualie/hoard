@@ -5,8 +5,8 @@ use Model\Bucket;
 use Hoard\Payload;
 use Exception;
 
-class Track extends \Controller\Base\Api {
-
+class Track extends \Controller\Base\Api
+{
     private $time_start = 0;
     private $time_end = 0;
     private $time_step = 0;
@@ -84,6 +84,7 @@ class Track extends \Controller\Base\Api {
                 'payload' => $payload->asArray()
             );
         }
+
         return $output;
 
     }

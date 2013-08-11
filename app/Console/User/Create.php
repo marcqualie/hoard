@@ -1,9 +1,7 @@
 <?php
 
 namespace Console\User;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Create extends \Console\Command
@@ -23,8 +21,7 @@ class Create extends \Console\Command
         $collection = $this->app->mongo->selectCollection('user');
 
         $dialog = $this->getHelperSet()->get('dialog');
-        while (empty($email) || ! filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
+        while (empty($email) || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $email = $dialog->ask($output, 'Email Address: ');
         }
 
@@ -33,24 +30,22 @@ class Create extends \Console\Command
         $user = $collection->findOne(array(
             'email' => $email
         ));
-        if (isset($user['_id']))
-        {
+        if (isset($user['_id'])) {
             $output->writeln('<error>This user already exists</error>');
+
             return 1;
         }
 
         // Ask for password
-        while (empty($password))
-        {
+        while (empty($password)) {
             $password = $dialog->askHiddenResponse($output, 'Password: ');
         }
-        while (empty($confirm_password))
-        {
+        while (empty($confirm_password)) {
             $confirm_password = $dialog->askHiddenResponse($output, 'Confirm:  ');
         }
-        if ($password !== $confirm_password)
-        {
+        if ($password !== $confirm_password) {
             $output->writeln('<error>Passwords do not match.</error>');
+
             return 1;
         }
 
@@ -80,7 +75,6 @@ class Create extends \Console\Command
         );
         $collection->insert($user);
         $output->writeln('User created: 1');
-
 
     }
 }

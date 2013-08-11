@@ -2,10 +2,9 @@
 
 namespace Controller\Base;
 
-class Api {
-
+class Api
+{
     public $app;
-
 
     /**
      * Main API Execution Method
@@ -14,7 +13,6 @@ class Api {
     public function exec ()
     {
     }
-
 
     /**
      * Error Message

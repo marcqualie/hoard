@@ -7,8 +7,7 @@ class Dashboard extends Base\Page
 
     public function before ()
     {
-        if ( ! $this->isLoggedIn())
-        {
+        if ( ! $this->isLoggedIn()) {
             header('Location: /login/');
             exit;
         }

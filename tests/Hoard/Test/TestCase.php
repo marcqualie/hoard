@@ -14,7 +14,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $server;
     protected $apikey;
 
-
     public function __construct()
     {
 
@@ -34,14 +33,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     }
 
-
     /**
      * Test setup
      */
     public function setUp()
     {
     }
-
 
     /**
      * Get database instance
@@ -51,9 +48,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->client = new Client();
         $this->mongo = $this->client->selectDb('hoard_test');
+
         return $this->mongo;
     }
-
 
     /**
      * Create a bucket
@@ -61,7 +58,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function createBucket($name)
     {
     }
-
 
     /**
      * Make internal request to http server
@@ -91,6 +87,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         ob_start();
         $response = include $this->approot . '/public/index.php';
         ob_end_clean();
+
         return $response;
     }
 

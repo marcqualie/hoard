@@ -4,29 +4,25 @@ namespace Hoard;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JSONResponse;
 
-class Router {
-
+class Router
+{
     public function render ($app, $method = null, array $vars = array())
     {
 
         // Detect Page Method
-        if ($method === null)
-        {
+        if ($method === null) {
             $uri_full = 'http://' . $app->request->server->get('HTTP_HOST') . $app->request->server->get('REQUEST_URI');
             $uri_path = parse_url($uri_full, PHP_URL_PATH);
             $uri_parts = explode('/', $uri_path);
             array_shift($uri_parts);
             $method = ! empty($uri_parts[0]) ? $uri_parts[0] : 'dashboard';
-        }
-        else
-        {
+        } else {
             $uri_parts = array('error');
         }
 
         // Check if method exists
         $class = 'Controller\\' . ucfirst($method);
-        if ( ! class_exists($class))
-        {
+        if ( ! class_exists($class)) {
             $method = 'error';
             header('HTTP/1.1 404 Not Found');
             $class = 'Controller\\Error';
@@ -36,8 +32,7 @@ class Router {
         $page = new $class($app);
         $page->uri = $uri_parts;
         $page->var = $vars;
-        if ($page->view === null)
-        {
+        if ($page->view === null) {
             $page->view = $method;
         }
         $page->controller = $method;
@@ -76,6 +71,5 @@ class Router {
         echo $twig->render('Layout/Default.twig', $twig_variables);
 
     }
-
 
 }

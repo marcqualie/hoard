@@ -26,7 +26,6 @@ class Application
         }
     }
 
-
     /**
      * Main call to application
      */
@@ -41,7 +40,6 @@ class Application
 
     }
 
-
     /**
      * Error and Exception Handler
      */
@@ -51,14 +49,12 @@ class Application
             $callback($e, $e->getCode());
         });
         set_error_handler(function ($code, $message, $file, $line) {
-            if (0 == error_reporting())
-            {
+            if (0 == error_reporting()) {
                 return;
             }
             throw new \ErrorException($message, 0, $code, $file, $line);
         });
     }
-
 
     /**
      * Redirect

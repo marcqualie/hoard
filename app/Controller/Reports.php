@@ -7,8 +7,7 @@ class Reports extends Base\Page
 
     public function before ()
     {
-        if ( ! $this->app->auth->isAdmin())
-        {
+        if ( ! $this->app->auth->isAdmin()) {
             header('Location: ' . ($this->app->auth->id ? '/account' : '/login'));
             exit;
         }
@@ -17,8 +16,7 @@ class Reports extends Base\Page
     public function req_get ()
     {
 
-        if (empty($this->uri[1]))
-        {
+        if (empty($this->uri[1])) {
             // List reports
             $this->view = 'Reports/List';
             $reports = $this->app->mongo->selectCollection('report')
@@ -27,8 +25,7 @@ class Reports extends Base\Page
                     'name' => 1
                 ))
                 ->asArray();
-            foreach ($reports as $index => $report)
-            {
+            foreach ($reports as $index => $report) {
                 $report['last_report'] = $this->app->mongo->selectCollection('report_' . (String) $report['_id'])
                     ->find()
                     ->sort(array('_id' => -1))
@@ -41,23 +38,19 @@ class Reports extends Base\Page
         }
 
         // Create new
-        elseif ($this->uri[1] === 'create')
-        {
+        elseif ($this->uri[1] === 'create') {
 
             $this->view = 'Reports/Create';
 
             // Create report
-            if ($this->app->request->getMethod() === 'POST')
-            {
+            if ($this->app->request->getMethod() === 'POST') {
                 $json = $this->app->request->get('report_json');
                 $data = json_decode($json, true);
-                if ( ! $data)
-                {
+                if (! $data) {
                     return $this->alert('Invalid JSON', 'error');
                 }
                 unset($data['_id']);
-                if (empty($data['name']))
-                {
+                if (empty($data['name'])) {
                     return $this->alert('Report Name is required', 'error');
                 }
                 $this->app->mongo->selectCollection('report')
@@ -72,7 +65,6 @@ class Reports extends Base\Page
         else {
             $this->app->redirect('/reports/');
         }
-
 
     }
 

@@ -16,8 +16,7 @@ class User extends Base\Page
 
         $this->id = isset($this->uri[1]) ? $this->uri[1] : false;
         $this->user = UserModel::findById(new \MongoId($this->id));
-        if (! $this->user)
-        {
+        if (! $this->user) {
             header('Location: /');
             exit;
         }
@@ -31,16 +30,13 @@ class User extends Base\Page
         $action = isset($_GET['action']) ? $_GET['action'] : false;
 
         // Remove User Access
-        if ($action === 'revoke-app-access')
-        {
+        if ($action === 'revoke-app-access') {
             $bucket = $_GET['bucket'];
-            if ( ! $bucket)
-            {
+            if (! $bucket) {
                 return $this->alert('You need to select an appkey', 'danger');
             }
             $app = $this->app->mongo->selectCollection('app')->findOne(array('appkey' => $bucket));
-            if ( ! $app['_id'])
-            {
+            if (! $app['_id']) {
                 return $this->alert('Invalid Application', 'danger');
             }
             $this->app->mongo->selectCollection('app')->update(
@@ -58,12 +54,10 @@ class User extends Base\Page
         $action = isset($_POST['action']) ? $_POST['action'] : false;
 
         // Grant user access to an application
-        if ($action === 'grant-app-access')
-        {
+        if ($action === 'grant-app-access') {
 
             $bucket_id = $this->app->request->get('bucket');
-            if (! $bucket_id)
-            {
+            if (! $bucket_id) {
                 return $this->alert('You need to select a Bucket', 'danger');
             }
             $bucket = BucketModel::findById($bucket_id);
@@ -79,8 +73,7 @@ class User extends Base\Page
         }
 
         // Change Password
-        if ($action === 'change-password')
-        {
+        if ($action === 'change-password') {
             $password = $this->app->request->get('password');
             if (! $password || strlen($password) < 4) {
                 return $this->alert('Password must be >= 4 chars', 'danger');

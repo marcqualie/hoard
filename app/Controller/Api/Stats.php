@@ -3,8 +3,8 @@
 namespace Controller\Api;
 use Model\Bucket;
 
-class Stats extends \Controller\Base\Api {
-
+class Stats extends \Controller\Base\Api
+{
     private $time_start = 0;
     private $time_end = 0;
     private $time_step = 0;
@@ -46,33 +46,22 @@ class Stats extends \Controller\Base\Api {
         $default_time_step = 60;
 
         // Per day
-        if ($period === 'month' || $period === 18144000)
-        {
+        if ($period === 'month' || $period === 18144000) {
             $default_time_gap = 18144000;
             $default_time_step = 86400;
-        }
-        elseif ($period === 'week' || $period === 604800)
-        {
+        } elseif ($period === 'week' || $period === 604800) {
             $default_time_gap = 604800;
             $default_time_step = 86400;
-        }
-        elseif ($period === 'day' || $period === '86400')
-        {
+        } elseif ($period === 'day' || $period === '86400') {
             $default_time_gap = 86400;
             $default_time_step = 3600;
-        }
-        elseif ($period === 'hour' || $period == '3600')
-        {
+        } elseif ($period === 'hour' || $period == '3600') {
             $default_time_gap = 3600;
             $default_time_step = 60;
-        }
-        elseif ($period === 'minute' || $period == '60')
-        {
+        } elseif ($period === 'minute' || $period == '60') {
             $default_time_gap = 60;
             $default_time_step = 1;
-        }
-        elseif ((int) $period)
-        {
+        } elseif ((int) $period) {
             $default_time_gap = $period;
             $default_time_step = $default_time_gap / 30;
         }
@@ -82,8 +71,7 @@ class Stats extends \Controller\Base\Api {
         $this->time_gap = $default_time_gap;
 
         // Make sure there aren't too many steps (possiblity of crashing stats engine)
-        if ($this->time_gap / $this->time_step > 300)
-        {
+        if ($this->time_gap / $this->time_step > 300) {
             $this->time_step = $this->time_gap / 300;
         }
 
@@ -94,14 +82,11 @@ class Stats extends \Controller\Base\Api {
         // Build Query
         $results = array();
         $query = array();
-        if ($this->event)
-        {
+        if ($this->event) {
             $query['e'] = $this->event;
         }
-        if ($this->query)
-        {
-            foreach ($this->query as $key => $val)
-            {
+        if ($this->query) {
+            foreach ($this->query as $key => $val) {
                 $query['d.' . $key] = $val;
             }
         }
@@ -110,19 +95,16 @@ class Stats extends \Controller\Base\Api {
         $func = '$sum';
         $func_inc = 1;
         $func_override = $this->app->request->get('func');
-        if ($func_override)
-        {
+        if ($func_override) {
             list ($func_name, $func_var) = explode(':', $func_override);
-            if ($func_name === 'avg')
-            {
+            if ($func_name === 'avg') {
                 $func = '$avg';
                 $func_inc = '$d.' . $func_var;
             }
         }
 
         // Loop over times
-        for ($time = $this->time_start; $time < $this->time_end; $time += $this->time_step)
-        {
+        for ($time = $this->time_start; $time < $this->time_end; $time += $this->time_step) {
             $query['t'] = array(
                 '$gte' => new \MongoDate($time),
                 '$lte' => new \MongoDate($time + $this->time_step)
@@ -147,17 +129,14 @@ class Stats extends \Controller\Base\Api {
             ));
             $count = 0;
             $result_arr = array();
-            foreach ($aggregate['result'] as $result)
-            {
+            foreach ($aggregate['result'] as $result) {
                 $count += $result['v'];
                 $result_arr[$result['_id']] = $result['v'];
             }
 
             // Calculate Average
-            if ($func === '$avg')
-            {
-                if ($result_arr)
-                {
+            if ($func === '$avg') {
+                if ($result_arr) {
                     $count = round($count / count($result_arr), 2);
                 }
             }

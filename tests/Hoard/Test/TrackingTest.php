@@ -6,7 +6,6 @@ use Model\Bucket;
 class TrackingTest extends TestCase
 {
 
-
     /**
      * Tracking must work directly on the bucket ID (unqique, none changable)
      */
@@ -38,7 +37,6 @@ class TrackingTest extends TestCase
         $this->assertArrayHasKey('id', $data['data']);
 
     }
-
 
     /**
      * Since buckets can be aliased, we must test this

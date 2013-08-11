@@ -13,16 +13,14 @@ class Bucket extends Base\Page
     {
 
         // Require Authentication
-        if ( ! $this->isLoggedIn())
-        {
+        if ( ! $this->isLoggedIn()) {
             header('Location: /login/');
             exit;
         }
 
         // Get app key
         $this->id = isset($this->uri[1]) ? $this->uri[1] : '';
-        if ( ! $this->id)
-        {
+        if (! $this->id) {
             header('Location: /');
             exit;
         }
@@ -44,8 +42,7 @@ class Bucket extends Base\Page
         // Check action
         $app_action = isset($this->uri[2]) ? $this->uri[2] : '';
         $collection = $this->app->mongo->selectCollection(BucketModel::$collection);
-        switch ($app_action)
-        {
+        switch ($app_action) {
             case 'save':
                 $alias_string = $this->app->request->get('alias');
                 $explode = explode(',', $alias_string);

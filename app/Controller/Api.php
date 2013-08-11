@@ -3,8 +3,8 @@
 namespace Controller;
 use Model\User;
 
-class Api extends Base\Page {
-
+class Api extends Base\Page
+{
     public function req_get ()
     {
 
@@ -31,8 +31,7 @@ class Api extends Base\Page {
 
         // Initialize API
         $api_controller_name = '\\Controller\\Api\\' . ucfirst($api_method);
-        if ( ! class_exists($api_controller_name))
-        {
+        if ( ! class_exists($api_controller_name)) {
             return $this->jsonError(404, 'API Method Not Found');
         }
         $api_controller = new $api_controller_name();
@@ -42,8 +41,7 @@ class Api extends Base\Page {
         $response = new \Hoard\ApiResponse($api_controller->exec());
 
         // Display Output
-        if ($response->error)
-        {
+        if ($response->error) {
             return $this->jsonError($response->error['code'], $response->error['message']);
         }
 

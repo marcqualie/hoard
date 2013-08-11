@@ -1,9 +1,7 @@
 <?php
 
 namespace Console\Generate;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Console\Command;
 use Model\Bucket;
@@ -58,8 +56,7 @@ class Events extends Command
         // Now pump data in
         $run = true;
         $count = 0;
-        while ($run && $count < $request_count)
-        {
+        while ($run && $count < $request_count) {
             $event = $events[array_rand($events)];
             $post = json_encode(array(
                 'v' => 1,

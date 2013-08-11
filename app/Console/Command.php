@@ -4,8 +4,8 @@ namespace Console;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Model\User;
 
-class Command extends SymfonyCommand {
-
+class Command extends SymfonyCommand
+{
     public $app;
     public $mongo;
     public $user;
@@ -18,7 +18,6 @@ class Command extends SymfonyCommand {
         parent::__construct();
         $this->assertCliUser();
     }
-
 
     /**
      * Create CLI User (Requires API Key Access)

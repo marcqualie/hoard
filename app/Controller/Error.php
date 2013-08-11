@@ -9,8 +9,7 @@ class Error extends Base\Page
     {
 
         // Set default error message
-        if ( ! isset($this->var['code']) || ! isset($this->var['message']))
-        {
+        if ( ! isset($this->var['code']) || ! isset($this->var['message'])) {
             $this->var['code'] = 404;
             $this->var['message'] = 'Page Not Found';
         }

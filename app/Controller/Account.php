@@ -1,10 +1,9 @@
 <?php
 
 namespace Controller;
-use Model;
 
-class Account extends Base\Page {
-
+class Account extends Base\Page
+{
     public $view = 'Account/Dashboard';
 
     public function req_get ()
@@ -23,6 +22,7 @@ class Account extends Base\Page {
                     'name' => $this->app->request->get('name'),
                     'active' => $this->app->request->get('active'),
                 ));
+
                 return $this->json(array('ok' => 1));
                 break;
         }

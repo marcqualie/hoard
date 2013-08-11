@@ -25,7 +25,6 @@ class User extends Base
         );
     }
 
-
     /**
      * Get buckets this user has access to
      */
@@ -48,9 +47,9 @@ class User extends Base
             )
         );
         \Utils::model_sort($buckets, 'description');
+
         return $buckets;
     }
-
 
     /**
      * Create API Key
@@ -72,7 +71,6 @@ class User extends Base
             $this->save();
         }
     }
-
 
     /**
      * Update API Key
@@ -98,7 +96,6 @@ class User extends Base
         }
     }
 
-
     /**
      * Helper for updating user passwords
      */
@@ -109,8 +106,8 @@ class User extends Base
         }
         $this->password = $this->getApp()->auth->password($password);
         $this->save();
+
         return 0;
     }
-
 
 }

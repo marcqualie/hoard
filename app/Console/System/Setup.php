@@ -1,9 +1,7 @@
 <?php
 
 namespace Console\System;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Setup extends \Console\Command
@@ -26,8 +24,7 @@ class Setup extends \Console\Command
         // Confirm that this may break the system and lose data
         $dialog = $this->getHelperSet()->get('dialog');
         $output->writeln('<fg=yellow;options=bold>This will create a fresh install; Data may lost.</fg=yellow;options=bold>');
-        if ( ! $dialog->askConfirmation($output, 'Continue? ', false))
-        {
+        if ( ! $dialog->askConfirmation($output, 'Continue? ', false)) {
             return;
         }
 
@@ -37,8 +34,7 @@ class Setup extends \Console\Command
         // Create User
         $output->writeln(' ');
         $output->writeln('<info>Admin Setup</info>');
-        if ($dialog->askConfirmation($output, 'Would you like to create an admin user? ', false))
-        {
+        if ($dialog->askConfirmation($output, 'Would you like to create an admin user? ', false)) {
             $this->getApplication()->find('user:create')->run($input, $output);
         }
 

@@ -2,7 +2,6 @@
 
 namespace Hoard;
 use Model\User;
-use Model\Bucket;
 use MongoId;
 
 class Auth
@@ -25,14 +24,12 @@ class Auth
         $this->cookie = 'u' . crc32($this->cookie . '.' . COOKIE_DOMAIN);
 
         $cookie = isset($_COOKIE[$this->cookie]) ? $_COOKIE[$this->cookie] : '';
-        if (! $cookie)
-        {
+        if (! $cookie) {
             return;
         }
         $data = $this->decrypt($cookie);
         list ($id, $token) = explode(':', $data);
-        if (! $id || ! $token)
-        {
+        if (! $id || ! $token) {
             return;
         }
         $user = User::findById(new MongoId($id));
@@ -57,15 +54,14 @@ class Auth
         $user = User::findOne(array(
             'email' => $email
         ));
-        if (! $user)
-        {
+        if (! $user) {
             return array('error' => 404, 'message' => 'No such user');
         }
-        if ($user->password !== $this->password($password))
-        {
+        if ($user->password !== $this->password($password)) {
             return array('error' => 401, 'message' => 'Invalid Password');
         }
         $this->login_apply((String) $user->id, $user->token);
+
         return array(
             'message' => 'Login Success'
         );
@@ -82,21 +78,21 @@ class Auth
         setcookie($this->cookie, false, time() / 2, '/', COOKIE_DOMAIN, COOKIE_SECURE, COOKIE_HTTP);
     }
 
-
     /**
      * Encryption
      */
     public function encrypt ($str)
     {
         $token = base64_encode($str);
+
         return $token;
     }
     public function decrypt ($token)
     {
         $str = base64_decode($token);
+
         return $str;
     }
-
 
     /**
      * Verify application keys when writing and reading data
@@ -106,7 +102,6 @@ class Auth
         return false;
     }
 
-
     /**
      * Password generator
      */
@@ -114,7 +109,6 @@ class Auth
     {
         return sha1(md5(sha1(md5($str))));
     }
-
 
     /**
      * Permissions

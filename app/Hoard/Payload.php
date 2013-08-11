@@ -42,7 +42,6 @@ class Payload
 
     }
 
-
     /**
      * Check if version is supported by the server
      */
@@ -50,7 +49,6 @@ class Payload
     {
         return $this->storage['version'] === 1 ? true : false;
     }
-
 
     /**
      *
@@ -60,9 +58,9 @@ class Payload
         if (isset($this->storage[$key])) {
             return $this->storage[$key];
         }
+
         return null;
     }
-
 
     /**
      * Array helper

@@ -73,8 +73,7 @@ class Buckets extends Base\Page
 
         $buckets = $this->app->auth->user->getBuckets();
         $totals = array('records' => 0, 'rps' => 0, 'storage' => 0, 'storage_index' => 0);
-        foreach ($buckets as &$bucket)
-        {
+        foreach ($buckets as &$bucket) {
 
             // Get stats from raw collection data
             $stats_raw = $this->app->mongo->command(array(
@@ -82,8 +81,7 @@ class Buckets extends Base\Page
             ));
 
             // Force index creation if not already there (temp hack, should be done on creation)
-            if ( ! isset($stats_raw['indexSizes']['t_-1']))
-            {
+            if ( ! isset($stats_raw['indexSizes']['t_-1'])) {
                 $this->app->mongo->selectCollection($bucket->event_collection)->ensureIndex(array('t' => -1));
             }
 

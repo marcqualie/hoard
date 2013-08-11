@@ -3,7 +3,6 @@
 namespace Console\Report;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Run extends \Console\Command
@@ -30,21 +29,19 @@ class Run extends \Console\Command
             ->findOne(array(
                 '_id' => new \MongoId($id)
             ));
-        if ( ! $report)
-        {
+        if (! $report) {
             $output->writeln('<error>Invalid Report ID</error>');
+
             return false;
         }
 
         // Run Aggretion
         $pipeline = $report['pipeline'];
-        if (empty($report['buckets']))
-        {
+        if (empty($report['buckets'])) {
             $report['buckets'] = array('50e8d81e17466');
         }
         $output->writeln('<info>' . $report['name'] . '</info>');
-        foreach ($report['buckets'] as $bucket_id)
-        {
+        foreach ($report['buckets'] as $bucket_id) {
             $bucket = $this->mongo->selectCollection('app')
                 ->findOne(array(
                     'appkey' => $bucket_id
@@ -52,24 +49,19 @@ class Run extends \Console\Command
             $output->writeln('Bucket(' . $bucket_id . '): ' . $bucket['name']);
             $collection = $this->mongo->selectCollection('event_' . $bucket_id);
             $event_count = $collection->count();
-            if ($event_count > 0)
-            {
+            if ($event_count > 0) {
                 $ts = new \MongoDate();
                 $report_start_time = microtime(true);
                 $results = $collection->aggregate($pipeline);
-                if (isset($results['result'][0]) && (int) $results['ok'] === 1)
-                {
+                if (isset($results['result'][0]) && (int) $results['ok'] === 1) {
                     $keys = array();
-                    foreach ($results['result'][0] as $key => $value)
-                    {
+                    foreach ($results['result'][0] as $key => $value) {
                         $keys[] = $key;
                     }
                     $data = array();
-                    foreach ($results['result'] as $result)
-                    {
+                    foreach ($results['result'] as $result) {
                         $row = array();
-                        foreach ($result as $key => $value)
-                        {
+                        foreach ($result as $key => $value) {
                             $row[] = $value;
                         }
                         $data[] = $row;

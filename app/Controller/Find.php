@@ -21,8 +21,7 @@ class Find extends Base\Page
 
         // App Key Required, Secret too in future
         $bucket_id = $this->app->request->get('bucket') ?: $this->uri[1];
-        if (empty($bucket_id))
-        {
+        if (empty($bucket_id)) {
             return $this->jsonError('Bucket ID is Required');
         }
         $bucket = BucketModel::findById($bucket_id);
@@ -38,42 +37,31 @@ class Find extends Base\Page
 
         // Where
         $where = array();
-        if ($event)
-        {
+        if ($event) {
             $where['e'] = $event;
         }
         /*
-        if ($bucket)
-        {
+        if ($bucket) {
             $where['appkey'] = $bucket;
-        }
-        else
-        {
+        } else {
             $app_keys = array();
-            foreach (Auth::$buckets as $k => $app)
-            {
+            foreach (Auth::$buckets as $k => $app) {
                 $app_keys[] = $app['appkey'];
             }
             $where['appkey'] = array('$in' => $app_keys);
         }
         */
-        if (isset($params['query']))
-        {
+        if (isset($params['query'])) {
             $json = $this->json2array($params['query'], true);
-            foreach ($json as $k => $v)
-            {
+            foreach ($json as $k => $v) {
                 // Specials
-                if ($k === '$e')
-                {
+                if ($k === '$e') {
                     $where['e'] = $v;
                     continue;
                 }
-                if (is_array($v))
-                {
-                    foreach ($v as $_k1 => $_v1)
-                    {
-                        if ($_k1 === '$regex')
-                        {
+                if (is_array($v)) {
+                    foreach ($v as $_k1 => $_v1) {
+                        if ($_k1 === '$regex') {
                             $v[$_k1] = new MongoRegex($_v1);
                         }
                     }
@@ -83,24 +71,21 @@ class Find extends Base\Page
         }
 //      print_r($where); exit;
 
-        if (isset($where['_id']))
-        {
+        if (isset($where['_id'])) {
             $where['_id'] = new MongoId($where['_id']);
         }
 
         // Fields
         $fields = array();
         /*
-        if ($params['fields'])
-        {
+        if ($params['fields']) {
             $json = $this->json2array($params['fields'], true);
             $json['date'] = 1;
 //          if (!$where['event'])
 //          {
                 $json['event'] = 1;
 //          }
-            foreach ($json as $k => $v)
-            {
+            foreach ($json as $k => $v) {
                 $fields[$k] = $v;
             }
         }
@@ -109,37 +94,30 @@ class Find extends Base\Page
         // Sort
         $sort = array();
         $sort['t'] = -1;
-        if (isset($params['sort']))
-        {
+        if (isset($params['sort'])) {
             $json = $this->json2array($params['sort'], true);
-            foreach ($json as $k => $v)
-            {
+            foreach ($json as $k => $v) {
                 $sort[$k] = $v;
             }
         }
 
         // Find Data
         // Save Data to log
-        try
-        {
+        try {
             $collection = $this->app->mongo->selectCollection($bucket->event_collection);
-            try
-            {
+            try {
                 $cursor = $collection
                     ->find($where, $fields)
                     ->sort($sort)
                     ->limit($limit);
                 $data = array();
-                foreach ($cursor as $row)
-                {
+                foreach ($cursor as $row) {
                     $row['_id'] = (String) $row['_id'];
 //                  $row['date'] = (array) $row['t'];
                     $data[] = $row;
                 }
                 echo json_encode($data);
-            }
-            catch (MongoCursorException $e)
-            {
+            } catch (MongoCursorException $e) {
                 echo '{"error":"Cursor Exception"}';
                 exit;
             }
@@ -147,8 +125,7 @@ class Find extends Base\Page
         }
 
         // Could not connect
-        catch (MongoConnectionException $e)
-        {
+        catch (MongoConnectionException $e) {
             echo '{"error":"Connection Exception"}';
             exit;
         }
@@ -158,20 +135,16 @@ class Find extends Base\Page
 
     }
 
-
     public function json2array ($str)
     {
-        try
-        {
+        try {
             $json = json_decode($str, true);
-            if ($json)
-            {
+            if ($json) {
                 return $json;
             }
+        } catch (Exception $e) {
         }
-        catch (Exception $e)
-        {
-        }
+
         return array();
     }
 

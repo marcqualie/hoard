@@ -11,7 +11,6 @@ class Bucket extends Base
     public $legacy = false;
     public $event_collection;
 
-
     /**
      * Initialize
      */
@@ -26,7 +25,6 @@ class Bucket extends Base
         }
     }
 
-
     /**
      * Generate ID
      */
@@ -34,7 +32,6 @@ class Bucket extends Base
     {
         return uniqid();
     }
-
 
     /**
      * Find instance by ID
@@ -53,11 +50,12 @@ class Bucket extends Base
         );
         if ($data) {
             $model_name = get_called_class();
+
             return new $model_name($data);
         }
+
         return null;
     }
-
 
     /**
      * Check if object exists
@@ -65,6 +63,7 @@ class Bucket extends Base
     public static function exists($id)
     {
         $collection = self::getApp()->mongo->selectCollection(static::$collection);
+
         return $collection->find(
             array(
                 '$or' => array(
@@ -77,7 +76,6 @@ class Bucket extends Base
             )
         )->count() > 0 ? true : false;
     }
-
 
     /**
      * Bucket Schema
@@ -93,7 +91,6 @@ class Bucket extends Base
             'updated' => 'MongoDate'
         );
     }
-
 
     /**
      * Add Role

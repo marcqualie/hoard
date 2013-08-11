@@ -19,15 +19,13 @@ class Report extends Base\Page
             ));
 
         // Just want reporting data
-        if (empty($this->uri[2]))
-        {
+        if (empty($this->uri[2])) {
             $report['runs'] = $this->app->mongo
                 ->selectCollection('report_' . (String) $report['_id'])
                 ->find()
                 ->sort(array('_id' => -1))
                 ->asArray();
-            foreach ($report['runs'] as $index => $run)
-            {
+            foreach ($report['runs'] as $index => $run) {
                 $run['bucket'] = $this->app->mongo
                     ->selectCollection('app')
                     ->findOne(array(
@@ -39,17 +37,14 @@ class Report extends Base\Page
         }
 
         // Edit
-        elseif ($this->uri[2] === 'edit')
-        {
+        elseif ($this->uri[2] === 'edit') {
             $this->view = 'Report/Edit';
         }
 
         // Run
-        elseif ($this->uri[2] === 'run')
-        {
+        elseif ($this->uri[2] === 'run') {
 
-            if ($this->app->request->get('process'))
-            {
+            if ($this->app->request->get('process')) {
                 echo shell_exec('php -f ' . DOCROOT . '/bin/cli report:run ' . $report['_id']);
                 exit;
             }

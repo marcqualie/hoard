@@ -14,8 +14,7 @@ $app->config = Hoard\Config::instance()->load($app->env);
 // Error Handling
 $app->error(function ($e, $code) use ($app) {
 
-    if (php_sapi_name() === 'cli')
-    {
+    if (php_sapi_name() === 'cli') {
         echo $e->getMessage();
         exit;
     }

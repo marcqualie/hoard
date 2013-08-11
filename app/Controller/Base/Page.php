@@ -44,8 +44,7 @@ class Page
     public $alert_data = array();
     public function alert ($str = null, $type = 'info')
     {
-        if ($str === null)
-        {
+        if ($str === null) {
             return $this->alert_data;
         }
         $this->alert_data = array(
@@ -54,7 +53,6 @@ class Page
         );
     }
 
-
     /**
      * Authentication
      */
@@ -62,7 +60,6 @@ class Page
     {
         return $this->app->auth->id ? true : false;
     }
-
 
     /**
      * JSON Output
@@ -86,18 +83,17 @@ class Page
         if ($debug) {
             $out['debug'] = $debug;
         }
-        if ($meta)
-        {
+        if ($meta) {
             $out['meta'] = $meta;
         }
-        if (isset($data['$error']))
-        {
+        if (isset($data['$error'])) {
             $out['error'] = $data['$error'];
             unset($data['$error']);
         }
         $out['data'] = $data;
         $response = new JsonResponse();
         $response->setData($out);
+
         return $response;
     }
 

@@ -27,7 +27,6 @@ class Base
         $this->init();
     }
 
-
     /**
      * Initialize Function to easily extend contructor
      */
@@ -35,7 +34,6 @@ class Base
     {
 
     }
-
 
     /**
      * Get variables
@@ -48,6 +46,7 @@ class Base
         if (isset($this->data[$field])) {
             return $this->data[$field];
         }
+
         return null;
     }
     public function __isset($field)
@@ -55,9 +54,9 @@ class Base
         if ($field === 'id') {
             $field = '_id';
         }
+
         return isset($this->data[$field]);
     }
-
 
     /**
      * Set Data
@@ -70,9 +69,9 @@ class Base
             $field = '_id';
         }
         $this->data[$field] = $value;
+
         return $value;
     }
-
 
     /**
      * Get Schema for this Model
@@ -86,7 +85,6 @@ class Base
         );
     }
 
-
     /**
      * Generate ID
      */
@@ -94,7 +92,6 @@ class Base
     {
         return new \MongoId();
     }
-
 
     /**
      * Save data to database
@@ -119,11 +116,12 @@ class Base
         $save = $collection->save($document);
         if (isset($save['ok']) && (int) $save['ok'] === 1) {
             $this->data = $document;
+
             return true;
         }
+
         return false;
     }
-
 
     /**
      * Get application instance
@@ -132,7 +130,6 @@ class Base
     {
         return \Hoard\Application::$app;
     }
-
 
     /**
      * Find all instamces matching a query
@@ -147,14 +144,15 @@ class Base
         foreach ($results as $data) {
             $models[] = new $model_name($data);
         }
+
         return $models;
     }
     public static function findOne(array $query = array())
     {
         $objects = static::find($query);
+
         return ! empty($objects[0]) ? $objects[0] : null;
     }
-
 
     /**
      * Find instance by ID
@@ -168,11 +166,12 @@ class Base
         ));
         if ($data) {
             $model_name = get_called_class();
+
             return new $model_name($data);
         }
+
         return null;
     }
-
 
     /**
      * Check if object exists
@@ -180,12 +179,12 @@ class Base
     public static function exists($id)
     {
         $collection = self::getApp()->mongo->selectCollection(static::$collection);
+
         return $collection->find(
             array('_id' => $id),
             array('_id' => 1)
         )->count() > 0 ? true : false;
     }
-
 
     /**
      * Create new Object
@@ -198,6 +197,7 @@ class Base
         if (! $save) {
             return false;
         }
+
         return $instance;
     }
 

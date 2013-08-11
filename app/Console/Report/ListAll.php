@@ -1,9 +1,7 @@
 <?php
 
 namespace Console\Report;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ListAll extends \Console\Command
@@ -25,8 +23,7 @@ class ListAll extends \Console\Command
             ->sort(array(
                 'name' => 1
             ));
-        foreach ($reports as $report)
-        {
+        foreach ($reports as $report) {
             $output->writeln('<info>' . $report['_id'] . '</info> ' . $report['name']);
         }
     }

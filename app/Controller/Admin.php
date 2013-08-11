@@ -9,8 +9,7 @@ class Admin extends Base\Page
 
     public function before ()
     {
-        if ( ! $this->app->auth->isAdmin())
-        {
+        if ( ! $this->app->auth->isAdmin()) {
             header('Location: ' . ($this->app->auth->id ? '/account' : '/login'));
             exit;
         }
@@ -19,22 +18,18 @@ class Admin extends Base\Page
     public function req_post ()
     {
 
-        if ($_POST['action'] === 'create-user')
-        {
+        if ($_POST['action'] === 'create-user') {
             $email = strtolower($_POST['email']);
-            if ( ! $email)
-            {
+            if (! $email) {
                 return $this->alert('You need to specify a valid email', 'danger');
             }
             $password = $_POST['password'];
-            if ( ! $password)
-            {
+            if (! $password) {
                 return $this->alert('You cannot add an emoty password', 'danger');
             }
             $token = uniqid();
             $user = $this->app->mongo->selectCollection(User::$collection)->findOne(array('email' => $email));
-            if (isset($user['_id']))
-            {
+            if (isset($user['_id'])) {
                 return $this->alert('There is already a user with that email address', 'danger');
             }
             $data = array(
