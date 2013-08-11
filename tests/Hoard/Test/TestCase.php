@@ -19,6 +19,21 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         $this->approot = dirname(dirname(dirname(__DIR__)));
 
+    }
+
+    /**
+     * Test setup
+     */
+    public function setUp()
+    {
+
+        // Create Environment
+        $db = $this->getDb();
+        $db->selectCollection(Bucket::$collection);
+
+        // Empty Database
+        $this->emptyDb();
+
         // Create user
         $user = User::create(array(
             'email' => 'test@hoardhq.com'
@@ -27,17 +42,18 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $apikeys = array_keys($user->apikeys);
         $this->apikey = $apikeys[0];
 
-        // Create Environment
-        $db = $this->getDb();
-        $db->selectCollection(Bucket::$collection);
-
     }
 
+
     /**
-     * Test setup
+     * Empty Database
      */
-    public function setUp()
+    public function emptyDb()
     {
+        $collections = $this->mongo->native->getCollectionNames();
+        foreach ($collections as $collection) {
+            $this->mongo->selectCollection($collection)->remove();
+        }
     }
 
     /**
