@@ -36,7 +36,7 @@ class Create extends \Console\Command
         if (isset($user['_id']))
         {
             $output->writeln('<error>This user already exists</error>');
-            exit(1);
+            return 1;
         }
 
         // Ask for password
@@ -51,7 +51,7 @@ class Create extends \Console\Command
         if ($password !== $confirm_password)
         {
             $output->writeln('<error>Passwords do not match.</error>');
-            exit(1);
+            return 1;
         }
 
         // Should they be admin

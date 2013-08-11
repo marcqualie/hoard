@@ -36,9 +36,9 @@ class Setup extends \Console\Command
 
         // Create User
         $output->writeln(' ');
+        $output->writeln('<info>Admin Setup</info>');
         if ($dialog->askConfirmation($output, 'Would you like to create an admin user? ', false))
         {
-            $output->writeln('<info>User Creation</info>');
             $this->getApplication()->find('user:create')->run($input, $output);
         }
 
