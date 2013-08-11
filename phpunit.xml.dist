@@ -5,7 +5,7 @@
     </php>
     <testsuites>
         <testsuite name="Hoard Test Suite">
-            <directory>test</directory>
+            <directory>tests/Hoard</directory>
         </testsuite>
     </testsuites>
     <filter>

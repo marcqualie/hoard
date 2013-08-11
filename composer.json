@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": ["app", "test"]
+            "": ["app", "tests"]
         }
     }
 }
