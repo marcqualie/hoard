@@ -1,6 +1,7 @@
 <?php
 
-namespace Hoard\Test;
+namespace Hoard\Test\Api;
+use Hoard\Test\TestCase;
 use Model\Bucket;
 
 class TrackingTest extends TestCase
