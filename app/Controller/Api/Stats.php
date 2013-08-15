@@ -41,7 +41,6 @@ class Stats extends \Controller\Base\Api
 
         // Verify input (TODO: Stronger validation and conversion)
         $period = $this->app->request->get('period') ?: false;
-        $now = time();
         $default_time_gap = 1800;
         $default_time_step = 60;
 
@@ -76,8 +75,10 @@ class Stats extends \Controller\Base\Api
         }
 
         // Create time ranges
+        $now = time();
+        $now = $now - ($now % $this->time_step) + $this->time_step;
         $this->time_start = ($now - $this->time_gap) - (($now - $this->time_gap) % $this->time_step);
-        $this->time_end = $now - ($now % $this->time_step) + $this->time_step;
+        $this->time_end = $now;
 
         // Build Query
         $results = array();

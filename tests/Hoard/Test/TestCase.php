@@ -16,10 +16,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-
         $this->approot = dirname(dirname(dirname(__DIR__)));
-
     }
+
 
     /**
      * Test setup
@@ -56,6 +55,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
+
     /**
      * Get database instance
      * @return MongoMinify\Client
@@ -68,12 +68,21 @@ class TestCase extends \PHPUnit_Framework_TestCase
         return $this->mongo;
     }
 
+
     /**
-     * Create a bucket
+     * Create test bucket
      */
-    public function createBucket($name)
+    public function createTestBucket()
     {
+        $bucket = Bucket::create(array(
+            '_id' => '51d077a88dff0',
+            'alias' => array(
+                'test-bucket'
+            )
+        ));
+        return $bucket;
     }
+
 
     /**
      * Make internal request to http server
