@@ -77,7 +77,7 @@ class Stats extends Base\Page
 
         // Create time ranges
         $this->time_start = ($now - $this->time_gap) - (($now - $this->time_gap) % $this->time_step);
-        $this->time_end = $now - ($now % $this->time_step);
+        $this->time_end = $now - ($now % $this->time_step) + $this->time_step;
 
         // Build Query
         $results = array();
