@@ -45,8 +45,8 @@ class Stats extends \Controller\Base\Api
         $default_time_step = 60;
 
         // Per day
-        if ($period === 'month' || $period === 18144000) {
-            $default_time_gap = 18144000;
+        if ($period === 'month' || $period === 2592000) {
+            $default_time_gap = 2592000;
             $default_time_step = 86400;
         } elseif ($period === 'week' || $period === 604800) {
             $default_time_gap = 604800;
