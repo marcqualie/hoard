@@ -25,6 +25,9 @@ class Account extends Base\Page
 
                 return $this->json(array('ok' => 1));
                 break;
+            case 'delete-apikey':
+                $this->app->auth->user->deleteApiKey($this->app->request->get('id'));
+                break;
         }
 
         // Get API Keys

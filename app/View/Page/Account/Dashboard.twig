@@ -5,7 +5,7 @@
         <div class="col col-lg-12">
             <div class="clearfix">
                 <div class="pull-left">
-                    <h4>My API Keys ( {{ apikeys | length }} / {{ user.apikey_limit }} )</h4>
+                    <h4>My API Keys ( <span class="apikey-total-count">{{ apikeys | length }}</span> / {{ user.apikey_limit }} )</h4>
                 </div>
                 <div class="pull-right">
 {% if apikeys | length < user.apikey_limit %}
@@ -60,6 +60,24 @@ function EditApiKey(key) {
     modal.find('[name=key-name]').val(tr.find('.key-name').html());
     modal.find('[name=key-active]')[0].checked = tr.find('.key-active').attr('data-active') === '1' ? true : false;
 }
+function DeleteApiKey() {
+    if (ApiKeyBeingEdited) {
+        var modal = $('#EditModal');
+        if (! confirm('Are you sure?')) {
+            return;
+        }
+        var tr = $('#key-' + ApiKeyBeingEdited);
+        var countDiv = $('.apikey-total-count');
+        var data = {
+            id: ApiKeyBeingEdited
+        };
+        $.post('/account/?action=delete-apikey', data, function () {
+            countDiv.text(parseInt(countDiv.text()) - 1);
+            tr.remove();
+            modal.modal('hide');
+        })
+    }
+}
 function SaveApiKey() {
     if (ApiKeyBeingEdited) {
         var modal = $('#EditModal');
@@ -69,7 +87,7 @@ function SaveApiKey() {
             id: ApiKeyBeingEdited,
             name: form.find('[name=key-name]').val(),
             active: form.find('[name=key-active]')[0].checked ? 1 : 0
-        }
+        };
         $.post('/account/?action=update-apikey', data, function () {
             location.reload();
         });
@@ -85,16 +103,21 @@ function SaveApiKey() {
                     <h4 class="modal-title">Edit API Key</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="key-name" placeholder="API Key Name"/>
+                    <div class="input-group">
+                        <span class="input-group-addon">Description</span>
+                        <input type="text" name="key-name" class="form-control" placeholder="API Key Description"/>
+                    </div>
+
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="key-active"/>
-                            Enable
+                            Enabled
                         </label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="DeleteApiKey()">Delete</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </form>

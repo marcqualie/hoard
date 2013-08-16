@@ -97,6 +97,20 @@ class User extends Base
     }
 
     /**
+     * Delete API Key
+     */
+    public function deleteApiKey($id)
+    {
+        if (isset($this->apikeys[$id])) {
+            $apikeys = $this->apikeys;
+            unset($apikeys[$id]);
+            $this->apikeys = $apikeys;
+            $this->save();
+        }
+        return false;
+    }
+
+    /**
      * Helper for updating user passwords
      */
     public function setPassword($password)
