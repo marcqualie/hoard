@@ -13,6 +13,9 @@ class Base
 
     public function __construct(array $data = array())
     {
+        if (! static::$collection) {
+            throw new Exception('Model has not defined a collection');
+        }
         if ($data) {
             $this->data = $data;
         }
@@ -121,6 +124,14 @@ class Base
         }
 
         return false;
+    }
+
+    /**
+     * As array
+     */
+    public function asArray()
+    {
+        return $this->data;
     }
 
     /**
