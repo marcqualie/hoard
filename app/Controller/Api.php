@@ -10,14 +10,14 @@ class Api extends Base\Page
 
         // Get API Method
         if (! isset($this->uri[1])) {
-            return $this->jsonError(500, 'No API Method Specified');
+            return $this->jsonError('No API Method Specified', 500);
         }
         $api_method = $this->uri[1];
 
         // Authenticate using API Keys
         $apikey = $this->app->request->get('apikey');
         if (! $apikey) {
-            return $this->jsonError(401, 'API Key is required');
+            return $this->jsonError('API Key is required', 401);
         }
         $user_collection = $this->app->mongo->selectCollection(User::$collection);
         $apikey_isvalid = $user_collection->find(
@@ -26,13 +26,13 @@ class Api extends Base\Page
             )
         )->count() > 0;
         if (! $apikey_isvalid) {
-            return $this->jsonError(401, 'Invalid API Key');
+            return $this->jsonError('Invalid API Key', 401);
         }
 
         // Initialize API
         $api_controller_name = '\\Controller\\Api\\' . ucfirst($api_method);
         if ( ! class_exists($api_controller_name)) {
-            return $this->jsonError(404, 'API Method Not Found');
+            return $this->jsonError('API Method Not Found', 404);
         }
         $api_controller = new $api_controller_name();
         $api_controller->app = $this->app;
@@ -42,7 +42,7 @@ class Api extends Base\Page
 
         // Display Output
         if ($response->error) {
-            return $this->jsonError($response->error['code'], $response->error['message']);
+            return $this->jsonError($response->error['message'], $response->error['code']);
         }
 
         // TODO: Log request

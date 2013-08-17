@@ -74,8 +74,8 @@ class TrackingTest extends TestCase
         $bucket->save();
         $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals($data['error']['code'], 404);
-        $this->assertEquals($data['error']['message'], 'Invalid Bucket');
+        $this->assertEquals(404, $data['error']['code']);
+        $this->assertEquals('Invalid Bucket', $data['error']['message']);
 
         // Musical bucket alias's!
         $bucket->alias = array('test-bucket-2');
@@ -104,8 +104,8 @@ class TrackingTest extends TestCase
         // Make request
         $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals($data['error']['code'], 404);
-        $this->assertEquals($data['error']['message'], 'Invalid Bucket');
+        $this->assertEquals(404, $data['error']['code']);
+        $this->assertEquals('Invalid Bucket', $data['error']['message']);
 
     }
 
