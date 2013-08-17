@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-class Viewer extends Base\Page
+class Query extends Base\Page
 {
 
 }

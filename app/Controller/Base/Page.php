@@ -64,7 +64,7 @@ class Page
     /**
      * JSON Output
      */
-    public function jsonError ($code = 500, $message = 'Application Error')
+    public function jsonError ($message = 'Application Error', $code = 500)
     {
         return $this->json(
             array(

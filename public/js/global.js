@@ -57,7 +57,9 @@ $(document).ready(function () {
 
             // Display API Errors
             if (j.hasOwnProperty('error')) {
-                viewContent.html('<div class="alert alert-danger"><b>Error</b> ' + j.error + '</div>');
+                if (j.error.code === 400) {
+                    viewContent.html('<div class="alert alert-warning">Please select a Bucket from the dropdown</div>');
+                }
                 return;
             }
 

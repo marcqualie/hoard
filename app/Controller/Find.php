@@ -22,11 +22,11 @@ class Find extends Base\Page
         // App Key Required, Secret too in future
         $bucket_id = $this->app->request->get('bucket') ?: $this->uri[1];
         if (empty($bucket_id)) {
-            return $this->jsonError('Bucket ID is Required');
+            return $this->jsonError('Bucket ID is Required', 400);
         }
         $bucket = BucketModel::findById($bucket_id);
         if (! $bucket) {
-            return $this->jsonError('Invalid Bucket ID');
+            return $this->jsonError('Invalid Bucket ID', 404);
         }
 
         // Vars
@@ -93,12 +93,17 @@ class Find extends Base\Page
 
         // Sort
         $sort = array();
-        $sort['t'] = -1;
         if (isset($params['sort'])) {
             $json = $this->json2array($params['sort'], true);
             foreach ($json as $k => $v) {
-                $sort[$k] = $v;
+                if ($k === '$time') {
+                    $sort['t'] = $v;
+                } else {
+                    $sort["d." . $k] = $v;
+                }
             }
+        } else {
+            $sort['t'] = -1;
         }
 
         // Find Data
@@ -108,8 +113,10 @@ class Find extends Base\Page
             try {
                 $cursor = $collection
                     ->find($where, $fields)
-                    ->sort($sort)
                     ->limit($limit);
+                if ($sort) {
+                    $cursor->sort($sort);
+                }
                 $data = array();
                 foreach ($cursor as $row) {
                     $row['_id'] = (String) $row['_id'];
