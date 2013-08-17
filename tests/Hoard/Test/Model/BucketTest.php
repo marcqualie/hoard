@@ -1,10 +1,10 @@
 <?php
 
-namespace Hoard\Test\Bucket;
+namespace Hoard\Test\Model;
 use Hoard\Test\TestCase;
 use Model\Bucket;
 
-class CreateTest extends TestCase
+class BucketTest extends TestCase
 {
 
 
