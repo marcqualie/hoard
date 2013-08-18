@@ -25,7 +25,7 @@ class Payload
                 $this->storage['bucket'] = $data['b'];
             }
             if (isset($data['e'])) {
-                $this->storage['event'] = $data['e'];
+                $this->storage['event'] = (String) $data['e'];
             }
             if (isset($data['d'])) {
                 $this->storage['data'] = $data['d'];
