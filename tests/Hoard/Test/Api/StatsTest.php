@@ -19,7 +19,7 @@ class StatsTest extends TestCase
         $bucket = $this->createTestBucket();
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/stats?period=' . $period . '&bucket=' . $bucket->id);
+        $response = $this->makeApiRequest('GET', '/api/stats?period=' . $period . '&bucket=' . $bucket->id);
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('time', $data);
 

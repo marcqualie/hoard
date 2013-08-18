@@ -33,7 +33,7 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
 
@@ -65,14 +65,14 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
 
         // Update alias and do it again
         $bucket->alias = array('test-bucket-3');
         $bucket->save();
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertEquals(404, $data['error']['code']);
         $this->assertEquals('Invalid Bucket', $data['error']['message']);
@@ -80,7 +80,7 @@ class TrackingTest extends TestCase
         // Musical bucket alias's!
         $bucket->alias = array('test-bucket-2');
         $bucket->save();
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('id', $data['data']);
 
@@ -102,7 +102,7 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertEquals(404, $data['error']['code']);
         $this->assertEquals('Invalid Bucket', $data['error']['message']);
@@ -124,7 +124,7 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertEquals($data['error']['code'], 400);
         $this->assertEquals($data['error']['message'], 'No Bucket specified');
@@ -146,7 +146,7 @@ class TrackingTest extends TestCase
         );
 
         // Make request
-        $response = $this->makeRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
+        $response = $this->makeApiRequest('GET', '/api/track?payload=' . urlencode(json_encode($payload)));
         $data = json_decode($response->getContent(), true);
         $this->assertEquals($data['error']['code'], 400);
         $this->assertEquals($data['error']['message'], 'No Event specified');
