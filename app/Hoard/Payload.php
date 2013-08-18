@@ -47,7 +47,7 @@ class Payload
      */
     public function isVersionSupported()
     {
-        return $this->storage['version'] === 1 ? true : false;
+        return $this->storage['version'] === 1;
     }
 
     /**
