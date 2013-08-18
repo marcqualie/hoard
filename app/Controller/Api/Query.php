@@ -89,7 +89,7 @@ class Query extends \Controller\Base\Api
                 if ($k === '$time') {
                     $sort['t'] = $v;
                 } else {
-                    $sort["d." . $k] = $v;
+                    $sort['d.' . $k] = $v;
                 }
             }
         }
@@ -109,17 +109,20 @@ class Query extends \Controller\Base\Api
                 }
                 $data = array();
                 foreach ($cursor as $row) {
-                    $row['_id'] = (String) $row['_id'];
-//                  $row['date'] = (array) $row['t'];
-                    $data[] = $row;
+                    $item = array(
+                        'id' => (String) $row['_id'],
+                        'event' => $row['e'],
+                        'data' => $row['d'],
+                        'time' => [$row['t']->sec, $row['t']->usec],
+                    );
+                    $data[] = $item;
                 }
+
             } catch (MongoCursorException $e) {
                 return $this->error('Database Write Error', 503);
             }
-        }
 
-        // Could not connect
-        catch (MongoConnectionException $e) {
+        } catch (MongoConnectionException $e) {
             return $this->error('Database Connection Error', 503);
         }
 
@@ -135,5 +138,4 @@ class Query extends \Controller\Base\Api
         );
 
     }
-
 }
