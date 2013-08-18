@@ -82,19 +82,17 @@ class Find extends Base\Page
 
         // Fields
         $fields = array();
-        /*
-        if ($params['fields']) {
-            $json = $this->json2array($params['fields'], true);
-            $json['date'] = 1;
-//          if (!$where['event'])
-//          {
-                $json['event'] = 1;
-//          }
-            foreach ($json as $k => $v) {
-                $fields[$k] = $v;
+        if (! empty($params['fields'])) {
+            $explode = explode(',', $params['fields']);
+            foreach ($explode as $field) {
+                $field = trim($field);
+                $fields['d.' . $field] = 1;
             }
         }
-        */
+        if ($fields) {
+            $fields['t'] = 1;
+            $fields['e'] = 1;
+        }
 
         // Sort
         $sort = array();
