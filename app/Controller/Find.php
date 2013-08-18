@@ -53,8 +53,10 @@ class Find extends Base\Page
         */
         if (! empty($params['query'])) {
             $json = $this->json2array($params['query'], true);
-            if (! $json) {
-                $json['$e'] = $params['query'];
+            if (is_scalar($json) || ! is_array($json)) {
+                $json = array(
+                    '$e' => $params['query']
+                );
             }
             foreach ($json as $k => $v) {
                 // Specials
