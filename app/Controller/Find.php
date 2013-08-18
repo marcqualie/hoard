@@ -51,8 +51,11 @@ class Find extends Base\Page
             $where['appkey'] = array('$in' => $app_keys);
         }
         */
-        if (isset($params['query'])) {
+        if (! empty($params['query'])) {
             $json = $this->json2array($params['query'], true);
+            if (! $json) {
+                $json['$e'] = $params['query'];
+            }
             foreach ($json as $k => $v) {
                 // Specials
                 if ($k === '$e') {
