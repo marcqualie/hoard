@@ -93,7 +93,7 @@ class Find extends Base\Page
 
         // Sort
         $sort = array();
-        if (isset($params['sort'])) {
+        if (! empty($params['sort'])) {
             $json = $this->json2array($params['sort'], true);
             foreach ($json as $k => $v) {
                 if ($k === '$time') {
@@ -102,7 +102,8 @@ class Find extends Base\Page
                     $sort["d." . $k] = $v;
                 }
             }
-        } else {
+        }
+        if (! $sort) {
             $sort['t'] = -1;
         }
 
