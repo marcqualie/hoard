@@ -95,6 +95,15 @@ class Find extends Base\Page
         $sort = array();
         if (! empty($params['sort'])) {
             $json = $this->json2array($params['sort'], true);
+            if (! $json) {
+                preg_match('/^([^:]+)(:([\-]*1))?$/', $params['sort'], $matches);
+                if (isset($matches[1])) {
+                    $order = isset($matches[3]) && $matches[3] === '-1' ? -1 : 1;
+                    $json = array(
+                        $matches[1] => $order
+                    );
+                }
+            }
             foreach ($json as $k => $v) {
                 if ($k === '$time') {
                     $sort['t'] = $v;
@@ -106,6 +115,7 @@ class Find extends Base\Page
         if (! $sort) {
             $sort['t'] = -1;
         }
+//        print_r($sort);
 
         // Find Data
         // Save Data to log
