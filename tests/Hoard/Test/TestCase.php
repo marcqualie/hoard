@@ -94,7 +94,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
 
         // Add API key to request params
-        $uri .= (strpos('?', $uri) === -1 ? '?' : '&') . 'apikey=' . $this->apikey;
+        $uri .= (strpos('?', $uri) === false ? '?' : '&') . 'apikey=' . $this->apikey;
 
         // Do normal raw request
         return $this->makeRawRequest($method, $uri, $post);
@@ -116,13 +116,16 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         // Query String
         $parsed = parse_url('http://' . $_SERVER['HTTP_HOST'] . $uri);
+        $queryString = '';
         if (isset($parsed['query'])) {
             parse_str(html_entity_decode($parsed['query']), $query);
-            $_GET = $query;
+            if ($query) {
+                $_GET = $query;
+                $queryString = http_build_query($query, '', '&');
+            }
             $_POST = $post;
         }
-        $queryString = http_build_query($query, '', '&');
-        $_SERVER['REQUEST_URI'] = $parsed['path'] . ('' !== $queryString ? '?' . $queryString : '');
+        $_SERVER['REQUEST_URI'] = $parsed['path'] . ($queryString !== '' ? '?' . $queryString : '');
         $_SERVER['QUERY_STRING'] = $queryString;
 
         // Load front controller with new server variables
