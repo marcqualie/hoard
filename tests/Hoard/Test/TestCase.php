@@ -94,7 +94,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
 
         // Add API key to request params
-        $uri .= (strpos('?', $uri) === false ? '?' : '&') . 'apikey=' . $this->apikey;
+        $uri .= (strpos($uri, '?') === false ? '?' : '&') . 'apikey=' . $this->apikey;
 
         // Do normal raw request
         return $this->makeRawRequest($method, $uri, $post);
@@ -110,20 +110,20 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         // Override server params
         $_SERVER['HTTP_HOST'] = 'hoard.dev';
-        $_SERVER['REQUEST_URI'] = $uri;
         $_SERVER['REQUEST_METHOD'] = $method;
         $_SERVER['DOCUMENT_ROOT'] = $this->approot;
 
         // Query String
         $parsed = parse_url('http://' . $_SERVER['HTTP_HOST'] . $uri);
         $queryString = '';
+        $_GET = array();
+        $_POST = $post;
         if (isset($parsed['query'])) {
             parse_str(html_entity_decode($parsed['query']), $query);
             if ($query) {
                 $_GET = $query;
                 $queryString = http_build_query($query, '', '&');
             }
-            $_POST = $post;
         }
         $_SERVER['REQUEST_URI'] = $parsed['path'] . ($queryString !== '' ? '?' . $queryString : '');
         $_SERVER['QUERY_STRING'] = $queryString;
