@@ -37,3 +37,7 @@ You can also run via any standard web browser such as Nginx or Apache. Simply us
 ## Support
 
 Official support is currently not available, but if you have any questions or suggections please use the Github issue system
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/marcqualie/hoard/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
