@@ -2,6 +2,8 @@
 
 namespace Api;
 
+use User;
+
 /**
  * @RoutePrefix("/api/users")
  */
@@ -13,12 +15,8 @@ class UsersController extends ApiController
      */
     public function indexAction()
     {
-        $this->respondWith([
-            [
-                'id' => 1,
-                'name' => 'Marc Qualie',
-            ]
-        ]);
+        $users = User::find();
+        $this->respondWith($users);
     }
 
 }
