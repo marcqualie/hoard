@@ -14,6 +14,7 @@ try {
 
     // Create a DI
     $di = new Phalcon\DI\FactoryDefault();
+    require $app_path . '/di.php';
 
     // Routing
     $di->set('router', require '../app/router.php');
