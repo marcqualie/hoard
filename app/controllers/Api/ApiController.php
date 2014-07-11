@@ -9,6 +9,7 @@ class ApiController extends BaseController
 
     public function respondWith($resource)
     {
+        $this->view->disable();
         $this->response->setContentType('application/json', 'UTF-8');
         $this->response->setJsonContent([
             'meta' => [],
