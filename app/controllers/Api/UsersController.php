@@ -19,4 +19,13 @@ class UsersController extends ApiController
         $this->respondWith($users);
     }
 
+    /**
+     * @Get("/{id:[a-zA-Z0-9]+}")
+     */
+    public function showAction($id)
+    {
+        $users = User::findById($id);
+        $this->respondWith($users);
+    }
+
 }
