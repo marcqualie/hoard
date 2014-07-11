@@ -2,3 +2,4 @@
 node_modules
 .sass-cache
 public/assets/app.css
+public/vendor

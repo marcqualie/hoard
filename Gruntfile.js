@@ -6,6 +6,12 @@ module.exports = function(grunt) {
       compile: {
         files: {
           'public/assets/app.css': 'app/assets/stylesheets/app.scss'
+        },
+        options: {
+          loadPath: [
+            'app/assets/stylesheets',
+            'public/vendor/bootstrap-sass-official/vendor/assets/stylesheets'
+          ]
         }
       },
       minify: {

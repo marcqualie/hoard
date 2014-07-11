@@ -1,5 +1,5 @@
 {
-  "name": "hoard-api",
+  "name": "hoard",
   "description": "Event storage and processing engine",
   "contributors": [
     {
@@ -11,7 +11,6 @@
     "type": "git",
     "url": "https://github.com/marcqualie/hoard"
   },
-  "private": true,
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.5",
