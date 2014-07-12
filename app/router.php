@@ -9,10 +9,12 @@ $router->notFound([
 ]);
 
 // Default Route
-$router->setDefaults([
-    'action' => 'index'
-]);
-$router->add('/', 'Home::index');
+$router->add('/', 'Home::index')->setName('home');
+
+// Standard Controllers
+$router->addResource('Sessions', '/sessions');
+$router->addGet('/login', 'Sessions::new')->setName('login');
+$router->addGet('/logout', 'Sessions::destroy')->setName('logout');
 
 // API resources
 $router->addResource('Api\Users', '/api/users');

@@ -1,0 +1,30 @@
+<div class="container text-center">
+
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3">
+
+      <h1>Authentication</h1>
+
+      <br/>
+      <?= $this->tag->form('sessions') ?>
+
+          <div class="form-group">
+            <label for="email">Username/Email</label>
+            <?= $this->tag->textField(['email', 'class' => 'form-control text-center']) ?>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <?= $this->tag->passwordField(['password', 'class' => 'form-control text-center']) ?>
+          </div>
+
+          <?= $this->tag->submitButton(['Login', 'class' => 'btn btn-primary']) ?>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

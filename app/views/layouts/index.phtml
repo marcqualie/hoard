@@ -10,12 +10,17 @@
     <div class="navbar navbar-default">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">Hoard</a>
-        <ul class="navbar-nav nav">
-          <li><a href="/">Dashboard</a></li>
+        <ul class="nav navbar-nav">
           <li><a href="/users">Users</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/account"><?= $authUser->email ?></a></li>
+          <li><a href="/logout">Logout</a></li>
         </ul>
       </div>
     </div>
+
+    <?= $this->flashSession->output() ?>
 
     <?= $this->getContent() ?>
 
