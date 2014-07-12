@@ -11,18 +11,20 @@
       <div class="container">
         <a class="navbar-brand" href="/">Hoard</a>
         <ul class="nav navbar-nav">
-          <li><a href="/buckets">Buckets (<?= count($authUser->getBuckets()) ?>)</a></li>
+          <li><a href="/buckets">Buckets ({{ authUser.getBuckets() | length }})</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/account"><?= $authUser->email ?></a></li>
+          <li><a href="/account">{{ authUser.email }}</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
       </div>
     </div>
 
-    <?= $this->flashSession->output() ?>
+    <div class="container">
+      {{ flashSession.output() }}
+    </div>
 
-    <?= $this->getContent() ?>
+    {% block content %}{% endblock %}
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/bootstrap.js"></script>

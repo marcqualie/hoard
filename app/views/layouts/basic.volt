@@ -7,9 +7,9 @@
   </head>
   <body>
 
-    <?= $this->flashSession->output() ?>
+    {{ flashSession.output() }}
 
-    <?= $this->getContent() ?>
+    {% block content %}{% endblock %}
 
     <script src="/assets/jquery.js"></script>
     <script src="/assets/bootstrap.js"></script>

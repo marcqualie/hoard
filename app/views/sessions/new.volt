@@ -1,3 +1,6 @@
+{% extends 'layouts/basic.volt' %}
+
+{% block content %}
 <div class="container text-center">
 
   <div class="row">
@@ -7,19 +10,19 @@
       <h1>Authentication</h1>
 
       <br/>
-      <?= $this->tag->form('sessions') ?>
+      {{ form('sessions', method: 'post') }}
 
           <div class="form-group">
             <label for="email">Username/Email</label>
-            <?= $this->tag->textField(['email', 'class' => 'form-control text-center']) ?>
+            {{ textField(['email', 'class' => 'form-control text-center']) }}
           </div>
 
           <div class="form-group">
             <label for="password">Password</label>
-            <?= $this->tag->passwordField(['password', 'class' => 'form-control text-center']) ?>
+            {{ passwordField(['password', 'class' => 'form-control text-center']) }}
           </div>
 
-          <?= $this->tag->submitButton(['Login', 'class' => 'btn btn-primary']) ?>
+          {{ submitButton(['Login', 'class' => 'btn btn-primary']) }}
 
       </form>
 
@@ -28,3 +31,4 @@
   </div>
 
 </div>
+{% endblock %}
