@@ -1,11 +1,10 @@
 <?php
 
-class HomeController extends Phalcon\Mvc\Controller
+class HomeController extends BaseController
 {
 
     public function indexAction()
     {
-        echo 'hmm';
     }
 
 }

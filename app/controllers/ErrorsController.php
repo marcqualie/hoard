@@ -1,11 +1,10 @@
 <?php
 
-class ErrorsController extends Phalcon\Mvc\Controller
+class ErrorsController extends BaseController
 {
 
     public function notFoundAction()
     {
-        echo 'fuck off, nothing here';
     }
 
 }
