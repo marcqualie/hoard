@@ -31,8 +31,10 @@ class User extends Phalcon\Mvc\Collection
     public function getBuckets()
     {
         return Bucket::find([
-            'roles.' . $this->getId() => [
-                '$exists' => 1
+            [
+                'roles.' . $this->getId() => [
+                    '$exists' => 1
+                ]
             ]
         ]);
     }
