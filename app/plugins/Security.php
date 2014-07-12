@@ -26,7 +26,8 @@ class Security extends Plugin
         if ($controller !== 'sessions' && ! $this->user)
         {
             $this->view->disable();
-            return $this->response->redirect('login');
+            $this->response->redirect('login');
+            return false;
         }
 
     }
