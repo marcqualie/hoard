@@ -38,6 +38,10 @@ module.exports = function(grunt) {
             'public/vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/transition.js'
           ],
           'public/assets/app.js': 'app/assets/javascripts/app.js',
+        },
+        options: {
+          mangle: false,
+          beautify: true
         }
       }
     },
