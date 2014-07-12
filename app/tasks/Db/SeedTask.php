@@ -18,11 +18,8 @@ class SeedTask extends Task
         echo "Seeding Database\n";
 
         // Drop databases
-        foreach (['User', 'Bucket'] as $model_name) {
-            $model = new $model_name;
-            $collection = $model->getConnection()->selectCollection($model->getSource());
-            $collection->drop();
-        }
+        $model = new User;
+        $model->getConnection()->drop();
 
         // Create Admin
         $user = new User;
@@ -50,8 +47,8 @@ class SeedTask extends Task
         // Events
         for ($i = 0; $i < 50; $i++) {
             $event = new Event;
+            $event->bucket_id = (string) $buckets[$i % count($buckets)]->getId();
             $event->name = 'ping';
-            $event->bucket_id = ceil($i / count($buckets));
             $event->data = [
                 'int' => 1,
                 'string' => 'blah blah',

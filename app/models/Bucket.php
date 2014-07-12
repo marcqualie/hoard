@@ -27,16 +27,25 @@ class Bucket extends Phalcon\Mvc\Collection
         $this->updated_at = new MongoDate();
     }
 
+    public function getEventCollection()
+    {
+        $model = new Event;
+        $collection = $model->getConnection()->selectCollection('events_' . $this->getId());
+        return $collection;
+    }
+
     public function getEvents()
     {
-        return Event::find([
-            [
-                'bucket_id' => $this->getId()
-            ],
-            'sort' => [
-                'created_at' => -1
-            ]
-        ]);
+        $events = [];
+        $cursor = $this->getEventCollection()->find()->sort(['created_at' => -1]);
+        foreach ($cursor as $document) {
+            $object = new stdClass;
+            foreach ($document as $key => $value) {
+                $object->$key = $value;
+            }
+            $events[] = $object;
+        }
+        return $events;
     }
 
     public function getAverage()
@@ -45,14 +54,7 @@ class Bucket extends Phalcon\Mvc\Collection
         $trend = [];
         foreach ($periods as $period) {
             $since = new MongoDate(time() - $period);
-            $count = count(Event::find([
-                [
-                    'bucket_id' => $this->getId(),
-                    'created_at' => [
-                        '$gt' => $since
-                    ]
-                ]
-            ]));
+            $count = $this->getEventCollection()->find(['created_at' => ['$gt' => $since]])->count();
             $trend[] = round($count / $period * 60, 2);
         }
         return $trend;
