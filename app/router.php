@@ -19,6 +19,7 @@ $router->addResource('Buckets', '/buckets');
 
 // API resources
 $router->addResource('Api\Users', '/api/users');
+$router->addResource('Api\Events', '/api/events');
 
 // Return instance for dependency injection
 return $router;
