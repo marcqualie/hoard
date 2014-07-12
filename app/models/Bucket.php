@@ -30,7 +30,9 @@ class Bucket extends Phalcon\Mvc\Collection
     public function getEvents()
     {
         return Event::find([
-            'bucket_id' => $this->getId()
+            [
+                'bucket_id' => $this->getId()
+            ]
         ]);
     }
 
