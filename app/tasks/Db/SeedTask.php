@@ -5,6 +5,7 @@ namespace Db;
 use Bucket;
 use Event;
 use MongoDate;
+use MongoId;
 use Phalcon\CLI\Task;
 use User;
 
@@ -25,6 +26,7 @@ class SeedTask extends Task
 
         // Create Admin
         $user = new User;
+        $user->_id = new MongoId('53c196fe06000e34580041a0');
         $user->name = 'Admin User';
         $user->username = 'admin';
         $user->email = 'admin@example.org';
@@ -35,6 +37,7 @@ class SeedTask extends Task
         $buckets = [];
         for ($i = 0; $i < 5; $i++) {
             $bucket = new Bucket;
+            $bucket->_id = new MongoId('53c1864406000e024a0041a' . $i);
             $bucket->name = 'Demo Bucket ' . ($i + 1);
             $bucket->description = 'This bucket is created automaitcally for demo purposes';
             $bucket->roles = [
