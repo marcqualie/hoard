@@ -10,19 +10,19 @@
       <h1>Authentication</h1>
 
       <br/>
-      {{ form('sessions', method: 'post') }}
+      {{ form('sessions', 'method': 'post') }}
 
           <div class="form-group">
             <label for="email">Username/Email</label>
-            {{ textField(['email', 'class' => 'form-control text-center']) }}
+            {{ text_field('email', 'class': 'form-control text-center') }}
           </div>
 
           <div class="form-group">
             <label for="password">Password</label>
-            {{ passwordField(['password', 'class' => 'form-control text-center']) }}
+            {{ password_field('password', 'class': 'form-control text-center') }}
           </div>
 
-          {{ submitButton(['Login', 'class' => 'btn btn-primary']) }}
+          {{ submit_button('Login', 'class': 'btn btn-primary') }}
 
       </form>
 
