@@ -19,12 +19,17 @@ class Security extends Plugin
         }
 
         // Take the active controller/action from the dispatcher
+        $namespace = strtolower($dispatcher->getNamespaceName());
         $controller = strtolower($dispatcher->getControllerName());
         $action = $dispatcher->getActionName();
 
+        // Skips API routes (for now)
+        if ($namespace === 'api') {
+            return true;
+        }
+
         // Redirect to /login if user is not logged in
-        if ($controller !== 'sessions' && ! $this->user)
-        {
+        if ($controller !== 'sessions' && ! $this->user) {
             $this->view->disable();
             $this->response->redirect('login');
             return false;
