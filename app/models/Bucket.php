@@ -32,6 +32,9 @@ class Bucket extends Phalcon\Mvc\Collection
         return Event::find([
             [
                 'bucket_id' => $this->getId()
+            ],
+            'sort' => [
+                'created_at' => -1
             ]
         ]);
     }
