@@ -29,14 +29,18 @@ class SeedTask extends Task
         $user->password = password_hash('password', PASSWORD_BCRYPT, ['cost' => 13]);
         $user->save();
 
-        // Create demo bucket
-        $bucket = new Bucket;
-        $bucket->name = 'Demo Bucket';
-        $bucket->description = 'This bucket is created automaitcally for demo purposes';
-        $bucket->roles = [
-            (string) $user->getId() => 'admin'
-        ];
-        $bucket->save();
+        // Create demo buckets
+        $buckets = [];
+        for ($i = 0; $i < 5; $i++) {
+            $bucket = new Bucket;
+            $bucket->name = 'Demo Bucket ' . ($i + 1);
+            $bucket->description = 'This bucket is created automaitcally for demo purposes';
+            $bucket->roles = [
+                (string) $user->getId() => 'admin'
+            ];
+            $bucket->save();
+            $buckets[$i] = $bucket;
+        }
 
     }
 
