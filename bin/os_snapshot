@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+
+$api_host = isset($argv[1]) ? $argv[1] : die("Hoard Hostname is not set\n");
+$bucket_id = isset($argv[2]) ? $argv[2] : die("Hoard BucketID is not set\n");
+
+$data = [];
+$top = trim(`top -l 1 | head -n 10`);
+
+// Load
+$load = trim(`sysctl -n vm.loadavg`);
+preg_match_all('/[0-9]+\.[0-9]+/', $load, $matches);
+$data['load'] = array_map(function ($num) {
+    return (float) $num;
+}, $matches[0]);
+
+// CPU
+$data['ncpu'] = (int) trim(`sysctl -n hw.ncpu`);
+
+// Memory Usage
+preg_match('/PhysMem: ([0-9]+)M used \(([0-9]+)M wired\), ([0-9]+)M unused/', $top, $matches);
+$data['memory'] = [
+    'total' => round(trim(`sysctl -n hw.memsize`) / 1024 / 1024, 2),
+    'used' => round($matches[1], 2),
+    'free' => round($matches[3], 2),
+];
+
+// Processes -  236 total, 2 running, 7 stuck, 227 sleeping, 1331 threads
+preg_match('/Processes: ([0-9]+) total, ([0-9]+) running, ([0-9]+) stuck, ([0-9]+) sleeping, ([0-9]+) threads/', $top, $matches);
+$data['processes'] = [
+    'total' => round($matches[1], 2),
+    'running' => round($matches[2], 2),
+    'stuck' => round($matches[3], 2),
+    'sleeping' => round($matches[4], 2),
+    'threads' => round($matches[5], 2),
+];
+
+// Hostname
+$data['host'] = trim(`sysctl -n kern.hostname`);
+
+// Send data to server
+$payload = [
+    'name' => 'ping',
+    'bucket_id' => $bucket_id,
+    'data' => $data,
+];
+$json_payload = json_encode($payload);
+$curl = curl_init();
+curl_setopt_array($curl, [
+    CURLOPT_URL => $api_host . '/api/events',
+    CURLOPT_HEADER => false,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => $json_payload,
+    CURLOPT_HTTPHEADER => [
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($json_payload)
+    ]
+]);
+$response = curl_exec($curl);
+echo $response;
