@@ -25,10 +25,13 @@ class EventsController extends ApiController
      */
     public function createAction()
     {
+
+        $payload = $this->request->getJsonRawBody();
+
         $event = new Event;
-        $event->name = $this->request->getPost('name');
-        $event->bucket_id = new MongoId($this->request->getPost('bucket_id'));
-        $event->data = (array) $this->request->getPost('data');
+        $event->name = $payload->name;
+        $event->bucket_id = new MongoId($payload->bucket_id);
+        $event->data = $payload->data;
         $event->save();
         $this->respondWith($event);
     }
