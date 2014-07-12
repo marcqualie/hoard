@@ -1,7 +1,6 @@
 {
   "require": {
-    "ext-phalcon": "*",
-    "ext-mongo": "*",
-    "phalcon/devtools": "dev-master"
+    "ext-phalcon": "~1.3.2",
+    "ext-mongo": "~1.5.4"
   }
 }
