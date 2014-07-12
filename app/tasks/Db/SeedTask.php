@@ -2,6 +2,7 @@
 
 namespace Db;
 
+use Bucket;
 use Phalcon\CLI\Task;
 use User;
 
@@ -14,25 +15,29 @@ class SeedTask extends Task
         echo "Seeding Database\n";
 
         // Drop databases
-        $user = new User;
-        $collection = $user->getConnection()->selectCollection($user->getSource());
-        $collection->drop();
+        foreach (['User', 'Bucket'] as $model_name) {
+            $model = new $model_name;
+            $collection = $model->getConnection()->selectCollection($model->getSource());
+            $collection->drop();
+        }
 
-        $this->seedUsers();
-
-    }
-
-    /**
-     * Seed users
-     */
-    protected function seedUsers()
-    {
+        // Create Admin
         $user = new User;
         $user->name = 'Admin User';
         $user->username = 'admin';
         $user->email = 'admin@example.org';
         $user->password = password_hash('password', PASSWORD_BCRYPT, ['cost' => 13]);
         $user->save();
+
+        // Create demo bucket
+        $bucket = new Bucket;
+        $bucket->name = 'Demo Bucket';
+        $bucket->description = 'This bucket is created automaitcally for demo purposes';
+        $bucket->roles = [
+            (string) $user->getId() => 'admin'
+        ];
+        $bucket->save();
+
     }
 
 }

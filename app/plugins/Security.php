@@ -25,6 +25,7 @@ class Security extends Plugin
         // Redirect to /login if user is not logged in
         if ($controller !== 'sessions' && ! $this->user)
         {
+            $this->view->disable();
             return $this->response->redirect('login');
         }
 

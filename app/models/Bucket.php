@@ -1,19 +1,18 @@
 <?php
 
-class User extends Phalcon\Mvc\Collection
+class Bucket extends Phalcon\Mvc\Collection
 {
 
     // Attributes
     public $name;
-    public $username;
-    public $email;
-    public $password;
+    public $roles;
+    public $description;
     public $created_at;
     public $updated_at;
 
     public function getSource()
     {
-        return 'users';
+        return 'buckets';
     }
 
     public function beforeCreate()
@@ -26,15 +25,6 @@ class User extends Phalcon\Mvc\Collection
     public function beforeSave()
     {
         $this->updated_at = new MongoDate();
-    }
-
-    public function getBuckets()
-    {
-        return Bucket::find([
-            'roles.' . $this->getId() => [
-                '$exists' => 1
-            ]
-        ]);
     }
 
 }

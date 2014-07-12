@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/">Hoard</a>
         <ul class="nav navbar-nav">
-          <li><a href="/users">Users</a></li>
+          <li><a href="/buckets">Buckets (<?= count($authUser->getBuckets()) ?>)</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/account"><?= $authUser->email ?></a></li>

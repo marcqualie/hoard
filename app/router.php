@@ -15,6 +15,7 @@ $router->add('/', 'Home::index')->setName('home');
 $router->addResource('Sessions', '/sessions');
 $router->addGet('/login', 'Sessions::new')->setName('login');
 $router->addGet('/logout', 'Sessions::destroy')->setName('logout');
+$router->addResource('Buckets', '/buckets');
 
 // API resources
 $router->addResource('Api\Users', '/api/users');
