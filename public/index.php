@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('UTC');
+
 try {
 
     $root_path = dirname(__DIR__);
