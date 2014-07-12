@@ -3,6 +3,8 @@
 namespace Db;
 
 use Bucket;
+use Event;
+use MongoDate;
 use Phalcon\CLI\Task;
 use User;
 
@@ -40,6 +42,19 @@ class SeedTask extends Task
             ];
             $bucket->save();
             $buckets[$i] = $bucket;
+        }
+
+        // Events
+        for ($i = 0; $i < 50; $i++) {
+            $event = new Event;
+            $event->name = 'ping';
+            $event->bucket_id = ceil($i / count($buckets));
+            $event->data = [
+                'int' => 1,
+                'string' => 'blah blah',
+                'date' => new MongoDate(),
+            ];
+            $event->save();
         }
 
     }

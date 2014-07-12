@@ -27,4 +27,11 @@ class Bucket extends Phalcon\Mvc\Collection
         $this->updated_at = new MongoDate();
     }
 
+    public function getEvents()
+    {
+        return Event::find([
+            'bucket_id' => $this->getId()
+        ]);
+    }
+
 }
