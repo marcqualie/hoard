@@ -1,10 +1,13 @@
 <?php
 
+include dirname(__DIR__) . '/vendor/autoload.php';
+
 $di = new Phalcon\DI\FactoryDefault();
 
 // Database Connection
 $di->set('mongo', function() {
-    $mongo = new MongoClient("mongodb://localhost:27017");
+    $mongo = new MongoMinify\Client("mongodb://localhost:27017");
+    $mongo->schema_dir = __DIR__ . '/schema';
     return $mongo->selectDB("hoard-beta");
 }, true);
 $di->set('collectionManager', function(){

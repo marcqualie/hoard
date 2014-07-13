@@ -1,6 +1,7 @@
 {
   "require": {
     "ext-phalcon": "~1.3.2",
-    "ext-mongo": "~1.5.4"
+    "ext-mongo": "~1.5.4",
+    "marcqualie/mongominify": "~1.0.4"
   }
 }

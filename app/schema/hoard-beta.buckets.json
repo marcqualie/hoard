@@ -1,0 +1,17 @@
+{
+  "name": {
+    "short": "n"
+  },
+  "roles": {
+    "short": "r"
+  },
+  "description": {
+    "short": "d"
+  },
+  "created_at": {
+    "short": "c"
+  },
+  "updated_at": {
+    "short": "m"
+  }
+}

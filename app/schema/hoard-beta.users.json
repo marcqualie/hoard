@@ -1,0 +1,20 @@
+{
+  "name": {
+    "short": "n"
+  },
+  "email": {
+    "short": "e"
+  },
+  "username": {
+    "short": "u"
+  },
+  "password": {
+    "short": "p"
+  },
+  "created_at": {
+    "short": "c"
+  },
+  "updated_at": {
+    "short": "m"
+  }
+}
