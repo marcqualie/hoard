@@ -15,7 +15,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </tale>
+    </table>
 
 </div>
 {% endblock %}
