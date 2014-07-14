@@ -48,6 +48,11 @@ class Bucket extends Phalcon\Mvc\Collection
         return $events;
     }
 
+     public function getEventCount()
+    {
+        return $this->getEventCollection()->count();
+    }
+
     public function getAverage()
     {
         $periods = func_get_args();
@@ -55,20 +60,15 @@ class Bucket extends Phalcon\Mvc\Collection
         foreach ($periods as $period) {
             $since = new MongoDate(time() - $period);
             $count = $this->getEventCollection()->find(['created_at' => ['$gt' => $since]])->count();
-            $trend[] = round($count / $period * 60, 2);
+            $trend[] = round($count / $period, 2);
         }
         return $trend;
     }
 
-    public function getEventCount()
-    {
-        $this->getEventCollection()->find()->count();
-    }
-
     public function getTrend()
     {
-        $averages = $this->getAverage(300, 3600);
-        return ($averages[0] - $averages[1]) * 10;
+        $averages = $this->getAverage(60);
+        return $averages[0];
     }
 
 }
