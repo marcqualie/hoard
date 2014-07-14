@@ -60,6 +60,11 @@ class Bucket extends Phalcon\Mvc\Collection
         return $trend;
     }
 
+    public function getEventCount()
+    {
+        $this->getEventCollection()->find()->count();
+    }
+
     public function getTrend()
     {
         $averages = $this->getAverage(300, 3600);
