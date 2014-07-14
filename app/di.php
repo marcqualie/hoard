@@ -62,12 +62,21 @@ $di->set('volt', function($view, $di) use ($app_path) {
     ]);
     return $volt;
 });
-$di->set('view', function() use ($di, $app_path) {
+$di->set('view', function() use ($app_path) {
+
+    $eventsManager = new Phalcon\Events\Manager();
+    $eventsManager->attach("view", function($event, $view) {
+        if ($event->getType() == 'notFoundView') {
+            throw new Exception('View not found' . $view->getActiveRenderPath());
+        }
+    });
+
     $view = new Phalcon\Mvc\View;
     $view->setViewsDir($app_path . '/views/');
     $view->registerEngines([
         '.volt' => 'volt',
     ]);
+    $view->setEventsManager($eventsManager);
     return $view;
 });
 
