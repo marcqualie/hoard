@@ -12,6 +12,7 @@ class ErrorsController extends BaseController
 
     public function notFoundAction()
     {
+        $this->view->pick('errors/notFound');
     }
 
 }

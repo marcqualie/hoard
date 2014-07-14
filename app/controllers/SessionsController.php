@@ -13,6 +13,7 @@ class SessionsController extends BaseController
      */
     public function newAction()
     {
+        $this->view->pick('sessions/new');
     }
 
     /**
@@ -36,6 +37,7 @@ class SessionsController extends BaseController
         }
 
         $this->flashSession->error('Wrong email/password');
+        $this->view->disable();
         return $this->response->redirect(['for' => 'login']);
     }
 
@@ -45,6 +47,7 @@ class SessionsController extends BaseController
     public function destroyAction()
     {
         $this->session->remove('auth_id');
+        $this->view->disable();
         return $this->response->redirect(['for' => 'login']);
     }
 

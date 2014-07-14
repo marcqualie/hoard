@@ -13,6 +13,7 @@ class BucketsController extends BaseController
     {
         $buckets = $this->authUser->getBuckets();
         $this->view->setVar('buckets', $buckets);
+        $this->view->pick('buckets/index');
     }
 
     /**
@@ -22,6 +23,7 @@ class BucketsController extends BaseController
     {
         $bucket = Bucket::findById($id);
         $this->view->setVar('bucket', $bucket);
+        $this->view->pick('buckets/events');
     }
 
     /**
@@ -31,6 +33,7 @@ class BucketsController extends BaseController
     {
         $bucket = Bucket::findById($id);
         $this->view->setVar('bucket', $bucket);
+        $this->view->pick('buckets/show');
     }
 
     /**
