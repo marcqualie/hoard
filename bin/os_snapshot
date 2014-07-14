@@ -1,42 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-$api_host = isset($argv[1]) ? $argv[1] : die("Hoard Hostname is not set\n");
+// Input Arguments
+$api_host = isset($argv[1]) ? $argv[1] : die("Hoard API Host is not set\n");
 $bucket_id = isset($argv[2]) ? $argv[2] : die("Hoard BucketID is not set\n");
 
-$data = [];
-$top = trim(`top -l 1 | head -n 10`);
+// HoardUtils Instance (PHP Extension must be installed)
+$metrics = new HoardUtils\ServerMetrics();
 
-// Load
-$load = trim(`sysctl -n vm.loadavg`);
-preg_match_all('/[0-9]+\.[0-9]+/', $load, $matches);
-$data['load'] = array_map(function ($num) {
-    return (float) $num;
-}, $matches[0]);
-
-// CPU
-$data['ncpu'] = (int) trim(`sysctl -n hw.ncpu`);
-
-// Memory Usage
-preg_match('/PhysMem: ([0-9]+)M used \(([0-9]+)M wired\), ([0-9]+)M unused/', $top, $matches);
-$data['memory'] = [
-    'total' => round(trim(`sysctl -n hw.memsize`) / 1024 / 1024, 2),
-    'used' => round($matches[1], 2),
-    'free' => round($matches[3], 2),
+// Grab data from metrics instance
+$data = [
+    'load' => $metrics->getLoad(),
+    'ncpu' => $metrics->getCpuCount(),
+    'memory' => $metrics->getMemoryInfo(),
+    'host' => $metrics->getHostName(),
+    'processes' => $metrics->getProcessInfo(),
 ];
-
-// Processes -  236 total, 2 running, 7 stuck, 227 sleeping, 1331 threads
-preg_match('/Processes: ([0-9]+) total, ([0-9]+) running, ([0-9]+) stuck, ([0-9]+) sleeping, ([0-9]+) threads/', $top, $matches);
-$data['processes'] = [
-    'total' => round($matches[1], 2),
-    'running' => round($matches[2], 2),
-    'stuck' => round($matches[3], 2),
-    'sleeping' => round($matches[4], 2),
-    'threads' => round($matches[5], 2),
-];
-
-// Hostname
-$data['host'] = trim(`sysctl -n kern.hostname`);
 
 // Send data to server
 $payload = [

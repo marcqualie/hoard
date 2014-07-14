@@ -2,6 +2,7 @@
   "require": {
     "ext-phalcon": "~1.3.2",
     "ext-mongo": "~1.5.4",
+    "ext-hoardutils": "~0.0.1",
     "marcqualie/mongominify": "~1.0.4"
   }
 }
