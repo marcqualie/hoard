@@ -26,6 +26,21 @@
 
     {% block content %}{% endblock %}
 
+    <div class="page-footer clearfix">
+      <div class="container">
+        <div class="pull-left">
+          &copy; <a href="https://github.com/marcqualie/hoard">Hoard</a> by <a href="https://marcqualie.com">Marc Qualie</a>
+        </div>
+        <div class="pull-right">
+          <span class="text-muted">
+            System Load: <strong>{{ serverMetrics.getLoad() | join(' ') }}</strong>
+            &middot;
+            <a href="/system">{{ serverMetrics.getHostname() }}</a>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <script src="/assets/jquery.js"></script>
     <script src="/assets/bootstrap.js"></script>
     <script src="/assets/app.js"></script>

@@ -1,0 +1,7 @@
+.page-footer {
+  margin-top: $grid-gutter-width;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: $input-border;
+  padding: ($grid-gutter-width / 2)  $grid-gutter-width;
+}

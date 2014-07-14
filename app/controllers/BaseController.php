@@ -21,6 +21,10 @@ class BaseController extends Phalcon\Mvc\Controller
             $this->authUser = User::findById($user_id);
             $this->view->setVar('authUser', $this->authUser);
         }
+
+        // Create a server metrics instance
+        $this->view->setVar('serverMetrics', new HoardUtils\ServerMetrics);
+
     }
 
 }
