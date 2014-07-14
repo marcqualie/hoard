@@ -7,7 +7,10 @@ class ErrorsController extends BaseController
 
     public function initialize()
     {
-        $this->view->disableLevel(View::LEVEL_MAIN_LAYOUT);
+        $this->view->disableLevel(array(
+            View::LEVEL_LAYOUT => true,
+            View::LEVEL_MAIN_LAYOUT => true
+        ));
     }
 
     public function notFoundAction()
